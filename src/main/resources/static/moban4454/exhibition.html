@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>云赏三维</title>
+      <!-- bootstrap css -->
+      <!--<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">-->
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+      <link rel="stylesheet" type="text/css" href="css/load_exhibition.css">
+      <style>
+      	.hoverDiv:hover .content{
+      		display: block;
+		}
+		.content {
+			position: absolute;
+			width: 92.3%;
+			height: 84%;
+			text-align: center;
+			background: rgba(1,1,1,0.4);
+			bottom: 90px;
+			display: none;
+		}
+		.head_img{
+			width:80px;
+			height: 80px;
+			background: rgba(245,245,245,1);
+		}
+      </style>
+      <script src="3dmodel/3dmodel.js"></script>
+      <script type="text/javascript" src="build/three.js"></script>
+      <script src="3dmodel/js/controls/OrbitControls.js"></script>
+      <!--<script src="3dmodel/js/loaders/DDSLoader.js"></script>-->
+      <script type="text/javascript" src="3dmodel/js/loaders/OBJLoader.js"></script>
+      <script type="text/javascript" src="3dmodel/js/loaders/MTLLoader.js"></script>
+      
+      <!--三维模型-->
+      <!--玉壶春瓶-->
+      <script type="text/javascript" src="3dmodel/load.js"> 
+
+//			var container,controls;
+//
+//			var camera=null;
+//			var scene=null;
+//			var renderer=null;
+//
+//			var mouseX = 0, mouseY = 0;
+//			
+//			var windowHalfX = 600;
+//			var windowHalfY = 500;
+//			
+//			
+//			var object1=null;
+//			var id = null;
+//			
+//			function clearModel () {
+//			  // 清除局部的模型
+//			  if (scene !== null) {
+//				// 确保3D相关对象已销毁
+//				window.cancelAnimationFrame(stop) // 可以取消动画
+//				scene = null
+//				camera = null
+//				renderer = null
+//				controls = null
+//				div3D = null
+//				console.log('dadasd');
+//			  }
+//			}
+//			
+//			
+//			function init() {
+//				
+//				clearModel();
+//				
+//				
+//				renderer = new THREE.WebGLRenderer({
+//					antialias:true,
+//					canvas:document.getElementById('mainCanvas')
+//				});
+//				
+//				camera = new THREE.PerspectiveCamera( initial, windowHalfX / windowHalfY, 1, 2000 );
+//				camera.position.z = position_z;
+//
+//				// scene
+//
+//				scene = new THREE.Scene();
+//				
+////				var ambientLight = new THREE.AmbientLight( 0x523318);
+////				scene.add( ambientLight );
+//				var ambientLight1 = new THREE.AmbientLight( 0xffffff);
+//				scene.add( ambientLight1 );
+//				
+//				var pointLight = new THREE.PointLight( 0xffffff );
+//				if(mtl!='yxs.mtl') {
+//					pointLight.position.set(-1.288,1.942,-3.340);
+//					pointLight.intensity = 0.1;
+//					pointLight.decay = 2;	
+//				}else {
+//					pointLight.intensity = 1;
+//				}
+//				
+//				camera.add( pointLight );
+//				
+//				scene.add( camera );
+//				
+//				//加载进度
+//				function onProgress( xhr ) {
+//
+//					if ( xhr.lengthComputable ) {
+//
+//						var percentComplete = xhr.loaded / xhr.total * 100;
+//						var progress = Math.round( percentComplete, 2 );
+//						document.getElementById('baifenbi').innerHTML =  Math.round( percentComplete, 2 ) + "%";
+//						if(progress == 100) {
+//							document.getElementById('loading').style.visibility = "hidden";
+//						}
+//						
+////						console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+//					}
+//				}
+//
+//				function onError() {}
+//				
+////				THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
+//
+//				new THREE.MTLLoader()
+//					.setPath(path)
+//					.load( mtl, function ( materials ) {
+//
+//						materials.preload();
+//
+//						new THREE.OBJLoader()
+//							.setMaterials( materials )
+//							.setPath(path)
+//							.load( obj, function ( object ) {
+//
+////								object.position.y = - 95;
+//								
+//								scene.add( object );
+//							}, onProgress, onError );
+//
+//					} );
+//				//
+//
+//				
+////				renderer = new THREE.WebGLRenderer({antialias: false,
+////                      alpha: false});
+//				renderer.setPixelRatio( window.devicePixelRatio );
+//				renderer.setSize( windowHalfX, windowHalfY );
+//				//设置颜色
+//				renderer.setClearColor('rgb(131,128,129)',1.0);
+////				container.appendChild( renderer.domElement );
+//				
+//				
+//				// 拖拽
+//				controls = new THREE.OrbitControls( camera, renderer.domElement );
+// 				controls.autoRotate = true;
+//				controls.autoRotateSpeed = 0.5;
+//				controls.minDistance = minDistance;
+//				controls.maxDistance = maxDistance;
+//				
+//				window.addEventListener('mousemove', onDocumentMouseMove, false);
+//				window.addEventListener( 'resize', onWindowResize, false );
+//				animate();
+//			}
+//			
+//			function onDocumentMouseMove( event ) {
+//
+//				mouseX = ( event.clientX - windowHalfX ) / 2;
+//				mouseY = ( event.clientY - windowHalfY ) / 2;
+//
+//			}
+//
+//			function onWindowResize() {
+//
+//				camera.aspect = windowHalfX / windowHalfY;
+//				camera.updateProjectionMatrix();
+//
+//				renderer.setSize( windowHalfX, windowHalfY );
+//
+//			}
+//
+//			function animate() {
+//				
+//				controls.update();
+//				renderer.render( scene, camera );
+//
+//				requestAnimationFrame( animate );
+//			}
+//
+//			function render() {
+//
+//				camera.position.x += ( mouseX - camera.position.x ) * .05;
+//				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+//
+//				camera.lookAt( scene.position );
+//			}
+			 
+			
+		</script>
+		
+		
+   </head>
+   <!--onload="init()"-->
+   <body onload="init()">
+      <!-- header section start -->
+      
+      <!-- services section end -->
+      <!-- about section start -->
+      <h1 class="about_taital" style="text-align: center;margin-top: 30px;">天津博物馆珍贵文物三维展示</h1>
+      <div class="about_section"  style="width: 100%;" id="3dmodel">
+         <div class="container-fluid" style="height: 522px;">
+            <div class="row" style="height: 500px;">
+               <div style="width: 50%; float: left;">
+                  <div style="width: 100%;padding-top: 50px;padding-left: 100px;">
+                     <h2 id="name">清 乾隆款珐琅彩芍药雉鸡图玉壶春瓶</h2>
+                     <p class="about_text" id="message">清乾隆款珐琅彩芍药雉鸡图玉壶春瓶，是国宝级文物。高16.3厘米，口径4厘米，底径5厘米。小撇口，长颈，腹部下端丰满，圈足。瓶胎质细腻洁白，胎体轻薄，釉面莹润如玉，上用珐琅彩绘画。颈部用蓝料彩绘上下两组蕉叶纹，腹部珐琅彩绘芍药雉鸡图：两只雌雄雉鸡栖身于山石上，彼此相偎，作态亲昵，周围衬以芍药花及秋季花草。空白处墨彩题诗：“青扶承露蕊，红妥出阑枝。”引首朱文“春和”印，句尾白文“翠铺”朱文“霞映”二方印。瓶底赭彩四字方款“乾隆年制”。这件玉壶春瓶，构图十分精美，芍药雉鸡寓意金鸡富贵，有吉祥的含义。画工精细入微，绘画图案取自清代宫廷画家的手稿。此瓶集诗、书、画、印于一身，有如一幅展开的画卷，称之国宝名副其实。</p>
+                     <div class="readmore_bt" id="name_btn"><a id="a_html" href="3dmodel/yyt.html?mtl=yhcp.mtl&obj=yhcp.obj&path=yhcp/&initial=50&position_z=250&minDistance=100&maxDistance=450" target="_blank">玉壶春瓶</a></div>
+                  </div>
+               </div>
+               <div style="width: 50%;height: 500px;float: right;">
+               		<canvas id="mainCanvas" width="500px" height="500px" style="margin-right: 40px;"></canvas>
+			      	<div class="loading" id="loading">
+				        <div class="pic">
+				            <!--外面的圈圈-->
+				            <span></span>
+				            <!--数据加载进度（百分比数字）-->
+				            <b id="baifenbi"></b>
+				        </div>
+				    </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      
+      <!-- footer section end -->
+      <div class="copyright_section" style="margin-top: 25px;margin-bottom: 15px;" >
+      	<div style="width: 100%;height: auto;display: flex;justify-content:space-around;">
+      		<div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(0,1)" ><img src="images/yhcp_head.png" class="head_img"/></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(1,1)" ><img src="images/bxhl_head.png" class="head_img"/></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(2,1)" ><img src="images/yyt_head.png" class="head_img"  /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(3,1)" ><img src="images/yth_head.png" class="head_img"  /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(4,1)" ><img src="images/shuangyu_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(5,1)" ><img src="images/xj_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(6,1)" ><img src="images/huakoupan_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(7,1)" ><img src="images/yxs_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(8,1)" ><img src="images/junyao_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(9,1)" ><img src="images/ruyao_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(10,1)" ><img src="images/menganyin_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(11,1)" ><img src="images/futongyin_head.png" class="head_img" /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(12,1)" ><img src="images/bingniutongyin_head.png" class="head_img" /></a>
+	        </div>
+      	</div>
+      	
+      </div>
+      <!-- copyright section start -->
+      <div class="copyright_section" style="background-color: #122c2d;">
+         <div class="container">
+            <p class="copyright_text">&copy; 1998-2020 天津博物馆版权所有 津ICP备12002929号</p>
+         </div>
+      </div>
+      
+   </body>
+</html>

@@ -1,0 +1,24 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 3,
+	"data": [{
+		"id":1,
+		"registrationNo":"59.3.150",
+		"name": "西周太保方鼎",
+		"organizer": "天津博物馆",
+		"username":"高专家",
+		"startTime":"1980-04-16",	
+		"endTime":"1980-10-20",	
+		"remark":"",
+		"result":"",
+		"skill":"",
+		"relics":[{
+			"registrationNo": "59.3.150",
+			"name": "西周太保方鼎",
+			"fulldisable": "残缺",
+			"reason":"腐蚀损毁严重，急需修复"
+		}]
+		
+	}]
+}

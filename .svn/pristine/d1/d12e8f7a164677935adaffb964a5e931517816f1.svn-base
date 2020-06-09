@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>生成返还入库单</title>
+    <meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+    <style type="text/css">
+		.layui-form-label {
+		    width: 86px;
+		}
+		.layui-table-cell {
+		    height: auto;
+		    line-height: 18px;
+		    padding: 0 0px;
+		    text-align: center;
+		    overflow:visible;
+		    text-overflow:inherit;
+		    white-space:normal;
+		}
+	</style>
+</head>
+<body>
+<div class="childrenBody">
+	<form class="layui-form" action="" lay-filter="demo1">			
+        <div class="layui-form-item" style="margin-top: 10px;">	
+	        <div class="layui-inline">
+	            <label class="layui-form-label">出库凭证号</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="danhao" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">点交人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="username" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">点收人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="username2" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">入库时间</label>
+	            <div class="layui-input-inline">
+	            	<input type="text" class="layui-input" name="yijiTime"  id="test1" placeholder="yyyy-MM-dd">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+				<label class="layui-form-label" id="lable">上传凭证</label>
+				<div class="layui-input-inline">
+					<button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>附件</button>
+				</div>
+			</div>
+        </div>
+        
+        <div class="layui-form" style="margin: 0px 5px;">
+			<table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>
+			<script type="text/html" id="checkbd">
+			    {{#  if (d.stockStatus === 4){ }}// 这里是判断要不要显示的条件
+			         <input type="checkbox" name="siam_one" title="" lay-skin="primary" data-id = "{{ d.TotalNumber }}">
+			    {{#  } else if{ d.stockStatus === 3}}
+	                <input type='checkbox' name='siam_all' title='' lay-skin='primary' lay-filter='siam_all'>
+	            {{#  } }}
+			</script>
+			<script type="text/html" id="xuhao">
+			    {{d.LAY_TABLE_INDEX+1}}
+			</script>
+			<script type="text/html" id="checkboxTpl">
+	            {{#  if(d.stockStatus === 0){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已征集未登记</button>
+	            {{#  } else if(d.stockStatus === 1){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已登记未入库</button>
+	            {{#  } else if(d.stockStatus === 2){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已入库</button>
+	            {{#  } else if(d.stockStatus === 3){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">出库</button>
+	            {{#  } else if(d.stockStatus === 4){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">返还入库</button>
+	            {{#  } else { }}
+	               <button type="button" class="layui-btn layui-btn-xs">完全返还入库</button>
+	            {{#  } }}
+		    </script>
+		</div>
+		<div id="page"></div>
+        
+        <div class="layui-form-item"style="margin-left: 30%;">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">确认入库</button>
+                <button type="reset" class="layui-btn layui-btn-primary">取消</button>
+            </div>
+        </div>
+    </form> 
+</div>
+
+<script src="../../../lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    var tjcpData = eval('('+parent.tjcpData+')');
+    console.log(tjcpData);        
+    
+    layui.use(['form', 'table', 'laydate'], function(){
+		var $ = layui.jquery,
+		form = layui.form,
+		table = layui.table,
+        laydate = layui.laydate;
+	
+		laydate.render({
+		    elem: '#test1',
+		    trigger: 'click'
+		})
+		
+		form.val("demo1", {
+			danhao: tjcpData.danhao,
+			ckdanhao: tjcpData.ckdanhao,
+			time: tjcpData.time,
+			/*username: tjcpData.username*/
+		})
+			
+		table.render({
+            elem: '#currentTable',
+            data: tjcpData.data,
+            cols: [
+                [
+                {type: 'checkbox',templet: "#checkbd",},
+                {type: 'numbers', title: '序号',templet: '#xuhao', width: 30},
+                {field: 'TotalNumber', title: '文物号', sort: true},
+                {field: 'McrName', title: '名称', minWidth: 100},
+                {field: 'Age', title: '年代', sort: true, edit: 'text'},
+                {field: 'Number', title: '数量(单位)', sort: true},
+                {field: 'Hall', title: '方位'},
+                {field: 'Fulldisable', title: '完残程度'},
+                {field: 'stockStatus', title: '藏品状态',templet: '#checkboxTpl'},
+                {field: 'yanjiao', title: '入库验收记录',edit: 'edit', width: 100},
+            ]
+			],
+            limits: [5, 10, 15, 20, 25, 50],
+            limit: 5,
+            page: true,
+            done:function(res, curr, count){
+            	trNum = count;
+				for(var i = 0;i<res.data.length;i++){
+				    var state = res.data[i].stockStatus;
+				    if(state == 4){//禁用选择框
+				        var index = res.data[i]['LAY_TABLE_INDEX'];
+				        $(".layui-table tr[data-index="+index+"] input[type='checkbox']").prop('disabled',true);
+				        $(".layui-table tr[data-index="+index+"] input[type='checkbox']").next().addClass('layui-btn-disabled');
+				        $('.layui-table tr[data-index=' + index + '] input[type="checkbox"]').prop('name', 'caib');
+				    }
+				}
+            }
+        });
+        
+        //监听单元格编辑
+		table.on('edit(currentTable)', function(obj){
+		    var value = obj.value, //得到修改后的值
+		    data = obj.data, //得到所在行所有键值
+		    field = obj.field; //得到字段
+		    layer.msg('[Index: '+ data.index +'] ' + field + ' 字段更改为：'+ value);
+		});
+		
+		
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+        
+        
+        
+	});
+</script>
+
+</body>
+</html>

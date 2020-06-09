@@ -1,0 +1,303 @@
+html, body {
+	width: 100%;
+}
+
+#searchbox{
+	width: 98%;
+	margin-left: 1%;
+}
+
+.bodywidth {
+	width: 98%;
+	margin-left: 1%;
+	height: 40px;
+	line-height: 40px;
+	margin-top: 20px;
+	font-size: 14px;
+	background: #E8E8E8;
+}
+
+.nice-select.small{
+	margin-top: 2px;
+	background-color: #E8E8E8;
+}
+
+#page {
+	/*margin-left: 30%;*/
+	float: right;
+}
+
+.searchbox {
+	margin-top: 10px;
+}
+
+.searchbox .l {
+	width: 71px;
+}
+
+.searchbox .c {
+	width: 108%;
+}
+
+a:hover {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.info {
+	width: 80%;
+	margin: 0px 10%;
+}
+
+.info div {
+	height: 30px;
+}
+
+.resourceContent {
+	width: 98%;
+	margin-left: 1%;
+	margin-top: 15px;
+}
+
+#nullData{
+	width: 276px;
+	height: 154px;
+	margin-left: 38%;
+	margin-top: 30px;
+}
+
+.relic-data h2 {
+	display: inline;
+	font-size: 16px;
+	color: #080808;
+	font-weight: 600;
+	line-height: 32px;
+	margin: 0 16px 0 0;
+}
+
+.tag{
+	display: inline-block;
+	height: 30px;
+	line-height: 30px;
+	padding: 0 10px;
+	font-size: 12px;
+	background-color: #f0f0f0;
+	border: 1px solid #C9C9C9;
+	border-radius: 100px;
+	cursor: pointer;
+}
+
+.tag:hover{
+	border: 1px solid #555;
+	background-color: #555;
+	color: #fff;
+}
+
+.relic-img{
+	margin-top: 5px;
+}
+
+.imgBox {
+	width: 15%;
+	height: 150px;
+	float: left;
+	margin-right: 50px;
+	margin-bottom: 10px;
+	background-color: #e6e5e5;
+	position: relative;
+}
+
+.imgBox img {
+	max-width: 100%;
+	max-height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+}
+
+.layui-table-cell{
+	display:table-cell;
+	vertical-align: middle;
+	height: auto;
+	line-height: 18px;
+	text-align: center;
+	overflow:visible;
+	text-overflow:inherit;
+	white-space:normal;
+}
+
+
+.div_img{
+	width: 50px;
+	height: 50px;
+	background-color: #e6e5e5;
+	position: relative;
+}
+
+.div_img img{
+	max-width: 100%;
+	max-height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+
+}
+
+.toolbar {
+	width: 100%;
+	display: none;
+	position: relative;
+	/*top: 105px;*/
+	top: 136px;
+	left: 3px;
+}
+
+.fbl{
+	color: #fff;
+}
+
+.canshu{
+	color: #fff;
+	font-size: 10px;
+	position: relative;
+	top: 20px;
+	left: 0px;
+}
+.canshu a{
+	color: #fff;
+}
+
+.toolitem a {
+	color: #fff;
+}
+
+.toolbar .toolitem {
+	display: inline-block;
+	float: right;
+	width: 24px;
+	height: 24px;
+	text-align: center;
+	line-height: 24px;
+	background: rgba(0, 0, 0, 0.5);
+	border-radius: 2px;
+	margin: 0 4px 4px 0;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	position: relative;
+	top: -10px;
+}
+
+.allImg {
+	width: 30px;
+	height: 30px;
+	position: relative;
+	top: -95px;
+	left: 96%;
+}
+.showMore{
+	height: 30px;
+	width: 30px;
+	line-height: 30px;
+	border: 1px solid #C9C9C9;
+	background-color: #C9C9C9;
+	color: #555;
+	border-radius: 128px;
+	cursor: pointer;
+}
+.showMore:hover{
+	border: 1px solid #555;
+	background-color: #555;
+	color: #fff;
+}
+
+
+/*购物车*/
+.seeall{
+	margin-top: 5px;
+	margin-left: 75%;
+}
+
+.order_lists {
+	height: 100px;
+}
+
+.cart_column ul {
+	padding: 0 5px;
+}
+
+.cart_column li {
+	padding: 5px 0;
+}
+
+.order_lists .list_con .list_img{
+	width: 50px;
+	height: 50px;
+	background-color: #e6e5e5;
+	position: relative;
+}
+
+.order_lists .list_con .list_img img{
+	max-width: 100%;
+	max-height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+
+}
+.cartMain {
+	width: 300px;
+	min-width: 300px;
+	max-width: 300px;
+	padding: 0px 0px 5px;
+}
+
+.cartMain_hd .cartTop {
+	height: 50px;
+	padding: 0px 0px 5px;
+}
+
+.cartTop li {
+	border-bottom: none;
+	margin-top: -10px;
+}
+
+.cartBox .shop_name a {
+	display: inline;
+}
+
+.cartMain_hd .cartTop .list_chk label {
+	position: absolute;
+	left: 10px;
+	top: 38px;
+}
+
+.cartMain_hd .cartTop .list_con {
+	width: 100px;
+	text-indent: 70px;
+}
+
+.order_lists .list_con {
+	width: 200px;
+}
+
+.order_lists .list_con .list_text {
+	width: 120px;
+}
+
+.order_lists .list_con .list_img,
+.order_lists .list_con .list_img img {
+	height: 50px;
+	width: 50px;
+}

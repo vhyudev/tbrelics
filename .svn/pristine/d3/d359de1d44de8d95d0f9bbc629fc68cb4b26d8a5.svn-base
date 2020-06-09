@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文物篮</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="lib/layui/css/layui.css" media="all" />
+    <script src="lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script src="lib/layui/layui.js"></script>
+    <script src="js/imgPath.js"></script>
+    <script src="js/cpwwl.js"></script>
+    <!--<script src="js/relicCart.js"></script>-->
+
+    <style type="text/css">
+        #relicList{
+            width: 98%;
+            padding: 10px;
+
+        }
+        #nullData{
+            width: 276px;
+            height: 154px;
+            margin-top: 90px;
+            margin-left: 38%;
+        }
+        .imgItem{
+            width: 180px;
+            height: 90px;
+            float: left;
+            margin-right: 23px;
+            margin-bottom: 10px;
+        }
+        .relic-data{
+            margin-bottom: 5px;
+        }
+
+        .imgBox {
+            width: 90px;
+            height: 90px;
+            margin-right: 10px;
+            background-color: #e6e5e5;
+            position: relative;
+        }
+
+        .imgBox img {
+            max-width: 100%;
+            max-height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .itemCtr {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            text-align: center;
+            line-height: 32px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 2px;
+            margin: 0 4px 4px 0;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body class="childrenBody">
+    <form class="layui-form">
+        <blockquote class="layui-elem-quote news_search">
+            <div class="layui-inline">
+                <input type="checkbox" name="selectAll" id="selectAll" lay-filter="selectAll" lay-skin="primary" title="全选">
+            </div>
+            <div class="layui-inline">
+                <a class="layui-btn layui-btn-danger batchDel">批量删除</a>
+            </div>
+            <div class="layui-inline">
+                <a class="layui-btn zyqdSubmit">生成资源清单</a>
+            </div>
+        </blockquote>
+        <div id="relicList"></div>
+    </form>
+
+    <!--<div id="model" style="display: none">
+        <form class="layui-form">
+            <div class="layui-form-item" style="margin-top: 10px">
+                <label class="layui-form-label" style="border: none">名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="resourceName" id="resourceName" class="layui-input" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="border: none">用途</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="resourceUse" id="resourceUse" class="layui-input" autocomplete="off">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input class="layui-btn queding" value="提交" type="button">
+                    <input class="layui-btn layui-btn-primary quxiao" value="取消" type="button">
+                </div>
+            </div>
+        </form>
+    </div>-->
+
+
+</body>
+</html>

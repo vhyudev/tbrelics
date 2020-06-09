@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>购物车</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="lib/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/carts.css">
+    <link rel="stylesheet" href="css/user.css">
+    <style type="text/css">
+    	.bar-wrapper {
+    		width: 1000px;
+    	}
+        #nullData{
+            width: 489px;
+            height: 350px;
+            margin-left: 30%;
+        }
+    	.cartMain{
+		    width: 1000px;
+		    min-width: 1000px;
+		    max-width: 1000px;
+		    padding: 0px 0px 20px;
+		}
+        .cartMain_hd .cartTop .list_con {
+            text-indent: 40px;
+        }
+		.order_lists .list_info {
+	        width: 170px;
+	    }
+	    .order_lists .list_price {
+		    width: 130px;
+		}
+		.order_lists .list_sum {
+		   width: 140px;
+		}
+		.order_lists .list_op {
+		    width: 150px;
+		} 
+		
+		.order_lists .list_con .list_img{
+            width: 90px;
+            height: 90px;
+            background-color: #e6e5e5;
+            position: relative;
+		}
+		.order_lists .list_con .list_img img{
+            max-width: 100%;
+            max-height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+		}
+		
+		.bar-wrapper .bar-right .calBtn a {
+		    width: 200px;
+		}
+		.bar-wrapper .bar-right .delMuchBtn{
+		    float: left;
+		    min-width: 110px;
+		    margin-right: 20px;
+		    height: 50px;
+		    line-height: 50px;
+		}
+		.delMuchBtn .removeMuch{
+			cursor: pointer;
+		
+		}
+    </style>
+</head>
+<body>
+    <section class="cartMain">
+        <div class="cartMain_hd">
+            <ul class="order_lists cartTop">
+                <li class="list_chk">
+                    <!--所有商品全选-->
+                    <input type="checkbox" id="all" class="whole_check">
+                    <label for="all"></label>
+                    全选
+                </li>
+                <li class="list_con">图片</li>
+                <li class="list_info">图片大小</li>
+                <li class="list_price">格式</li>
+                <li class="list_sum">分辨率</li>
+                <li class="list_op">操作</li>
+            </ul>
+        </div>
+
+        <!--底部-->
+        <div class="bar-wrapper">
+            <div class="bar-right">
+            	<!--<div class="delMuchBtn">
+            		<a href="javascript:;" class="removeMuch">删除选中的资源</a>
+            	</div>-->
+                <div class="calBtn"><a href="javascript:;">生成资源清单</a></div>
+            </div>
+        </div>
+    </section>
+    <section class="model_bg"></section>
+    <section class="my_model">
+        <p class="title">删除资源<span class="closeModel">X</span></p>
+        <p>您确认要删除该资源吗？</p>
+        <div class="opBtn"><a href="javascript:;" class="dialog-sure">确定</a><a href="javascript:;" class="dialog-close">关闭</a></div>
+    </section>
+    <section class="list_model">
+        <p class="title">生成资源清单<span class="closeModel">X</span></p>
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="border: none">名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="resourceName" id="resourceName" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="border: none">用途</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="resourceUse" id="resourceUse" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input class="layui-btn zyqdSubmit" value="提交" type="button">
+                </div>
+            </div>
+        </form>
+    </section>
+    <script src="lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script src="lib/layui/layui.js"></script>
+    <script src="js/cartsOp.js"></script>
+    <script src="js/wwl.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            getWwlInfo();
+        })
+
+
+    </script>
+</body>
+</html>

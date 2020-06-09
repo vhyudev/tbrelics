@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>纹饰造型</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div style="width: auto;height: 40px;line-height: 40px;font-size: 24px;padding-left: 40px;">
+			纹饰造型
+		</div>
+		<div style="width: auto;height: 40px;line-height: 40px;font-size: 24px;padding-left: 40px;">
+			蕉叶纹
+		</div>
+		<br />
+		<div style="width: auto;height: 40px;line-height: 40px;font-size: 24px;padding-left: 40px;">
+			饕餮纹
+		</div>
+		<br />
+		<div style="width: auto;height: 40px;line-height: 40px;font-size: 24px;padding-left: 40px;">
+			扉棱
+		</div>
+		
+	</body>
+</html>

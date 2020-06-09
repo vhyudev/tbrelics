@@ -1,0 +1,218 @@
+{
+	"status": 0,
+	"msg": "ok",
+	"data": [{
+			"id": 1,
+			"name": "藏品管理",
+			"icon": "&#xe70b;",
+			"url": "",
+			"children": [ {
+				"id": 11,
+				"name": "总账管理",
+				"icon": "",
+				"url": "",
+				"children": [{
+					"id": 111,
+					"name": "征集录入",
+					"icon": "",
+					"url": "page/collection/solicitation/addzjrz.html"
+				},{
+					"id": 112,
+					"name": "征集维护",
+					"icon": "",
+					"url": "page/collection/solicitation/zjglMaintain.html"
+				},{
+					"id": 113,
+					"name": "文物账",
+					"icon": "",
+					"url": "page/collection/ledger/zzRegister.html"
+				},{
+					"id": 114,
+					"name": "资料账",
+					"icon": "",
+					"url": "page/collection/ledger/zzMaintain.html"
+				},{
+					"id": 116,
+					"name": "藏品分配",
+					"icon": "",
+					"url": "page/collection/ledger/cpfp.html"
+				},{
+					"id": 117,
+					"name": "藏品入库",
+					"icon": "",
+					"url": "page/collection/ledger/cprk.html"
+				}, {
+					"id": 118,
+					"name": "藏品注销",
+					"icon": "",
+					"url": "page/collection/ledger/cpzx.html"
+				}]						
+			},{
+				"id": 12,
+				"name": "信息管理",
+				"icon": "",
+				"url": "",
+				"children": [{
+					"id": 122,
+					"name": "藏品信息",
+					"icon": "",
+					"url": "page/collection/info/zsjs.html"
+				},{
+					"id": 123,
+					"name": "管理信息",
+					"icon": "",
+					"children": [{
+						"id":1231,
+						"name":"拍摄记录",
+						"icon":"",
+						"url":"page/collection/info/record/psjl.html"
+					},{
+						"id":1232,
+						"name":"扫描记录",
+						"icon":"",
+						"url":"page/collection/info/record/swjl.html"
+					},{
+						"id":1233,
+						"name":"外展记录",
+						"icon":"",
+						"url":"page/collection/info/record/wzjl.html"
+					},{
+						"id":1234,
+						"name":"内展记录",
+						"icon":"",
+						"url":"page/collection/info/record/nzjl.html"
+					},{
+						"id":1235,
+						"name":"观摩记录",
+						"icon":"",
+						"url":"page/collection/info/record/gmjl.html"
+					},{
+						"id":1236,
+						"name":"修复记录",
+						"icon":"",
+						"url":"page/collection/info/record/xfjl.html"
+					}]
+				}]
+			},{
+				"id": 13,
+				"name": "提借管理",
+				"icon": "",
+				"url": "",
+				"children": [{
+					"id": 131,
+					"name": "预提借管理",
+					"icon": "",
+					"url": "",
+					"children": [{
+						"id": 1311,
+						"name": "藏品检索",
+						"icon": "",
+						"url": "page/collection/borrowing/cpjs.html"
+					},{
+						"id": 1312,
+						"name": "文物篮管理",
+						"icon": "",
+						"url": "page/collection/borrowing/wwllist.html"
+					}, {
+						"id": 1313,
+						"name": "备选单管理",
+						"icon": "",
+						"url": "page/collection/borrowing/tjqdlist.html"
+					}]					
+				}, {
+					"id": 132,
+					"name": "提借出库管理",
+					"icon": "",
+					"url": "",
+					"children": [{
+						"id": 1321,
+						"name": "提借出库单管理",
+						"icon": "",
+						"url": "page/collection/borrowing/tjcklist.html"
+					},{
+						"id": 1322,
+						"name": "新增出库单",
+						"icon": "",
+						"url": "page/collection/borrowing/tjqdlist2.html"
+					}]
+				}, {
+					"id": 133,
+					"name": "返还入库管理",
+					"icon": "",
+					"url": "",
+					"children": [{
+						"id": 1331,
+						"name": "返还入库单管理",
+						"icon": "",
+						"url": "page/collection/borrowing/fhrklist.html"
+					},{
+						"id": 1332,
+						"name": "新增入库单",
+						"icon": "",
+						"url": "page/collection/borrowing/tjcklist3.html"
+					}]
+				}]
+			}, {
+				"id": 14,
+				"name": "盘核管理",
+				"icon": "",
+				"url": "page/collection/check/phgl.html"
+			}, {
+				"id": 15,
+				"name": "藏品统计",
+				"icon": "",
+				"url": "",
+				"children": [{
+					"id": 151,
+					"name": "藏品信息统计",
+					"icon": "",
+					"url": "page/collection/statistic/cptj.html"
+				}, {
+					"id": 152,
+					"name": "藏品数量变动统计",
+					"icon": "",
+					"url": "page/collection/statistic/cptjsl.html"
+				}, {
+					"id": 153,
+					"name": "藏品提用动态统计",
+					"icon": "",
+					"url": "page/collection/statistic/cptjty.html"
+				}]
+			}, {
+				"id": 16,
+				"name": "系统设置",
+				"icon": "",
+				"url": "",
+				"children": [{
+					"id": 161,
+					"name": "休眠规则",
+					"icon": "",
+					"url": "page/collection/ledger/wwbh.html"
+				}]
+			}]
+		},{
+			"id": 2,
+			"name": "藏品数字资源管理",
+			"icon": "&#xe705;",
+			"url": "",
+			"children": [{
+				"id": 21,
+				"name": "资源检索",
+				"icon": "",
+				"url": "zyjs.html"
+			}, {
+				"id": 22,
+				"name": "文物篮",
+				"icon": "",
+				"url": "cpwwl.html"
+
+			}, {
+				"id": 23,
+				"name": "资源清单管理",
+				"icon": "",
+				"url": "list.html"
+
+			}]
+		}
+	]
+}

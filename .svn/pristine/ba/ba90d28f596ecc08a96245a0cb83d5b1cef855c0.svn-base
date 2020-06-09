@@ -1,0 +1,265 @@
+
+
+{
+  "code": 0,
+  "msg": "",
+  "count": 203,
+  "data": 
+[
+	{"id":"10001",
+	"waterCode":"0b20190412",
+	"username":"宋范宽雪景寒林图轴",
+	"sex":"保存完好",
+	"logins":"2019-10-15",
+	"joinTime":"购买",
+	"joinTime2":"2019-10-15",
+	"overCode":"201908171530",
+	"beSolPeo":"张茂才",
+	"rePeo":"李文芳",
+	"zjNum":"0a1b20190804",
+	"cultNum":"0a1b20190804",
+	"exNum":"0a1b20190804",
+	"status":"无",
+	"data": [{
+					
+					"McrName": "宋范宽雪景寒林图轴",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1",
+					"typeNumber":"138.28.38.232",
+					"cultType":"文房四宝"
+					
+				},
+				{
+					
+					"McrName": "西周太保方鼎",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1",
+					"typeNumber":"18.23.34.12",
+					"cultType":"出土文物"
+				},
+				{
+					
+					"McrName": "清乾隆款珐琅彩芍药雉鸡图玉壶春瓶",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1",
+					"typeNumber":"44.23.53.23",
+					"cultType":"瓷器"
+				},
+				{
+					
+					"McrName": "新石器时代红山文化兽面形玉珮",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1",
+					"typeNumber":"38.22.32.20",
+					"cultType":"玉器"
+
+				},
+				{
+					
+					"McrName": "明顾从义摹刻石鼓文砚",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1",
+					"typeNumber":"18.45.63.41",
+					"cultType":"文房四宝"
+
+				}
+
+			]},
+{"id":"10002",
+"waterCode":"0b20190213",
+"username":"西周太保方鼎",
+"sex":"残缺",
+"logins":"2019-10-15",
+"joinTime":"拨交",
+"joinTime2":"2019-10-15",
+"overCode":"201908171530",
+"Code":"202001170920",
+"beSolPeo":"张茂才",
+"rePeo":"李文芳","zjNum":"0a1b20190804","cultNum":"0a1b20190804","exNum":"0a1b20190804","status":"无",
+"data": [{
+					
+					"McrName": "宋范宽雪景寒林图轴",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "西周太保方鼎",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "清乾隆款珐琅彩芍药雉鸡图玉壶春瓶",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "新石器时代红山文化兽面形玉珮",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "明顾从义摹刻石鼓文砚",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				}
+
+			]}
+,{"id":"10003","waterCode":"0b20190525",
+"username":"清乾隆款珐琅彩芍药雉鸡图玉壶春瓶",
+"sex":"基本完好","logins":"2019-10-15","joinTime":"移交",
+"joinTime2":"2019-10-15","overCode":"201908171530","beSolPeo":"张茂才",
+"rePeo":"李文芳","zjNum":"0a1b20190804","cultNum":"0a1b20190804","exNum":"0a1b20190804","status":"无",
+"data": [{
+					
+					"McrName": "宋范宽雪景寒林图轴",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "西周太保方鼎",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "清乾隆款珐琅彩芍药雉鸡图玉壶春瓶",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "新石器时代红山文化兽面形玉珮",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "明顾从义摹刻石鼓文砚",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				}
+
+			]}
+,{"id":"10004","waterCode":"0b20190810","username":"新石器时代红山文化兽面形玉珮",
+"sex":"基本完好","logins":"2019-10-15","joinTime":"购买","joinTime2":"2019-10-15","overCode":"201908171530",
+"beSolPeo":"张茂才","rePeo":"李文芳","zjNum":"0a1b20190804","cultNum":"0a1b20190804","exNum":"0a1b20190804","status":"无",
+"data": [{
+					
+					"McrName": "宋范宽雪景寒林图轴",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "西周太保方鼎",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "清乾隆款珐琅彩芍药雉鸡图玉壶春瓶",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "新石器时代红山文化兽面形玉珮",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "明顾从义摹刻石鼓文砚",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				}
+
+			]}
+,{"id":"10005","waterCode":"0b20190522","username":"明顾从义摹刻石鼓文砚","sex":"基本完好",
+"logins":"2019-10-15","joinTime":"拨交","joinTime2":"2019-10-15","overCode":"201908171530","beSolPeo":"张茂才",
+"rePeo":"李文芳","zjNum":"0a1b20190804","cultNum":"0a1b20190804","exNum":"0a1b20190804","status":"无",
+"data": [{
+					
+					"McrName": "宋范宽雪景寒林图轴",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "西周太保方鼎",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "清乾隆款珐琅彩芍药雉鸡图玉壶春瓶",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "新石器时代红山文化兽面形玉珮",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				},
+				{
+					
+					"McrName": "明顾从义摹刻石鼓文砚",
+					"Age":"保存完好",
+					"toNumber":"1",
+					"nowNumber":"1"
+					
+				}
+
+			]}
+]
+
+}

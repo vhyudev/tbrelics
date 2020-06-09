@@ -1,0 +1,559 @@
+package com.lxtech.tbrelics.service.impl;
+
+import com.lxtech.tbrelics.domain.LCollection;
+import com.lxtech.tbrelics.domain.LResource;
+import com.lxtech.tbrelics.domain.LUserResource;
+import com.lxtech.tbrelics.mapper.*;
+import com.lxtech.tbrelics.service.CollectionService;
+import com.lxtech.tbrelics.service.DResourceService;
+import com.lxtech.tbrelics.util.FatherToChildUtil;
+import com.lxtech.tbrelics.util.Test;
+import com.lxtech.tbrelics.view.ViewCollectionCount;
+import com.lxtech.tbrelics.view.ViewResourceCollection;
+import com.lxtech.tbrelics.view.ViewShopcart;
+import com.lxtech.tbrelics.vo.CollectionResources;
+import com.lxtech.tbrelics.vo.CountCollectionResources;
+import com.lxtech.tbrelics.vo.RelicandresourceAttribute;
+import com.lxtech.tbrelics.vo.UserResources;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskRejectedException;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+@Service
+public class CollectionServiceImpl implements CollectionService {
+
+    @Autowired
+    private LCollectionMapper lCollectionMapper;
+
+    @Autowired
+    private ViewShopcartMapper viewShopcartMapper;
+
+    @Autowired
+    private LUserResourceMapper lUserResourceMapper;
+
+    @Autowired
+    private LResourceMapper lResourceMapper;
+
+    @Autowired
+    private ViewResourceCollectionMapper viewResourceCollectionMapper;
+
+    @Autowired
+    private ViewCollectionCountMapper viewCollectionCountMapper;
+
+    @Autowired
+    private DResourceService dResourceService;
+
+    @Override
+    public ViewResourceCollection selectByResourceId(Long id) {
+
+        return viewResourceCollectionMapper.selectById(id);
+    }
+
+    @Override
+    public JSONObject findSearchCriteria() {
+        System.out.println("从数据库查询用户搜索条件");
+        JSONObject jsonObject = new JSONObject();
+
+
+        List<String> setAge = lCollectionMapper.selectRelicsAge();
+        JSONArray jsonArrayAge=new JSONArray();
+        JSONObject jsonObjectAge=null;
+        for (String str : setAge) {
+            jsonObjectAge = new JSONObject();
+            jsonObjectAge.put("value",str);
+            jsonObjectAge.put("text",str);
+            jsonArrayAge.add(jsonObjectAge);
+        }
+        jsonObject.put("ageData", jsonArrayAge);
+
+
+        List<String> setType = lCollectionMapper.selectRelicsType();
+        JSONArray jsonArrayType=new JSONArray();
+        JSONObject jsonObjectType=null;
+        for (String str : setType) {
+            jsonObjectType = new JSONObject();
+            jsonObjectType.put("value", str);
+            jsonObjectType.put("text", str);
+            jsonArrayType.add(jsonObjectType);
+        }
+        jsonObject.put("typeData",jsonArrayType);
+
+
+        List<String> setLevel = lCollectionMapper.selectRelicsLevel();
+        JSONArray jsonArrayLevel=new JSONArray();
+        JSONObject jsonObjectLevel=null;
+        for (String str : setLevel) {
+            jsonObjectLevel = new JSONObject();
+            jsonObjectLevel.put("value", str);
+            jsonObjectLevel.put("text", str);
+            jsonArrayLevel.add(jsonObjectLevel);
+        }
+        jsonObject.put("levelData",jsonArrayLevel);
+
+
+       List<String> setFormat = lResourceMapper.selectImgFormat();
+        JSONArray jsonArrayFormat=new JSONArray();
+        JSONObject jsonObjectFormat=null;
+        for (String str : setFormat) {
+            jsonObjectFormat = new JSONObject();
+            jsonObjectFormat.put("value", str);
+            jsonObjectFormat.put("text", str);
+            jsonArrayFormat.add(jsonObjectFormat);
+        }
+        jsonObject.put("formatData",jsonArrayFormat);
+
+        List<String> setImgResolutionRatioFlag = lResourceMapper.selectImgResolutionRatioFlag();
+        JSONArray jsonArrayImgResolutionRatioFlag=new JSONArray();
+        JSONObject jsonObjectImgResolutionRatioFlag=null;
+        for (String str : setImgResolutionRatioFlag) {
+            jsonObjectImgResolutionRatioFlag = new JSONObject();
+            jsonObjectImgResolutionRatioFlag.put("value", str);
+            if(str.equals("1")){
+                jsonObjectImgResolutionRatioFlag.put("text", "10万像素以下");
+            }else if(str.equals("2")){
+                jsonObjectImgResolutionRatioFlag.put("text", "10万-100万像素");
+            }else if(str.equals("3")){
+                jsonObjectImgResolutionRatioFlag.put("text", "100万-500万像素");
+            }else if(str.equals("4")){
+                jsonObjectImgResolutionRatioFlag.put("text", "500万-2000万像素");
+            }else if(str.equals("5")){
+                jsonObjectImgResolutionRatioFlag.put("text", "2000万像素以上");
+            }
+            jsonArrayImgResolutionRatioFlag.add(jsonObjectImgResolutionRatioFlag);
+        }
+        jsonObject.put("fblData",jsonArrayImgResolutionRatioFlag);
+
+        List<String> setImgSizeFlag = lResourceMapper.selectImgSizeFlag();
+        JSONArray jsonArrayImgSizeFlag=new JSONArray();
+        JSONObject jsonObjectImgSizeFlag=null;
+        for (String str : setImgSizeFlag) {
+            jsonObjectImgSizeFlag = new JSONObject();
+            jsonObjectImgSizeFlag.put("value", str);
+            if(str.equals("1")){
+                jsonObjectImgSizeFlag.put("text", "5M以下");
+            }else if(str.equals("2")){
+                jsonObjectImgSizeFlag.put("text", "5M-50M");
+            }else if(str.equals("3")){
+                jsonObjectImgSizeFlag.put("text", "50M-200M");
+            }else if(str.equals("4")){
+                jsonObjectImgSizeFlag.put("text", "200M以上");
+            }
+            jsonArrayImgSizeFlag.add(jsonObjectImgSizeFlag);
+        }
+        jsonObject.put("tpdxData",jsonArrayImgSizeFlag);
+
+        return jsonObject;
+    }
+
+    @Override
+    public List<String> findRelicsAge() {
+
+        return lCollectionMapper.selectRelicsAge();
+    }
+
+    @Override
+    public List<String> findRelicsType() {
+        return lCollectionMapper.selectRelicsType();
+    }
+
+    @Override
+    public List<CollectionResources>  selectShopCarts(long userid) {
+        List<ViewShopcart> list =viewShopcartMapper.selectByViewShop(userid);
+
+        List<CollectionResources> collList = new ArrayList<>();
+        ViewShopcart viewShopcart=null;
+        List<LResource> resourceList=null;
+        LResource lResource = null;
+        for(int i=0;i<list.size();i++){
+            viewShopcart=list.get(i);
+            CollectionResources collectionResources = null;
+            for(int j=0;j<collList.size();j++){
+                if(collList.get(j).getId().equals(viewShopcart.getRelicid())){
+                    collectionResources=collList.get(j);
+                }
+            }
+            if(collectionResources==null){
+                collectionResources = new CollectionResources();
+                resourceList = new ArrayList<>();
+                collectionResources.setId(viewShopcart.getRelicid());
+                collectionResources.setTitle(viewShopcart.getTitle());
+                collectionResources.setIdentifier(viewShopcart.getIdentifier());
+                collectionResources.setIdentifiertype(viewShopcart.getIdentifiertype());
+                collectionResources.setMaterials(viewShopcart.getMaterials());
+                collectionResources.setDate(viewShopcart.getDate());
+                collectionResources.setLevel(viewShopcart.getLevel());
+                collectionResources.setWorktype(viewShopcart.getWorktype());
+                collectionResources.setSource(viewShopcart.getSource());
+                lResource = new LResource();
+                lResource.setRelicid(viewShopcart.getRelicid());
+                lResource.setAddresss(viewShopcart.getAddresss());
+                lResource.setId(viewShopcart.getResid());
+                lResource.setImgsize(viewShopcart.getImgsize());
+                lResource.setName(viewShopcart.getName());
+                lResource.setFormat(viewShopcart.getFormat());
+                lResource.setResolutionratio(viewShopcart.getResolutionratio());
+                resourceList.add(lResource);
+                collectionResources.setResourceList(resourceList);
+                collList.add(collectionResources);
+            }else{
+                lResource = new LResource();
+                lResource.setRelicid(viewShopcart.getRelicid());
+                lResource.setAddresss(viewShopcart.getAddresss());
+                lResource.setId(viewShopcart.getResid());
+                lResource.setImgsize(viewShopcart.getImgsize());
+                lResource.setName(viewShopcart.getName());
+                lResource.setFormat(viewShopcart.getFormat());
+                lResource.setResolutionratio(viewShopcart.getResolutionratio());
+                List<LResource> resourceList1 = collectionResources.getResourceList();
+                resourceList1.add(lResource);
+                //collectionResources.setResourceList(resourceList1);
+            }
+        }
+        return collList;
+    }
+
+    @Override
+    public int insertUserResource(LUserResource lUserResource) {
+        List<Long> residList = lUserResourceMapper.selectResourcesId(lUserResource.getUserid());
+        List<LResource> lResourceList = new ArrayList<>();
+        boolean flag = false;
+        //判断list是否含有某元素
+        for (Long rs:residList){
+            if(rs.equals(lUserResource.getResid())){
+                flag = true;
+                break;
+            }
+        }
+        int i = 0;
+        if(!flag){
+            i = lUserResourceMapper.insert(lUserResource);
+        }
+        return i;
+    }
+
+    @Override
+    public int delUserResource(long userid, long resid) {
+        long urid = lUserResourceMapper.selectDRId(userid, resid);
+        int i = lUserResourceMapper.deleteByPrimaryKey(urid);
+        return i;
+    }
+
+    @Override
+    public int delBatchUserResource(long userID, long[] resIdArray) {
+        int m=0;
+        for(int i=0;i<resIdArray.length;i++){
+            long urid = lUserResourceMapper.selectDRId(userID, resIdArray[i]);
+            int n=lUserResourceMapper.deleteByPrimaryKey(urid);
+            m=m+n;
+        }
+        return m;
+
+    }
+
+    @Override
+    public UserResources selectResources(long userid) {
+        UserResources userResources = new UserResources();
+        List<Long> residList = lUserResourceMapper.selectResourcesId(userid);
+        userResources.setCount(residList.size());
+        List<LResource> lResourceList = new ArrayList<>();
+        LResource lResource = null;
+        for(int i=0;i<residList.size();i++){
+            if(i>4){
+                break;
+            }
+            lResource =lResourceMapper.selectByPrimaryKey(residList.get(i));
+            lResourceList.add(lResource);
+
+        }
+        userResources.setResourceList(lResourceList);
+        return userResources ;
+    }
+
+    @Override
+    public int noTotal() {
+        int num  = viewResourceCollectionMapper.selectRelicBySql().size();
+        return num;
+    }
+
+    @Override
+    public List<CollectionResources> selectBysql(int start, int end) throws Exception {
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<Long>  relicIdList = viewResourceCollectionMapper.selectRelicBySqlConpaging(start, end);
+        CollectionResources collectionResources = null;
+        LCollection lCollection = null;
+        for(Long relicId:relicIdList){
+            collectionResources = new CollectionResources();
+            lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        return collectionResourcesList;
+    }
+
+    @Override
+    public int haveTotal(RelicandresourceAttribute relicandresourceAttribute) {
+        int num = viewResourceCollectionMapper.selectRelicBySqlSplicing(relicandresourceAttribute).size();
+        return num;
+    }
+
+    @Override
+    public List<CollectionResources> selectByHavesql(RelicandresourceAttribute relicandresourceAttribute) throws Exception {
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<ViewResourceCollection>  relicIdList = viewResourceCollectionMapper.selectRelicByHaveSqlConpaging(relicandresourceAttribute);
+        CollectionResources collectionResources = null;
+        LCollection lCollection = null;
+        for(ViewResourceCollection viewResourceCollection:relicIdList){
+            long relicId = viewResourceCollection.getRelicid();
+            collectionResources = new CollectionResources();
+            lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            relicandresourceAttribute.setRelicId(relicId);
+            collectionResources.setResourceList(lResourceMapper.selectResouceBySql(relicandresourceAttribute));
+            collectionResourcesList.add(collectionResources);
+        }
+        return collectionResourcesList;
+    }
+
+    @Override
+    public List<CollectionResources> selectRelicByIdentifier(String identifier) {
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<ViewResourceCollection>  relicIdList =viewResourceCollectionMapper.selectRelicByIdentifier(identifier);
+        CollectionResources collectionResources = null;
+        LCollection lCollection = null;
+        System.out.println(relicIdList.size());
+        for(ViewResourceCollection viewResourceCollection:relicIdList){
+            long relicId = viewResourceCollection.getRelicid();
+            collectionResources = new CollectionResources();
+            lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            try {
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            LResource lResource = new LResource();
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        return collectionResourcesList;
+
+    }
+
+    @Override
+    public List<CollectionResources> selectRelicListByIdentifier(String identifier) {
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<ViewResourceCollection>  relicIdList =viewResourceCollectionMapper.selectRelicListByIdentifier(identifier);
+        CollectionResources collectionResources = null;
+        LCollection lCollection = null;
+        System.out.println(relicIdList.size());
+        for(ViewResourceCollection viewResourceCollection:relicIdList){
+            long relicId = viewResourceCollection.getRelicid();
+            collectionResources = new CollectionResources();
+            lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            try {
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            LResource lResource = new LResource();
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        return collectionResourcesList;
+    }
+
+    @Override
+    public long selectRelicID(String identifier) {
+        List<Long> relicIdList = lCollectionMapper.selectRelicsId(identifier);
+        if (relicIdList.size() < 1) {
+            LCollection lCollection = new LCollection();
+            lCollection.setIdentifier(identifier);
+            lCollectionMapper.insert(lCollection);
+            return  lCollection.getId();
+        } else {
+            return relicIdList.get(0);
+        }
+    }
+
+    @Override
+    public List<CollectionResources> selectByIdentifier(String identifier, int start, int end) {
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<LCollection>  lCollectionList =lCollectionMapper.selectByIdentifier(identifier,start,end);
+        CollectionResources collectionResources = null;
+        System.out.println("lCollectionList:"+lCollectionList.size());
+        for(LCollection lCollection:lCollectionList){
+            collectionResources = new CollectionResources();
+            long relicId = lCollection.getId();
+            lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            try {
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        return collectionResourcesList;
+    }
+
+    @Override
+    public int selectCountByIdentifier(String identifier) {
+        return lCollectionMapper.selectCountByIdentifier(identifier);
+    }
+
+    @Override
+    public List<CollectionResources> selectListByIdentifier(String identifier, int start, int end) {
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<LCollection>  lCollectionList =lCollectionMapper.selectListByIdentifier(identifier,start,end);
+        CollectionResources collectionResources = null;
+        System.out.println("lCollectionList:"+lCollectionList.size());
+        for(LCollection lCollection:lCollectionList){
+            collectionResources = new CollectionResources();
+            long relicId = lCollection.getId();
+            lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            try {
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        return collectionResourcesList;
+    }
+
+    @Override
+    public int selecListCounttByIdentifier(String identifier) {
+        return lCollectionMapper.selecListCounttByIdentifier(identifier);
+    }
+
+    @Override
+    public CountCollectionResources findIdentifierLike(String identifier, int start, int end) {
+        CountCollectionResources countCollectionResources = new CountCollectionResources();
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<LCollection> lCollectionList=viewCollectionCountMapper.findIdentifierLike(identifier,start,end);
+        CollectionResources collectionResources = null;
+        System.out.println("lCollectionList:"+lCollectionList.size());
+        for(LCollection lCollection:lCollectionList){
+            collectionResources = new CollectionResources();
+            //lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            try {
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            long relicId = lCollection.getId();
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        countCollectionResources.setCollectionResourcesList(collectionResourcesList);
+        countCollectionResources.setCount(viewCollectionCountMapper.findIdentifierLikeCount(identifier));
+        return countCollectionResources;
+    }
+
+    @Override
+    public CountCollectionResources findNameLike(String title, int start, int end) {
+        CountCollectionResources countCollectionResources = new CountCollectionResources();
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<LCollection> lCollectionList=viewCollectionCountMapper.findNameLike(title,start,end);
+        CollectionResources collectionResources = null;
+        System.out.println("lCollectionList:"+lCollectionList.size());
+        for(LCollection lCollection:lCollectionList){
+            collectionResources = new CollectionResources();
+            //lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            try {
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            long relicId = lCollection.getId();
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        countCollectionResources.setCollectionResourcesList(collectionResourcesList);
+        countCollectionResources.setCount(viewCollectionCountMapper.findNameLikeCount(title));
+        return countCollectionResources;
+    }
+
+    @Override
+    public CountCollectionResources findAllByPage(int start,int end) {
+        CountCollectionResources countCollectionResources = new CountCollectionResources();
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        List<LCollection> lCollectionList=viewCollectionCountMapper.findAllByPage(start,end);
+        CollectionResources collectionResources = null;
+        for(LCollection lCollection:lCollectionList){
+            collectionResources = new CollectionResources();
+            //lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+            try {
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            long relicId = lCollection.getId();
+            collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+            collectionResourcesList.add(collectionResources);
+        }
+        countCollectionResources.setCollectionResourcesList(collectionResourcesList);
+        countCollectionResources.setCount(viewCollectionCountMapper.findAllByPageCount());
+        return countCollectionResources;
+    }
+
+    @Override
+    public CountCollectionResources findSearchByPage(RelicandresourceAttribute relicandresourceAttribute)throws Exception {
+        CountCollectionResources countCollectionResources = new CountCollectionResources();
+        List<CollectionResources> collectionResourcesList = new ArrayList<>();
+        if((relicandresourceAttribute.getFormat()!=null && !"".equals(relicandresourceAttribute.getFormat())) ||
+                (relicandresourceAttribute.getResolutionRatioFlag()!=null && !"".equals(relicandresourceAttribute
+                        .getResolutionRatioFlag())) ||
+                (relicandresourceAttribute.getImgSizeFlag()!=null && !"".equals(relicandresourceAttribute
+                .getImgSizeFlag()))) {//图片条件过滤
+            System.out.println(1);
+            List<ViewResourceCollection>  relicIdList = viewResourceCollectionMapper.selectRelicByHaveSqlConpaging(relicandresourceAttribute);
+            CollectionResources collectionResources = null;
+            LCollection lCollection = null;
+            for(ViewResourceCollection viewResourceCollection:relicIdList){
+                collectionResources = new CollectionResources();
+                long relicId = viewResourceCollection.getRelicid();
+                lCollection = lCollectionMapper.selectByPrimaryKey(relicId);
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+                relicandresourceAttribute.setRelicId(relicId);
+                collectionResources.setResourceList(lResourceMapper.selectResouceBySql(relicandresourceAttribute));
+                collectionResourcesList.add(collectionResources);
+            }
+            int num = viewResourceCollectionMapper.selectRelicBySqlSplicing(relicandresourceAttribute).size();
+            countCollectionResources.setCollectionResourcesList(collectionResourcesList);
+            countCollectionResources.setCount(num);
+        }else {//文物条件过滤
+            List<Long> idList=viewCollectionCountMapper.findSearchByPage(relicandresourceAttribute);
+            CollectionResources collectionResources = null;
+            LCollection lCollection = null;
+            for(Long id:idList){
+                collectionResources = new CollectionResources();
+                lCollection = lCollectionMapper.selectByPrimaryKey(id);
+                FatherToChildUtil.fatherToChild(lCollection, collectionResources);
+                long relicId = lCollection.getId();
+                collectionResources.setResourceList(lResourceMapper.selectResourcesByrelicId(relicId));
+                collectionResourcesList.add(collectionResources);
+            }
+            int num = viewCollectionCountMapper.findSearchByPageCount(relicandresourceAttribute);
+            countCollectionResources.setCollectionResourcesList(collectionResourcesList);
+            countCollectionResources.setCount(num);
+        }
+        return countCollectionResources;
+    }
+
+
+
+}

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>藏品注销</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+		<style type="text/css">
+			form {
+				width: 96%;
+				margin: 0 auto;
+			}
+			
+			.layui-form-item .layui-inline {
+				margin-bottom: 4px;
+			}
+			
+			.layui-input,
+			.layui-select,
+			.layui-textarea {
+				height: 30px;
+			}
+			
+			.layui-date {
+				position: absolute;
+				right: 5px;
+				top: -4%;
+				cursor: pointer;
+				font-size: 30px;
+				color: #c2c2c2;
+			}
+			
+			.imgDiv {
+				position: relative;
+				left: 50px;
+				border: 0.8px solid #c2c2c2;
+			}
+			
+			.imgDiv,
+			.layui-upload-img {
+				width: 80px;
+				height: 80px;
+			}
+			
+			#Img {
+				display: block;
+				margin: 0 auto;
+			}
+			
+			label.layui-form-label:after {
+				content: '* ';
+				color: red;
+			}
+			
+			.box_relative {
+				position: absolute;
+				left: 64%;
+				top: 20%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div style="color: #009688;margin-left: 24%;font-size: 30px;">藏品注销流程</div>
+		<div class="childrenBody" style="margin-top: -40px;">
+			<form class="layui-form" action="#" lay-filter="InLibraryForm">
+				<div class="layui-form-item" style="margin-top: 6%;">
+					注销藏品
+					<hr class="layui-bg-orange" style="margin-right: 37%;">
+					<div class="layui-inline">
+						<label class="layui-form-label">注销编号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Code" autocomplete="off" class="layui-input" value="tjmrgpz-yj-7341">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">文物号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Batch" autocomplete="off" class="layui-input" value="">
+						</div>
+					</div>
+
+					<br />
+					<div class="layui-inline">
+						<label class="layui-form-label">注销文物</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Batch" autocomplete="off" class="layui-input" value="">
+						</div>
+					</div>
+
+					<div class="layui-inline">
+						<label class="layui-form-label">文物级别</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Batch" autocomplete="off" class="layui-input" value="">
+						</div>
+					</div>
+					
+					<br /> 
+					注销说明
+					<hr class="layui-bg-orange" style="margin-right: 37%;">					
+					<div id="chuzhi">
+						<div class="layui-inline">
+							<label class="layui-form-label" id="lable">处置方式</label>
+							<div class="layui-input-inline">
+								<select name="ClassifyType" lay-search="">
+									<option value="">直接选择或搜索选择</option>
+									<option value="">转让</option>
+									<option value="书法、绘画">交换</option>
+									<option value="瓷器">出售</option>
+									<option value="铜器">用于教育或研究目的 </option>
+									<option value="玉石器、宝石">归还原属国家或归还原主 </option>
+									<option value="雕塑、造像">归还捐赠者 </option>
+									<option value="漆器">销毁</option>
+								</select>
+
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">处置说明</label>
+								<div class="layui-input-inline">
+									<input type="text" name="ReceiptNo" autocomplete="off" class="layui-input" value="">
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					损失评估
+					<hr class="layui-bg-orange" style="margin-right: 37%;">
+					<div class="layui-inline">
+						<label class="layui-form-label">藏品估值</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Batch" autocomplete="off" class="layui-input" value="">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">藏品评分</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Batch" autocomplete="off" class="layui-input" value="">
+						</div>
+					</div>
+					</br>
+					<div class="layui-inline">
+						<label class="layui-form-label">对注销后果的评估</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Batch" autocomplete="off" class="layui-input" value="">
+						</div>
+					</div>
+					
+					</br>
+					审核文件
+					<hr class="layui-bg-orange" style="margin-right: 37%;">
+					<div class="layui-inline">
+						<label class="layui-form-label">提交人</label>
+						<div class="layui-input-inline">
+							<input type="text" name="Batch" autocomplete="off" class="layui-input" value="">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" id="lable">附件</label>
+						<div class="layui-input-inline">
+							<button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>审核文件</button>
+						</div>
+					</div>
+
+					<div class="layui-form-item" style="margin-left: 14%;margin-top: 2%;">
+						<div class="layui-input-block">
+							<!-- <button class="layui-btn" onclick="display()" >注销</button> -->
+							<button class="layui-btn" onclick="display2()">处置</button>
+							<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+						</div>
+					</div>
+					<div class="box_relative">
+						藏品注销的规定:
+						</br>
+						</br>
+						1.注销需遵守法律规定，并遵守藏品入藏时的附加条件，除非该附加条件对机构利益有明显损害
+						</br>
+						2.注销必须充分考虑藏品的重要性、特性（无论藏品是否能再生）、法律地位，还要考虑是否会威胁博物馆公信力
+						</br>
+						3.注销的决定应由博物馆理事机构、馆长、从事藏品管理工作的研究员负责
+						</br>
+						4.每个博物馆应当拟定关于永久移除藏品的合法方式的规定，移除方式包括捐赠、交换、出售、归还、销毁。需保 留注销的完整记录。建议将已注销物品优先提供给其他博物馆
+						</br>
+						5.博物馆藏品是为公众服务的，不能被视为可变现的财产。由藏品注销所获得的资金只能被用于改善收藏，通常 是用于同类藏品的购入
+						</br>
+						6.博物馆员工、理事机构、或其家庭成员与亲属不能购买该员工所服务的博物馆注销的藏品 </div>
+			</form>
+			</div>
+			<script type="text/javascript" src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+			<script>
+				function display() {
+					$("#zhuxiao").css("display", "block");
+					$("#chuzhi").css("display", "none");
+				}
+
+				function display2() {
+					$("#zhuxiao").css("display", "none");
+					$("#chuzhi").css("display", "block");
+				}
+			</script>
+			<script type="text/javascript" src="../../lib/layui/layui.js"></script>
+			<script>
+				layui.use(['form', 'element', 'laydate', 'upload'], function() {
+					var $ = layui.jquery,
+						element = layui.element, //Tab的切换功能，切换事件监听等，需要依赖element模块	
+						form = layui.form,
+						layer = layui.layer,
+						laydate = layui.laydate,
+						upload = layui.upload;
+
+					//日期
+					laydate.render({
+						elem: '#IntoDate',
+						eventElem: '#date1',
+						trigger: 'click'
+					});
+					laydate.render({
+						elem: '#AddTime',
+						eventElem: '#date2',
+						trigger: 'click'
+					});
+					laydate.render({
+						elem: '#CollectDatetime',
+						eventElem: '#date3',
+						trigger: 'click'
+					});
+					laydate.render({
+						elem: '#AddTime2',
+						eventElem: '#date4',
+						trigger: 'click'
+					});
+
+					//监听提交
+					form.on('submit(demo1)', function(data) {
+						layer.alert(JSON.stringify(data.field), {
+							title: '最终的提交信息'
+						})
+						return false;
+					});
+
+					//普通图片上传
+					var uploadInst = upload.render({
+						elem: '#Img',
+						url: '/upload/',
+						multiple: true,
+						before: function(obj) {
+							//预读本地文件示例，不支持ie8
+							obj.preview(function(index, file, result) {
+								$('#demo1').attr('src', result); //图片链接（base64）
+							});
+						},
+						done: function(res) {
+							//如果上传失败
+							if(res.code > 0) {
+								return layer.msg('上传失败');
+							}
+							//上传成功
+						},
+						error: function() {
+							//演示失败状态，并实现重传
+							var demoText = $('#demoText');
+							demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+							demoText.find('.demo-reload').on('click', function() {
+								uploadInst.upload();
+							});
+						}
+					});
+
+					//多文件列表示例
+					var demoListView = $('#demoList'),
+						uploadListIns = upload.render({
+							elem: '#Appendixs',
+							url: '/upload/',
+							accept: 'file',
+							multiple: true,
+							auto: false,
+							bindAction: '#testListAction',
+							choose: function(obj) {
+								var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+								//读取本地文件
+								obj.preview(function(index, file, result) {
+									var tr = $(['<tr id="upload-' + index + '">',
+										'<td>' + file.name + '</td>',
+										'</tr>'
+									].join(''));
+
+									//单个重传
+									tr.find('.demo-reload').on('click', function() {
+										obj.upload(index, file);
+									});
+
+									//删除
+									tr.find('.demo-delete').on('click', function() {
+										delete files[index]; //删除对应的文件
+										tr.remove();
+										uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+									});
+
+									demoListView.append(tr);
+								});
+							},
+							done: function(res, index, upload) {
+								if(res.code == 0) { //上传成功
+									var tr = demoListView.find('tr#upload-' + index),
+										tds = tr.children();
+									tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+									tds.eq(3).html(''); //清空操作
+									return delete this.files[index]; //删除文件队列已经上传成功的文件
+								}
+								this.error(index, upload);
+							},
+							error: function(index, upload) {
+								var tr = demoListView.find('tr#upload-' + index),
+									tds = tr.children();
+								tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+								tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+							}
+						});
+
+				});
+			</script>
+
+	</body>
+
+</html>

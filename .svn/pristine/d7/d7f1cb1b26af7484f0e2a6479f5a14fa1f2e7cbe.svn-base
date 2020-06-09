@@ -1,0 +1,30 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 3,
+	"data": [{
+		"id":1,
+		"registrationNo": "59.3.150",
+		"name": "西周太保方鼎",
+		"fulldisable": "三维扫描",
+		"outTime": "2020-04-18",
+		"username":"李少军",
+		"outNo":"132121231312",
+		"inTime":"2020-04-18",
+		"organizition":"天津大学",
+		"remark":""
+		
+	},{
+		"id":1,
+		"registrationNo": "59.3.150",
+		"name": "西周太保方鼎",
+		"fulldisable": "三维扫描",
+		"outTime": "2019-08-10",
+		"username":"李少军",
+		"outNo":"512123123122",
+		"inTime":"2019-10-10",
+		"organizition":"",
+		"remark":""
+		
+	}]
+}

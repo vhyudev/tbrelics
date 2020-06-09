@@ -1,0 +1,50 @@
+.loading {
+    width: 550px;
+    position: absolute;
+    top: 0;
+    /*left: 20px;*/
+    z-index: 1000;
+    background-color: #fff;
+}
+.loading .pic {
+    width:100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    font-size: 18px;
+    text-align: center;
+    line-height: 100px;
+}
+.loading .pic span {
+    display: block;
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    /* background: #066; */
+    border-radius: 50%;
+    box-shadow: 0 3px 0 #666;
+    -webkit-animation: rotate 1s infinite linear;
+    animation: rotate 1s infinite linear;
+}
+@-webkit-keyframes rotate {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

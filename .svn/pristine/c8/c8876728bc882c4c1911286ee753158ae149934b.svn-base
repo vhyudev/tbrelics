@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>外貌特征</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="width: auto;height: auto;line-height: 40px;font-size: 24px;padding-left: 20px;padding-top: 10px;">
+			外貌特征
+		</div>
+		<div style="width: 96%;height: auto;margin-left: 2%;border: 0.5px solid #CCCCCC;line-height: 40px;font-size: 16px;padding-left: 5px;">
+			西周太保鼎为方形，高57.6厘米，长35.8厘米，宽22.8厘米，重26公斤。四柱足，口上铸双立耳，耳上浮雕双兽。鼎腹部四面饰蕉叶纹与饕餮纹，四角饰扉棱。最为显著的是柱足上装饰的扉棱和柱足中部装饰的圆盘，这在商周青铜器中是独一无二的，非常奇异。
+		</div>
+		
+	</body>
+</html>

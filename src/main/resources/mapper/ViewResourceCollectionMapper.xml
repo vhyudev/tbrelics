@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxtech.tbrelics.mapper.ViewResourceCollectionMapper" >
+  <resultMap id="BaseResultMap" type="com.lxtech.tbrelics.view.ViewResourceCollection" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="relicId" property="relicid" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="addresss" property="addresss" jdbcType="VARCHAR" />
+    <result column="format" property="format" jdbcType="VARCHAR" />
+    <result column="resolutionRatio" property="resolutionratio" jdbcType="VARCHAR" />
+    <result column="resolutionRatioFlag" property="resolutionratioflag" jdbcType="VARCHAR" />
+    <result column="imgSize" property="imgsize" jdbcType="VARCHAR" />
+    <result column="imgSizeFlag" property="imgsizeflag" jdbcType="VARCHAR" />
+    <result column="imgComparison" property="imgcomparison" jdbcType="VARCHAR" />
+    <result column="identifierType" property="identifiertype" jdbcType="VARCHAR" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="period" property="period" jdbcType="VARCHAR" />
+    <result column="workType" property="worktype" jdbcType="VARCHAR" />
+    <result column="materials" property="materials" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="smalladdr" property="smalladdr" jdbcType="VARCHAR" />
+    <result column="bigaddr" property="bigaddr" jdbcType="VARCHAR" />
+    <result column="make" property="make" jdbcType="VARCHAR" />
+    <result column="model" property="model" jdbcType="VARCHAR" />
+    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
+    <result column="resolutionunits" property="resolutionunits" jdbcType="VARCHAR" />
+    <result column="wresolution" property="wresolution" jdbcType="VARCHAR" />
+    <result column="hresolution" property="hresolution" jdbcType="VARCHAR" />
+    <result column="exifImageWidth" property="exifimagewidth" jdbcType="VARCHAR" />
+    <result column="exifImageLength" property="exifimagelength" jdbcType="VARCHAR" />
+    <result column="imgSoftware" property="imgsoftware" jdbcType="VARCHAR" />
+    <result column="hueLocation" property="huelocation" jdbcType="VARCHAR" />
+    <result column="exifver" property="exifver" jdbcType="VARCHAR" />
+    <result column="fnum" property="fnum" jdbcType="VARCHAR" />
+    <result column="isoSpeedRatings" property="isospeedratings" jdbcType="VARCHAR" />
+    <result column="imgExposureTime" property="imgexposuretime" jdbcType="VARCHAR" />
+    <result column="imgShootTime" property="imgshoottime" jdbcType="VARCHAR" />
+    <result column="saveTime" property="savetime" jdbcType="VARCHAR" />
+    <result column="finallTime" property="finalltime" jdbcType="VARCHAR" />
+    <result column="imgExposureValue" property="imgexposurevalue" jdbcType="VARCHAR" />
+    <result column="maxAVal" property="maxaval" jdbcType="VARCHAR" />
+    <result column="imgMeteringModel" property="imgmeteringmodel" jdbcType="VARCHAR" />
+    <result column="light" property="light" jdbcType="VARCHAR" />
+    <result column="bulbuse" property="bulbuse" jdbcType="VARCHAR" />
+    <result column="focallen" property="focallen" jdbcType="VARCHAR" />
+    <result column="colorfulspace" property="colorfulspace" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.lxtech.tbrelics.view.ViewResourceCollection" >
+    insert into view_resource_collection (id, relicId, name, 
+      addresss, format, resolutionRatio, 
+      resolutionRatioFlag, imgSize, imgSizeFlag, 
+      imgComparison, identifierType, identifier, 
+      title, period, workType, 
+      materials, level, source, 
+      smalladdr, bigaddr, make, 
+      model, orientation, resolutionunits, 
+      wresolution, hresolution, exifImageWidth, 
+      exifImageLength, imgSoftware, hueLocation, 
+      exifver, fnum, isoSpeedRatings, 
+      imgExposureTime, imgShootTime, saveTime, 
+      finallTime, imgExposureValue, maxAVal, 
+      imgMeteringModel, light, bulbuse, 
+      focallen, colorfulspace)
+    values (#{id,jdbcType=BIGINT}, #{relicid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{addresss,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, #{resolutionratio,jdbcType=VARCHAR}, 
+      #{resolutionratioflag,jdbcType=VARCHAR}, #{imgsize,jdbcType=VARCHAR}, #{imgsizeflag,jdbcType=VARCHAR}, 
+      #{imgcomparison,jdbcType=VARCHAR}, #{identifiertype,jdbcType=VARCHAR}, #{identifier,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{period,jdbcType=VARCHAR}, #{worktype,jdbcType=VARCHAR}, 
+      #{materials,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
+      #{smalladdr,jdbcType=VARCHAR}, #{bigaddr,jdbcType=VARCHAR}, #{make,jdbcType=VARCHAR}, 
+      #{model,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, #{resolutionunits,jdbcType=VARCHAR}, 
+      #{wresolution,jdbcType=VARCHAR}, #{hresolution,jdbcType=VARCHAR}, #{exifimagewidth,jdbcType=VARCHAR}, 
+      #{exifimagelength,jdbcType=VARCHAR}, #{imgsoftware,jdbcType=VARCHAR}, #{huelocation,jdbcType=VARCHAR}, 
+      #{exifver,jdbcType=VARCHAR}, #{fnum,jdbcType=VARCHAR}, #{isospeedratings,jdbcType=VARCHAR}, 
+      #{imgexposuretime,jdbcType=VARCHAR}, #{imgshoottime,jdbcType=VARCHAR}, #{savetime,jdbcType=VARCHAR}, 
+      #{finalltime,jdbcType=VARCHAR}, #{imgexposurevalue,jdbcType=VARCHAR}, #{maxaval,jdbcType=VARCHAR}, 
+      #{imgmeteringmodel,jdbcType=VARCHAR}, #{light,jdbcType=VARCHAR}, #{bulbuse,jdbcType=VARCHAR}, 
+      #{focallen,jdbcType=VARCHAR}, #{colorfulspace,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lxtech.tbrelics.view.ViewResourceCollection" >
+    insert into view_resource_collection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="relicid != null" >
+        relicId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="addresss != null" >
+        addresss,
+      </if>
+      <if test="format != null" >
+        format,
+      </if>
+      <if test="resolutionratio != null" >
+        resolutionRatio,
+      </if>
+      <if test="resolutionratioflag != null" >
+        resolutionRatioFlag,
+      </if>
+      <if test="imgsize != null" >
+        imgSize,
+      </if>
+      <if test="imgsizeflag != null" >
+        imgSizeFlag,
+      </if>
+      <if test="imgcomparison != null" >
+        imgComparison,
+      </if>
+      <if test="identifiertype != null" >
+        identifierType,
+      </if>
+      <if test="identifier != null" >
+        identifier,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="period != null" >
+        period,
+      </if>
+      <if test="worktype != null" >
+        workType,
+      </if>
+      <if test="materials != null" >
+        materials,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="smalladdr != null" >
+        smalladdr,
+      </if>
+      <if test="bigaddr != null" >
+        bigaddr,
+      </if>
+      <if test="make != null" >
+        make,
+      </if>
+      <if test="model != null" >
+        model,
+      </if>
+      <if test="orientation != null" >
+        orientation,
+      </if>
+      <if test="resolutionunits != null" >
+        resolutionunits,
+      </if>
+      <if test="wresolution != null" >
+        wresolution,
+      </if>
+      <if test="hresolution != null" >
+        hresolution,
+      </if>
+      <if test="exifimagewidth != null" >
+        exifImageWidth,
+      </if>
+      <if test="exifimagelength != null" >
+        exifImageLength,
+      </if>
+      <if test="imgsoftware != null" >
+        imgSoftware,
+      </if>
+      <if test="huelocation != null" >
+        hueLocation,
+      </if>
+      <if test="exifver != null" >
+        exifver,
+      </if>
+      <if test="fnum != null" >
+        fnum,
+      </if>
+      <if test="isospeedratings != null" >
+        isoSpeedRatings,
+      </if>
+      <if test="imgexposuretime != null" >
+        imgExposureTime,
+      </if>
+      <if test="imgshoottime != null" >
+        imgShootTime,
+      </if>
+      <if test="savetime != null" >
+        saveTime,
+      </if>
+      <if test="finalltime != null" >
+        finallTime,
+      </if>
+      <if test="imgexposurevalue != null" >
+        imgExposureValue,
+      </if>
+      <if test="maxaval != null" >
+        maxAVal,
+      </if>
+      <if test="imgmeteringmodel != null" >
+        imgMeteringModel,
+      </if>
+      <if test="light != null" >
+        light,
+      </if>
+      <if test="bulbuse != null" >
+        bulbuse,
+      </if>
+      <if test="focallen != null" >
+        focallen,
+      </if>
+      <if test="colorfulspace != null" >
+        colorfulspace,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="relicid != null" >
+        #{relicid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addresss != null" >
+        #{addresss,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null" >
+        #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratio != null" >
+        #{resolutionratio,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratioflag != null" >
+        #{resolutionratioflag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsize != null" >
+        #{imgsize,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsizeflag != null" >
+        #{imgsizeflag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgcomparison != null" >
+        #{imgcomparison,jdbcType=VARCHAR},
+      </if>
+      <if test="identifiertype != null" >
+        #{identifiertype,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null" >
+        #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=VARCHAR},
+      </if>
+      <if test="worktype != null" >
+        #{worktype,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null" >
+        #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="smalladdr != null" >
+        #{smalladdr,jdbcType=VARCHAR},
+      </if>
+      <if test="bigaddr != null" >
+        #{bigaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="make != null" >
+        #{make,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionunits != null" >
+        #{resolutionunits,jdbcType=VARCHAR},
+      </if>
+      <if test="wresolution != null" >
+        #{wresolution,jdbcType=VARCHAR},
+      </if>
+      <if test="hresolution != null" >
+        #{hresolution,jdbcType=VARCHAR},
+      </if>
+      <if test="exifimagewidth != null" >
+        #{exifimagewidth,jdbcType=VARCHAR},
+      </if>
+      <if test="exifimagelength != null" >
+        #{exifimagelength,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsoftware != null" >
+        #{imgsoftware,jdbcType=VARCHAR},
+      </if>
+      <if test="huelocation != null" >
+        #{huelocation,jdbcType=VARCHAR},
+      </if>
+      <if test="exifver != null" >
+        #{exifver,jdbcType=VARCHAR},
+      </if>
+      <if test="fnum != null" >
+        #{fnum,jdbcType=VARCHAR},
+      </if>
+      <if test="isospeedratings != null" >
+        #{isospeedratings,jdbcType=VARCHAR},
+      </if>
+      <if test="imgexposuretime != null" >
+        #{imgexposuretime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgshoottime != null" >
+        #{imgshoottime,jdbcType=VARCHAR},
+      </if>
+      <if test="savetime != null" >
+        #{savetime,jdbcType=VARCHAR},
+      </if>
+      <if test="finalltime != null" >
+        #{finalltime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgexposurevalue != null" >
+        #{imgexposurevalue,jdbcType=VARCHAR},
+      </if>
+      <if test="maxaval != null" >
+        #{maxaval,jdbcType=VARCHAR},
+      </if>
+      <if test="imgmeteringmodel != null" >
+        #{imgmeteringmodel,jdbcType=VARCHAR},
+      </if>
+      <if test="light != null" >
+        #{light,jdbcType=VARCHAR},
+      </if>
+      <if test="bulbuse != null" >
+        #{bulbuse,jdbcType=VARCHAR},
+      </if>
+      <if test="focallen != null" >
+        #{focallen,jdbcType=VARCHAR},
+      </if>
+      <if test="colorfulspace != null" >
+        #{colorfulspace,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectRelicBySqlSplicing" resultMap="BaseResultMap" parameterType="com.lxtech.tbrelics.vo.RelicandresourceAttribute" >
+    select relicId from view_resource_collection where relicId!=1
+    <if test="workType!=null and !''.equals(workType)">
+      and workType = #{workType}
+    </if>
+    <if test="period!=null and !''.equals(period)">
+      and period = #{period}
+    </if>
+    <if test="level!=null and !''.equals(level)">
+      and level = #{level}
+    </if>
+    <if test="format!=null and !''.equals(format)">
+      and format = #{format}
+    </if>
+    <if test="resolutionRatioFlag!=null and !''.equals(resolutionRatioFlag)">
+      and resolutionRatioFlag = #{resolutionRatioFlag}
+    </if>
+    <if test="imgSizeFlag!=null and !''.equals(imgSizeFlag)">
+      and imgSizeFlag = #{imgSizeFlag}
+    </if>
+    group by relicId
+  </select>
+
+  <select id="selectRelicByHaveSqlConpaging" resultMap="BaseResultMap" parameterType="com.lxtech.tbrelics.vo.RelicandresourceAttribute" >
+    select t1.relicId from view_resource_collection t1,view_relicid_count t2
+    where t1.relicId!=1 and t1.relicId=t2.relicId
+    <if test="workType!=null and !''.equals(workType)">
+      and workType = #{workType}
+    </if>
+    <if test="period!=null and !''.equals(period)">
+      and period = #{period}
+    </if>
+    <if test="level!=null and !''.equals(level)">
+      and level = #{level}
+    </if>
+    <if test="format!=null and !''.equals(format)">
+      and format = #{format}
+    </if>
+    <if test="resolutionRatioFlag!=null and !''.equals(resolutionRatioFlag)">
+      and resolutionRatioFlag = #{resolutionRatioFlag}
+    </if>
+    <if test="imgSizeFlag!=null and !''.equals(imgSizeFlag)">
+      and imgSizeFlag = #{imgSizeFlag}
+    </if>
+    group by relicId order by t2.count desc limit #{start},#{end}
+  </select>
+
+  <!--====================有条件===========================-->
+  <select id="findBySqlPage" resultMap="BaseResultMap" parameterType="com.lxtech.tbrelics.vo.RelicandresourceAttribute" >
+    select * from view_resource_collection where relicId!=1
+    <if test="workType!=null and !''.equals(workType)">
+      and workType = #{workType}
+    </if>
+    <if test="period!=null and !''.equals(period)">
+      and period = #{period}
+    </if>
+    <if test="level!=null and !''.equals(level)">
+      and level = #{level}
+    </if>
+    <if test="format!=null and !''.equals(format)">
+      and format = #{format}
+    </if>
+    <if test="resolutionRatioFlag!=null and !''.equals(resolutionRatioFlag)">
+      and resolutionRatioFlag = #{resolutionRatioFlag}
+    </if>
+    <if test="imgSizeFlag!=null and !''.equals(imgSizeFlag)">
+      and imgSizeFlag = #{imgSizeFlag}
+    </if>
+    order by relicId limit #{start},#{end}
+  </select>
+
+  <select id="findBySqlPageCount" resultType="java.lang.Integer" parameterType="com.lxtech.tbrelics.vo.RelicandresourceAttribute" >
+    select count(*) from view_resource_collection where relicId!=1
+    <if test="workType!=null and !''.equals(workType)">
+      and workType = #{workType}
+    </if>
+    <if test="period!=null and !''.equals(period)">
+      and period = #{period}
+    </if>
+    <if test="level!=null and !''.equals(level)">
+      and level = #{level}
+    </if>
+    <if test="format!=null and !''.equals(format)">
+      and format = #{format}
+    </if>
+    <if test="resolutionRatioFlag!=null and !''.equals(resolutionRatioFlag)">
+      and resolutionRatioFlag = #{resolutionRatioFlag}
+    </if>
+    <if test="imgSizeFlag!=null and !''.equals(imgSizeFlag)">
+      and imgSizeFlag = #{imgSizeFlag}
+    </if>
+    order by relicId
+  </select>
+</mapper>

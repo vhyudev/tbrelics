@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>视频资源</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../../lib/layui/css/layui.css" media="all">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+			.video{
+				display: block;
+				width: 80%;
+				height: auto;
+			}
+			.margin15{
+				margin: 15px;
+			}
+		</style>
+	</head>
+	<body >
+		<div class="layui-container">
+			<div class="layui-row layui-col-space15 margin15">
+				<section class="layui-card">
+					<div class="layui-card-body">
+						<div class="video" id="video" data-url="../../../../video/yhcp.mp4" style="width: 80%;"></div>
+						<div style="width: 20%;background: red;height: 100%;">
+
+						</div>
+					</div>
+
+				</section>
+			</div>
+		</div>
+		<script type="text/javascript" src="../../../../lib/layui/layui.js"></script>
+		<script type="text/javascript">
+			layui.config({
+				base: '../../../../lib/'
+			}).extend({
+				ckplayer: 'ckplayer/ckplayer'
+			}).use(['jquery', 'ckplayer'], function() {
+				var $ = layui.$,
+						ckplayer = layui.ckplayer;
+				var vUrl = $('#video').data('url'),
+						videoObject = {
+							container: '#video',
+							loop: true,
+							autoplay: false,
+							video: [
+								[vUrl, 'video/mp4']
+							]
+						};
+				var player = new ckplayer(videoObject);
+			});
+
+			(function(){
+				/**
+				 * 获取当前域
+				 **/
+				function _getDomain(){
+					var _hostname = window.location.hostname.toString();
+					var _hosts = _hostname.split(".");
+					var _len = _hosts.length;
+					if(_len>2){
+						return _hosts[_len-2]+"."+_hosts[_len-1];
+					}
+					return _hostname;
+				}
+
+				window.onload = function()
+				{
+//设置子页面的域
+					document.domain=_getDomain();
+					function _setHeight()
+					{
+						if (window.parent != window)
+						{
+							try
+							{
+//设置父级iframe的高度
+								parent.document.getElementById("shipinzy").style.height = document.body.scrollHeight+ 'px';
+							}
+							catch(e)
+							{
+							}
+						}
+//每隔2s设置一次，主要为了兼容子页面加载完毕之后高度再变化
+						setTimeout(_setHeight,2000);
+					}
+//子页面加载完毕之后调用一次
+					_setHeight();
+				}
+			})();
+		</script>
+	</body>
+</html>

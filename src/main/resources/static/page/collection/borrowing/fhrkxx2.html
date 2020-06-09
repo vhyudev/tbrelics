@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>查看返还入库单详情</title>
+    <meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+    <style type="text/css">
+		.layui-form-label {
+		    width: 86px;
+		}
+		.layui-table-cell {
+		    height: auto;
+		    line-height: 18px;
+		    padding: 0 0px;
+		    text-align: center;
+		    overflow:visible;
+		    text-overflow:inherit;
+		    white-space:normal;
+		}
+	</style>
+</head>
+<body>
+<div class="childrenBody">
+	<form class="layui-form" action="" lay-filter="demo1">			
+        <div class="layui-form-item" style="margin-top: 10px;">	
+            <div class="layui-inline">
+	            <label class="layui-form-label">凭证号</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="danhao" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">出库单号</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="ckdanhao" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">回库时间</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="time" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">点交人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="username" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">点收人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="username2" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+        </div>
+        
+        <div class="layui-form" style="margin: 0px 5px;">
+			<table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>					
+			<script type="text/html" id="xuhao">
+			    {{d.LAY_TABLE_INDEX+1}}
+			</script>
+			<script type="text/html" id="checkboxTpl">
+	            {{#  if(d.stockStatus === 0){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已征集未登记</button>
+	            {{#  } else if(d.stockStatus === 1){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已登记未入库</button>
+	            {{#  } else if(d.stockStatus === 2){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已入库</button>
+	            {{#  } else if(d.stockStatus === 3){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">出库</button>
+	            {{#  } else if(d.stockStatus === 4){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">返还入库</button>
+	            {{#  } else { }}
+	               <button type="button" class="layui-btn layui-btn-xs">完全返还入库</button>
+	            {{#  } }}
+		    </script>
+		</div>
+		<div id="page"></div>
+    </form> 
+</div>
+
+<script src="../../../lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    var fhrkData = eval('('+parent.fhrkData+')');
+    console.log(fhrkData);        
+    
+    layui.use(['form', 'table', ], function(){
+		var $ = layui.jquery,
+		form = layui.form,
+		table = layui.table;
+		
+		form.val("demo1", {
+			danhao: fhrkData.danhao,
+			ckdanhao: fhrkData.ckdanhao,
+			time: fhrkData.time,
+			username: fhrkData.username,
+			hkyj: fhrkData.hkyj,
+			username2: '史梅'
+		})
+			
+		table.render({
+            elem: '#currentTable',
+            data: fhrkData.data,
+            cols: [
+                [
+                /*{type: 'checkbox'},*/
+                {type: 'numbers', title: '序号',templet: '#xuhao', width: 30},
+                {field: 'TotalNumber', title: '文物号', sort: true},
+                {field: 'McrName', title: '名称', minWidth: 100},
+                {field: 'Age', title: '年代', sort: true},
+                {field: 'Number', title: '数量(单位)', sort: true, edit: 'text'},
+                {field: 'Hall', title: '方位'},
+                {field: 'Fulldisable', title: '完残程度'},
+                {field: 'stockStatus', title: '藏品状态',templet: '#checkboxTpl'},
+                {field: 'hkyj', title: '入库验收记录',edit: 'edit', width: 100},
+            ]
+			],
+            limits: [5, 10, 15, 20, 25, 50],
+            limit: 5,
+            page: true
+        });
+        
+        //监听单元格编辑
+		table.on('edit(currentTable)', function(obj){
+		    var value = obj.value, //得到修改后的值
+		    data = obj.data, //得到所在行所有键值
+		    field = obj.field; //得到字段
+		    layer.msg('[Index: '+ data.index +'] ' + field + ' 字段更改为：'+ value);
+		});
+		
+		
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+        
+        
+        
+	});
+</script>
+
+</body>
+</html>

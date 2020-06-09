@@ -1,0 +1,16 @@
+
+
+{
+  "code": 0,
+  "msg": "",
+  "count": 6,
+  "data": 
+[{"id":"10001","username":"日常盘核","email":"书画库：1号柜","sex":"李少军","sex1":"李少泽","sex2":"李秋泽","city":"无","sign":"1","experience":"116","ip":"192.168.0.8","logins":"2019-1-15","joinTime":"2019-2-14","joinTime1":"2019-2-15","joinTime2":"2019-2-17","advice":"完成的时间和效率都不错。"},
+{"id":"10002","username":"周期盘核","email":"瓷器库：4号柜","sex":"李存续","sex1":"李少泽","sex2":"李秋泽","city":"无","sign":"2","experience":"12","ip":"192.168.0.8","logins":"2019-7-20","joinTime":"2019-8-27","joinTime1":"2019-8-29","joinTime2":"2019-8-30","advice":"完成的时间和效率都不错。"}
+,{"id":"10003","username":"周期盘核","email":"书画库：1号柜","sex":"李少军","sex1":"李少泽","sex2":"李少泽","city":"无","sign":"2","experience":"12","ip":"192.168.0.8","logins":"2019-6-14","joinTime":"2019-7-24","joinTime1":"2019-7-25","joinTime2":"2019-7-28","advice":"周期太长"}
+,{"id":"10004","username":"日常盘核","email":"书画库：1号柜","sex":"李存续","sex1":"李少军","sex2":"李存续","city":"无","sign":"2","experience":"12","ip":"192.168.0.8","logins":"2019-7-12","joinTime":"2019-8-11","joinTime1":"2019-8-12","joinTime2":"2019-8-14","advice":"效率太低"}
+,{"id":"10005","username":"周期盘核","email":"瓷器库：4号柜","sex":"李少军","sex1":"李少军","sex2":"李少军","city":"无","sign":"2","experience":"12","ip":"192.168.0.8","logins":"2019-7-20","joinTime":"2019-6-8","joinTime1":"2019-6-8","joinTime2":"2019-6-9","advice":"完成的时间和效率都不错。"}
+,{"id":"10006","username":"日常盘核","email":"瓷器库：4号柜","sex":"李存续","sex1":"李存续","sex2":"李少军","city":"无","sign":"2","experience":"12","ip":"192.168.0.8","logins":"2019-2-20","joinTime":"2019-2-9","joinTime1":"2019-2-10","joinTime2":"2019-2-11","advice":"完成的时间和效率都不错。"}
+]
+
+}

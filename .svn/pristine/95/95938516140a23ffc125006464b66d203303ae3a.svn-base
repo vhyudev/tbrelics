@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>查看征集信息</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+		<style type="text/css">
+			.layui-form-pane .layui-form-label {
+				padding: 8px 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="childrenBody">
+			<form class="layui-form layui-form-pane" action="" lay-filter="demo1" style="padding: 5px;">
+				<div class="layui-form-item" style="margin-top: 10px;">
+					<div class="layui-inline">
+						<label class="layui-form-label">征集单号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="waterCode" autocomplete="off" class="layui-input" value="10001" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">原记录表号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="sss" autocomplete="off" class="layui-input" value="保存完好" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">征集方式</label>
+						<div class="layui-input-inline">
+							<input type="text" name="coll" autocomplete="off" class="layui-input" value="购买" readonly="readonly">
+						</div>
+					</div>
+					
+					<div class="layui-inline">
+						<label class="layui-form-label">征集日期</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" id="test6" placeholder="2019-10-15" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">馆内对接人</label>
+						<div class="layui-input-inline">
+							<input type="text" name="rePeo" autocomplete="off" class="layui-input" value="李文芳" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">被征集单位/人</label>
+						<div class="layui-input-inline">
+							<input type="text" name="bePeo" autocomplete="off" class="layui-input" value="张茂才" readonly="readonly">
+						</div>
+					</div>
+					<!--<div class="layui-inline">
+						<label class="layui-form-label">征集凭证</label>
+						<div class="layui-input-inline">
+							<input type="text" name="bePeo" autocomplete="off" class="layui-input" value="0a1b20190323.jpg" readonly="readonly">
+						</div>
+					</div>-->
+
+				</div>
+				<div class="layui-form" style="margin: 0px 5px;">
+					<table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>
+
+					<script type="text/html" id="xuhao">
+						{{d.LAY_TABLE_INDEX+1}}
+					</script>
+				</div>
+				<div id="page"></div>
+			</form>
+			<table class="layui-hide" id="test" lay-filter="test"></table>
+		</div>
+
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script>
+			layui.use(['laydate'], function() {
+
+				var laydate = layui.laydate;
+
+				//日期范围
+				laydate.render({
+					elem: '#test6',
+					format: "yyyy年MM月dd日"
+				});
+			});
+		</script>
+		<script>
+			var tjcpData = eval('(' + parent.tjcpData + ')');
+			console.log(tjcpData);
+
+			layui.use(['form', 'table'], function() {
+				var $ = layui.jquery,
+					form = layui.form,
+					table = layui.table;
+
+				form.val("demo1", {
+					Name: tjcpData.Name,
+					Number: tjcpData.Number,
+					Remark: tjcpData.Remark
+				})
+
+				table.render({
+					elem: '#currentTable',
+					data: tjcpData.data,
+					cols: [
+						[{
+								type: 'checkbox'
+							},
+							{
+								type: 'numbers',
+								title: '序号',
+								templet: '#xuhao',
+								width: 30
+							},
+
+							{
+								field: 'McrName',
+								title: '文物名称',
+								minWidth: 100
+							},
+							{
+								field: 'Age',
+								title: '现状',
+								sort: true
+							},
+							{
+								field: 'toNumber',
+								title: '统计数量',
+								sort: true
+							},
+							{
+								field: 'nowNumber',
+								title: '实际数量',
+								sort: true
+							}
+							// {fixed: 'right', title:'操作', toolbar:"#barDemo", width:120}
+							/*{field: 'Hall', title: '方位', edit: 'text'},
+							{field: 'Fulldisable', title: '完残程度', edit: 'text'},
+							{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150} */
+						]
+					],
+					limits: [5, 10, 15, 20, 25, 50],
+					limit: 5,
+					page: true
+				});
+
+				//监听单元格编辑
+				table.on('edit(currentTable)', function(obj) {
+					var value = obj.value, //得到修改后的值
+						data = obj.data, //得到所在行所有键值
+						field = obj.field; //得到字段
+					layer.msg('[Index: ' + data.index + '] ' + field + ' 字段更改为：' + value);
+				});
+				//监听行工具事件
+				table.on('tool(currentTable)', function(obj) {
+
+					var data = obj.data;
+					tjcpData = JSON.stringify(data);
+					//console.log(obj)
+					if(obj.event === 'del') {
+						layer.confirm('真的删除行么', function(index) {
+							obj.del();
+							layer.close(index);
+						});
+					} else if(obj.event === 'edit') {
+						layer.open({
+							type: 2,
+							//title: title, //不显示标题栏
+							area: ['80%', '80%'],
+							content: "editcp.html",
+						});
+					}
+				});
+
+				// 监听添加操作
+				$(".data-add-btn").on("click", function() {
+					tjcpData = [];
+					tjcpData = JSON.stringify(tjcpData);
+					var index = layui.layer.open({
+						title: "添加信息",
+						area: ['80%', '80%'],
+						type: 2,
+						content: "addcp.html",
+
+					})
+					//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+					/* $(window).resize(function(){
+						layui.layer.full(index);
+					})
+					layui.layer.full(index); */
+					/* 	//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+						 $(window).resize(function(){
+							layui.layer.full(index);
+						})
+						layui.layer.full(index); 
+					 });
+					 */
+				});
+
+				//监听提交
+				form.on('submit(demo1)', function(data) {
+					layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					})
+					return false;
+				});
+
+			});
+		</script>
+		<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
+	</body>
+
+</html>

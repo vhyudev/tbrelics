@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>藏品分配</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+    <style type="text/css">
+        .childrenBody {
+            margin: 0px 5px;
+        }
+
+        .layui-elem-field {
+            border: none;
+        }
+
+        .layui-form-item {
+            margin-bottom: 0px;
+        }
+
+        .layui-input,
+        .layui-select,
+        .layui-textarea {
+            height: 30px;
+        }
+
+        .layui-form-pane .layui-form-label {
+            height: 30px;
+            padding: 5px 15px;
+        }
+
+        .layui-date {
+            position: absolute;
+            right: 2px;
+            top: 7%;
+            cursor: pointer;
+            font-size: 24px;
+            color: #c2c2c2;
+        }
+    </style>
+
+</head>
+<body class="childrenBody" style="margin-top: 2%;">
+<fieldset class="layui-elem-field">
+    <div style="margin: 10px 40px 0px">
+        <form class="layui-form layui-form-pane" action="">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">分类号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="Code" autocomplete="off" class="layui-input" value="">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">文物名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="number" lay-verify="required|number" autocomplete="off"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">文物状态</label>
+                    <div class="layui-input-inline">
+                        <select lay-search="">
+                            <option value="请选择">请选择</option>
+                            <option value="未分配">未分配</option>
+                            <option value="已分配">已分配</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item" align="center">
+                    <div class="layui-inline" style="margin-right: 100px;">
+                        <a class="layui-btn layui-btn-sm" lay-submit="" lay-filter="data-search-btn">查询</a>
+                        <a class="layui-btn layui-btn-primary layui-btn-sm">重置</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</fieldset>
+<div style="margin-left: 2%;margin-right: 2%;">
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
+
+<script type="text/html" id="barDemo">
+    {{#  if(d.cultType === "未分配"){ }}
+        <a class="layui-btn layui-btn-xs" lay-event="edit"> <i class="layui-icon">&#xe642;</i>分配</a>
+    {{#  } else { }}
+        <a class="layui-btn layui-btn-xs" lay-event="edit"> <i class="layui-icon">&#xe642;</i>修改</a>
+    {{#  } }}
+</script>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button type="button" class="layui-btn layui-btn-xs data-add-btn" lay-event="getCheckData">
+            <i class="layui-icon">&#xe642;</i>分配
+        </button>
+    </div>
+</script>
+<script src="../../../lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'element', 'laydate', 'upload'], function () {
+        var $ = layui.jquery,
+            element = layui.element, //Tab的切换功能，切换事件监听等，需要依赖element模块
+            form = layui.form,
+            layer = layui.layer,
+            laydate = layui.laydate,
+            upload = layui.upload;
+
+        //日期
+        laydate.render({
+            elem: '#IntoDate',
+            eventElem: '#date1',
+            trigger: 'click'
+        });
+        laydate.render({
+            elem: '#AddTime',
+            eventElem: '#date2',
+            trigger: 'click'
+        });
+        laydate.render({
+            elem: '#CollectDatetime',
+            eventElem: '#date3',
+            trigger: 'click'
+        });
+        laydate.render({
+            elem: '#AddTime2',
+            eventElem: '#date4',
+            trigger: 'click'
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#Img',
+            url: '/upload/',
+            multiple: true,
+            before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            },
+            done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+            },
+            error: function () {
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html(
+                    '<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            }
+        });
+
+
+        //多文件列表示例
+        var demoListView = $('#demoList'),
+            uploadListIns = upload.render({
+                elem: '#Appendixs',
+                url: '/upload/',
+                accept: 'file',
+                multiple: true,
+                auto: false,
+                bindAction: '#testListAction',
+                choose: function (obj) {
+                    var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+                    //读取本地文件
+                    obj.preview(function (index, file, result) {
+                        var tr = $(['<tr id="upload-' + index + '">',
+                            '<td>' + file.name + '</td>',
+                            '</tr>'
+                        ].join(''));
+
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function () {
+                            obj.upload(index, file);
+                        });
+
+                        //删除
+                        tr.find('.demo-delete').on('click', function () {
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
+
+                        demoListView.append(tr);
+                    });
+                },
+                done: function (res, index, upload) {
+                    if (res.code == 0) { //上传成功
+                        var tr = demoListView.find('tr#upload-' + index),
+                            tds = tr.children();
+                        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                        tds.eq(3).html(''); //清空操作
+                        return delete this.files[index]; //删除文件队列已经上传成功的文件
+                    }
+                    this.error(index, upload);
+                },
+                error: function (index, upload) {
+                    var tr = demoListView.find('tr#upload-' + index),
+                        tds = tr.children();
+                    tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                    tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                }
+            });
+
+    });
+
+    layui.use('table', function () {
+        /* var $ = layui.jquery, */
+        var table = layui.table;
+
+        table.render({
+            elem: '#test',
+            url: '../../../json/collection/cprl.json',
+            toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+            ,
+            defaultToolbar: ['filter', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            title: '出库数据表',
+            cols: [
+                [{
+                    type: 'checkbox'
+                }, {
+                    field: 'id',
+                    width: 80,
+                    title: 'ID',
+                    sort: true
+                }, {
+                    field: 'relics',
+                    title: '文物名称',
+                    width: 200
+                }, {
+                    field: 'object',
+                    title: '分类号',
+                    width: 105
+                }, {
+                    field: 'joinTime',
+                    title: '入馆时间',
+                    width: 120
+                }, {
+                    field: 'object1',
+                    title: '分类',
+                    width: 150
+                }, {
+                    field: 'size',
+                    title: '尺寸',
+                    width: 150
+                }, {
+                    field: 'cultType',
+                    title: '状态',
+                    width: 150
+                }, {
+                    fixed: 'right',
+                    title: '操作',
+                    toolbar: '#barDemo',
+                    width: 120
+                }
+
+
+                ]
+            ],
+            limits: [5, 10, 15, 20, 25, 50],
+            limit: 5,
+            page: true
+        });
+
+        //头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'getCheckData':
+                    var index = layui.layer.open({
+                        skin: 'demo-class',
+                        area: ['70%', '80%'],
+                        title: "选择藏品保管员",
+                        type: 2,
+                        content: "addTree.html",
+                    });
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'detail') {
+                layer.msg('ID：' + data.id + ' 的查看操作');
+            } else if (obj.event === 'edit') {
+                var index = layui.layer.open({
+                    skin: 'demo-class',
+                    area: ['70%', '80%'],
+                    title: "选择藏品保管员",
+                    type: 2,
+                    content: "addTree.html",
+                });
+            } else if (obj.event === 'ruku') {
+
+            }
+        });
+    });
+</script>
+</body>
+</html>

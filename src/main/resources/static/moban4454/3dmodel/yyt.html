@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>三维赏析</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+		<link type="text/css" rel="stylesheet" href="../css/load01.css">
+		
+		<script>
+			var mtl,obj,path,initial,position_z,minDistance,maxDistance;
+			function parseURL(url){
+			    var url = url.split("?")[1];
+			    var para = url.split("&");
+			    var len = para.length;
+			    var res = {};
+			    var arr = [];
+			    for(var i=0;i<len;i++){
+			        arr = para[i].split("=");
+			        res[arr[0]] = arr[1];
+			    }
+			    mtl = res.mtl;
+			    obj = res.obj;
+			    path = res.path;
+			    initial = res.initial;
+			    position_z = res.position_z;
+			    minDistance = res.minDistance;
+			    maxDistance = res.maxDistance;
+			}
+			parseURL(window.location.href);
+		</script>
+		<script src="../build/three.js"></script>
+		<script src="js/loaders/OBJLoader.js"></script>
+		<script src="js/controls/OrbitControls.js"></script>
+		<script src="js/loaders/MTLLoader.js"></script>
+		<script type="text/javascript">
+			
+			var container,controls;
+			var camera, scene, renderer;
+			var mouseX = 0, mouseY = 0;
+			
+			var windowHalfX = window.innerWidth;
+			var windowHalfY = window.innerHeight;
+			
+			
+			var object;
+			var id = null;
+			function init() {
+				
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				
+				camera = new THREE.PerspectiveCamera( initial, windowHalfX/windowHalfY, 1, 2000 );
+				camera.position.z = position_z;
+
+				// scene
+
+				scene = new THREE.Scene();
+
+				var ambientLight1 = new THREE.AmbientLight( 0xffffff);
+				scene.add( ambientLight1 );
+				
+				var pointLight = new THREE.PointLight( 0xffffff );
+				if(mtl!='yxs.mtl') {
+					pointLight.position.set(-1.288,1.942,-3.340);
+					pointLight.intensity = 0.1;
+					pointLight.decay = 2;	
+				}else {
+					pointLight.intensity = 1;
+				}
+				camera.add( pointLight );
+//				
+				scene.add( camera );
+
+				function onProgress( xhr ) {
+
+					if ( xhr.lengthComputable ) {
+
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						
+						var progress = Math.round( percentComplete, 2 );
+						document.getElementById('baifenbi').innerHTML =  Math.round( percentComplete, 2 ) + "%";
+						if(progress == 100) {
+							document.getElementById('loading').style.visibility = "hidden";
+						}
+//						console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+					}
+				}
+
+				function onError() {}
+				
+				new THREE.MTLLoader()
+					.setPath(path)
+					.load( mtl, function ( materials ) {
+
+						materials.preload();
+
+						new THREE.OBJLoader()
+							.setMaterials( materials )
+							.setPath(path)
+							.load( obj, function ( object ) {
+
+//								object.position.y = - 95;
+								
+								scene.add( object );
+							}, onProgress, onError );
+
+					} );
+				
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( windowHalfX, windowHalfY );
+				//设置颜色
+				renderer.setClearColor('rgb(131,128,129)',1.0);
+				container.appendChild( renderer.domElement );
+				// 拖拽
+				//controls = new TrackballControls( camera, renderer.domElement );
+				controls = new THREE.OrbitControls( camera, renderer.domElement );
+ 				controls.autoRotate = true;
+				controls.minDistance = minDistance;
+				controls.maxDistance = maxDistance;
+                controls.autoRotateSpeed = 0.5;
+
+				window.addEventListener( 'resize', onWindowResize, false );
+				animate();
+			}
+
+			function onWindowResize() {
+				camera.aspect = windowHalfX / windowHalfY;
+				camera.updateProjectionMatrix();
+				renderer.setSize( windowHalfX, windowHalfX );
+			}
+
+			function animate() {
+
+				controls.update();
+				renderer.render( scene, camera );
+
+				requestAnimationFrame( animate );
+
+			}
+
+			function render() {
+
+				camera.position.x += ( mouseX - camera.position.x ) * .05;
+				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+
+				camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+	</head>
+
+	<body onload="init()">
+		<div class="loading" id="loading" style="height: 100%;">
+			<div class="pic"> <!--class=""pic-->
+				<!--外面的圈圈-->
+				<span></span>
+				<!--数据加载进度（百分比数字）-->
+				<b id="baifenbi"></b>
+			</div>
+		</div>
+
+	</body>
+</html>

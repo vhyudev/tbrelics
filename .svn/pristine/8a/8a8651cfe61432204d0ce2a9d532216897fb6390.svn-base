@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>藏品信息维护</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1472438_oy0f3ptndzr.css" media="all"/>
+    <style type="text/css">
+        .childrenBody {
+            margin: 0px 5px;
+        }
+
+        .layui-table-cell {
+            height: auto;
+            line-height: 18px;
+            padding: 0 0px;
+            text-align: center;
+            overflow: visible;
+            text-overflow: inherit;
+            white-space: normal;
+        }
+
+        .iconfont {
+            margin-right: 5px;
+            vertical-align: bottom;
+        }
+
+        .layui-table-tool {
+            min-height: 30px;
+            padding: 5px 15px;
+        }
+    </style>
+</head>
+<body class="childrenBody">
+<form class="layui-form" action="" lay-filter="demo1">
+    <div class="layui-form-item" style="margin-top: 10px;margin-bottom: 5px;">
+        <!--<label class="layui-form-label">关键字</label>-->
+        <div class="layui-input-inline">
+            <input type="text" name="keyword" placeholder="请输入关键字" autocomplete="off" class="layui-input">
+        </div>
+        <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="sreach" style="margin-top: 3px;"><i
+                class="layui-icon">&#xe615;</i></button>
+    </div>
+</form>
+
+<div class="layui-form">
+    <table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            </button>
+            <button type="button" class="layui-btn layui-btn-xs">
+                <i class="layui-icon layui-icon-export"></i>导出
+            </button>
+            <button type="button" class="layui-btn layui-btn-xs">
+                <i class="layui-icon  layui-icon-print"></i>打印
+            </button>
+            <!--<button type="button" class="layui-btn layui-btn-sm">
+                <i class="iconfont icon-select"></i>查看
+            </button>-->
+        </div>
+    </script>
+    <script type="text/html" id="xuhao">
+        {{d.LAY_TABLE_INDEX+1}}
+    </script>
+    <script type="text/html" id="relicImg">
+        <img src="{{d.Img}}" style="width: 40px;height: 40px;">
+    </script>
+    <script type="text/html" id="gradeBar">
+        {{#  if(d.relicGrade === "1"){ }}
+        一级
+        {{#  } else if(d.relicGrade === "2"){ }}
+        二级
+        {{#  } else if(d.relicGrade === "3"){ }}
+        三级
+        {{#  } else if(d.relicGrade === "4"){ }}
+        一般
+        {{#  } else { }}
+        未定级
+                    {{#  } }}
+    </script>
+    <script type="text/html" id="sourceBar">
+        {{#  if(d.source === "0"){ }}
+        征集购买
+        {{#  } else if(d.source === "1"){ }}
+        依法交换
+        {{#  } else if(d.source === "2"){ }}
+        接受捐赠
+        {{#  } else if(d.source === "3"){ }}
+        拨交
+        {{#  } else if(d.source === "4"){ }}
+        移交
+        {{#  } else if(d.source === "5"){ }}
+        旧藏
+        {{#  } else if(d.source === "6"){ }}
+        发掘
+        {{#  } else if(d.source === "7"){ }}
+        采集
+        {{#  } else if(d.source === "8"){ }}
+        拣选
+        {{#  } else { }}
+        其他
+                    {{#  } }}
+    </script>
+    <script type="text/html" id="currentTableBar">
+        <a class="layui-btn layui-btn-xs data-count-look" lay-event="look">
+            查看
+        </a>
+        <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">
+            编辑
+        </a>
+    </script>
+</div>
+<div id="page"></div>
+
+<script type="text/javascript" src="../../lib/layui/layui.js"></script>
+<script>
+    var tjcpData = [];
+    var e = 0;
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTable',
+            url: '../../json/collection/cpxx.json',
+            toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+            defaultToolbar: [],
+            cols: [
+                [
+                {type: 'checkbox'},
+                {type: 'numbers', title: '序号', templet: '#xuhao', width: 30},
+                {field: 'Img', title: '图片', align: "center", templet: "#relicImg"},
+                {field: 'registrationNo', title: '文物号', sort: true, width: 100},
+                {field: 'name', title: '名称', minWidth: 140},
+                {field: 'category', title: '类别'},
+                {field: 'age', title: '年代'},
+                {field: 'source', title: '来源', templet: '#sourceBar'},
+                {field: 'quantity', title: '数量'},
+                /*{field: 'weight', title: '重量'},
+                {field: 'matter', title: '质地'},
+                {field: 'size', title: '尺寸'},*/
+                {field: 'inMuseumDate', title: '入藏年代'},
+                {field: 'fulldisable', title: '完残程度'},
+                {field: 'relicGrade', title: '文物级别', templet: '#gradeBar'},
+                {title: '操作', templet: '#currentTableBar', align: "center"}
+            ]
+            ],
+            limits: [5, 10, 15, 20, 25, 50],
+            limit: 5,
+            page: true
+        });
+
+        table.on('tool(currentTable)', function (obj) {
+            var data = obj.data;
+            tjcpData = JSON.stringify(data);
+            if (obj.event === 'look') {
+                e = 0;
+                var index = layui.layer.open({
+                    title: "查看基本信息",
+                    type: 2,
+                    content: "cpxxxq.html",
+                    area: ['100%', '100%'],
+                    success: function (layero, index) {
+                        setTimeout(function () {
+                            layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        }, 500)
+                    }
+                })
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function () {
+                    layui.layer.full(index);
+                })
+                layui.layer.full(index);
+            } else if (obj.event === 'edit') {
+                e = 1;
+                var index = layui.layer.open({
+                    title: "编辑基本信息",
+                    type: 2,
+                    content: "cpxxxq.html",
+                    area: ['100%', '100%'],
+                    success: function (layero, index) {
+                        setTimeout(function () {
+                            layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        }, 500)
+                    }
+                })
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function () {
+                    layui.layer.full(index);
+                })
+                layui.layer.full(index);
+            }
+        });
+    });
+</script>
+</body>
+</html>

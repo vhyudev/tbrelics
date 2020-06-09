@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>总账维护</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+  <style type="text/css">
+  	.childrenBody{
+  		margin: 0px 5px;
+  	}
+  	.layui-elem-field{
+  		border: none;
+  	}
+  	.layui-form-item {
+  		margin-bottom: 0px;
+  	}
+  	.layui-input, .layui-select, .layui-textarea {
+  	    height: 30px;
+  	}
+  	.layui-form-pane .layui-form-label {
+  		height: 30px;
+  		padding: 5px 15px;
+  	}
+
+  	.layui-date{
+  	    position: absolute;
+  	    right: 2px;
+  	    top: 7%;
+  	    cursor: pointer;
+  	    font-size: 24px;
+  	    color: #c2c2c2;
+  	}
+  </style>
+</head>
+<body class="childrenBody" style="margin-top: 2%;">
+		<fieldset class="layui-elem-field">
+        <!--<legend>搜索信息</legend>-->
+        <div style="margin: 10px 40px 0px">
+            <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">                   
+                    <div class="layui-inline">
+                        <label class="layui-form-label">凭证编号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="Code" autocomplete="off" class="layui-input" value="">
+                        </div>
+                    </div>
+					 <div class="layui-inline">
+					    <label class="layui-form-label">文物号</label>
+					    <div class="layui-input-inline">
+					        <input type="text" name="TotalNumber" autocomplete="off" class="layui-input">
+					    </div>
+					</div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">日期选择</label> 
+					    <div class="layui-input-inline">
+					        <input type="text" class="layui-input" id="AddTime" placeholder=" - ">
+					        <i class="layui-icon layui-date" id="date">&#xe637;</i>
+					    </div>
+                    </div>
+                   
+                   
+                    <div class="layui-inline">
+                        <label class="layui-form-label">名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="McrName" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>  
+                    <div class="layui-inline">
+                        <label class="layui-form-label">文物分类</label>                      
+                        <div class="layui-input-inline">
+						    <select name="ClassifyType" lay-search="">
+						        <option value="">直接选择或搜索选择</option>					        
+						        <option value="书法、绘画">书法、绘画</option>
+						        <option value="瓷器">瓷器</option>
+						        <option value="铜器">铜器</option>
+						        <option value="玉石器、宝石">玉石器、宝石</option>
+						        <option value="雕塑、造像">雕塑、造像</option>
+						        <option value="漆器">漆器</option>
+						        <option value="文具">文具</option>
+						    </select>
+						</div>
+                    </div>
+                    <div class="layui-inline" style="margin-right: 100px;">
+                        <a class="layui-btn layui-btn-sm" lay-submit="" lay-filter="data-search-btn">查询</a>
+                        <a class="layui-btn layui-btn-primary layui-btn-sm">重置</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+	<div class="layui-form">
+		<table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>		
+		<script type="text/html" id="xuhao">
+		    {{d.LAY_TABLE_INDEX+1}}
+		</script>
+		<script type="text/html" id="relicImg">
+		    <img src="{{d.Img}}" style="width: 40px;height: 40px;">
+		</script>
+		<script type="text/html" id="buttonTpl">
+	        {{#  if(d.DataState == "已通过"){ }}
+	        <button class="layui-btn layui-btn-xs">已通过</button>
+	        {{#  } else { }}
+	        <button class="layui-btn layui-btn-danger layui-btn-xs">未通过</button>
+	        {{#  } }}
+	    </script>
+	   <!-- <script type="text/html" id="toolbarDemo">
+			<div class="layui-btn-container">
+			    <button type="button" class="layui-btn layui-btn-xs data-add-btn" lay-event="getCheckData" >
+				    <i class="layui-icon">&#xe654;</i>添加
+				</button>	
+			</div>
+		</script> -->
+		
+	</div>
+ 
+<table class="layui-hide" id="test" lay-filter="test"></table>
+ 
+ 
+<script type="text/html" id="barDemo">
+   <a class="layui-btn layui-btn-xs" lay-event="edit"> <i class="layui-icon">&#xe642;</i></a>
+</script>
+<script type="text/html" id="link">
+       <a href=" ">{{d.file}}</a>
+   </script>
+
+<script type="text/html" id="barDemo1">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">未提交</a>
+</script>
+              
+          
+<script type="text/javascript" src="../../lib/layui/layui.js"></script>
+ <script>
+ 	    layui.use(['form', 'table','laydate',], function () {
+ 	        var $ = layui.jquery,
+ 	        form = layui.form,
+ 	        table = layui.table;
+ 		    var laydate = layui.laydate;
+ 			 //日期
+ 			laydate.render({
+ 			    elem: '#AddTime',
+ 			    eventElem: '#date',
+ 			    range: true,
+ 			    trigger: 'click'
+ 			});
+ 			/* //日期范围
+ 			laydate.render({
+ 			  elem: '#test6'
+ 			  ,range: true
+ 			}); */
+ 			});
+ 	</script>
+ 	
+ 	<script>
+ layui.use('laydate', function(){
+ 	 var $ = layui.jquery,
+   var laydate = layui.laydate;
+   
+   //日期范围
+   laydate.render({
+     elem: '#test6'
+     ,range: true
+   });
+   
+ });
+ </script>
+<script>
+layui.use('table', function(){
+	/* var $ = layui.jquery, */
+  var table = layui.table;
+  
+  table.render({
+    elem: '#test'
+    ,url:'../../json/collection/rgcpTable.json'
+    ,cols: [
+        [
+            {type: "numbers", title: '序号', templet: '#xuhao', width: 100},
+            {field: 'Code', title: '登记凭证', width: 120},
+            {field: 'ClassifyType', title: '分类', width: 100},
+            {field: 'ClassifyID', title: '文物号', width: 100},
+            {field: 'TotalNumber', title: '来源凭证', width: 100},
+            {field: 'McrName', title: '名称', width: 120},
+            {field: 'AddBy', title: '登记人', width: 120},
+            {field: 'AddTime', title: '登记时间', width: 120},
+            {field: 'Reason', title: '来源', width: 100},
+            {field: 'statues', title: '登记状态', width: 100},
+            {field: 'comment', title: '备注', width: 100},
+            {field: 'TotalNumbe', title: '注销凭证', width: 100},
+            {field: 'TotalNumbe', title: '注销原因', width: 100},
+            {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 80},
+					
+		 ]
+      ]
+    ,page: true
+  });
+  
+  //监听行工具事件
+  table.on('tool(test)', function(obj){
+    var data = obj.data;
+    //console.log(obj)
+     if(obj.event === 'detail'){
+      layer.msg('ID：'+ data.id + ' 的查看操作');
+    } else if(obj.event === 'del'){
+      layer.confirm('确定删除?', function(index){
+        obj.del();
+        layer.close(index);
+      });
+    } else if(obj.event === 'edit'){
+      /* layer.alert('编辑行：<br>'+ JSON.stringify(data)) */
+			var index = layui.layer.open({
+			skin: 'demo-class',
+			area: ['800px', '440px'],
+			title : "查询与维护",
+			type : 2,
+			content : "editzzwh.html",});
+    }
+  });
+});
+</script>
+
+</body>
+</html>

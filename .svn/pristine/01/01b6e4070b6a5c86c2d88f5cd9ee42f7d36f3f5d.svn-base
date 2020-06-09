@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>藏品信息检索</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1472438_oy0f3ptndzr.css" media="all" />    
+    <link rel="stylesheet" href="../../lib/fiterMore/fiterMore.min.css" />
+    <style type="text/css">
+    	.searchbox .l {
+    		width: 58px;
+    	}	
+    	.childrenBody{
+    		margin: 0px 5px;
+    	}
+    	.layui-elem-field{
+    		border: none;
+    	}
+    	.layui-form-item {
+    		margin-bottom: 0px;
+    	}
+    	.layui-input, .layui-select, .layui-textarea {
+		    height: 30px;
+		}
+    	.layui-form-pane .layui-form-label {
+    		height: 30px;
+    		padding: 5px 15px;
+    	}
+    	.layui-table-cell {
+    		height: auto;
+    		line-height: 18px; 
+    		padding: 0 0px;
+    		text-align: center;
+    		overflow:visible;
+    		text-overflow:inherit;
+    		white-space:normal;
+    	}    	
+    </style>
+</head>
+<body class="childrenBody">	
+	<form class="layui-form" action="" lay-filter="demo1">			
+        <div class="layui-form-item" style="margin-top: 10px;margin-bottom: 5px;">	
+            <!--<label class="layui-form-label">关键字</label>-->
+            <div class="layui-input-inline">
+			    <input type="text" name="keyword" placeholder="请输入关键字" autocomplete="off" class="layui-input">				
+            </div>   
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </div>     
+    </form>
+    
+	<!--filterMore筛选条件-->
+	<div class="searchbox" id="searchbox"></div>
+	
+<!--    <div class="layui-inline" style="margin-top: 10px;">-->
+<!--        <a class="layui-btn layui-btn-sm data-quickSearch-btn">查询</a>-->
+<!--        <a class="layui-btn layui-btn-sm data-advancedSearch-btn">高级查询</a>-->
+<!--        <a class="layui-btn layui-btn-sm data-zdycx-btn">自定义查询</a>-->
+<!--        <a class="layui-btn layui-btn-sm data-qwjs-btn">全文检索</a>-->
+<!--    </div>-->
+	
+	<div class="layui-form">
+		<table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>				
+		<script type="text/html" id="xuhao">
+		    {{d.LAY_TABLE_INDEX+1}}
+		</script>
+		<script type="text/html" id="relicImg">
+		    <img src="{{d.Img}}" style="width: 40px;height: 40px;">
+		</script>
+		<script type="text/html" id="gradeBar">
+            {{#  if(d.relicGrade === "1"){ }}
+                                一级
+            {{#  } else if(d.relicGrade === "2"){ }}
+                                二级
+            {{#  } else if(d.relicGrade === "3"){ }}
+                                三级
+            {{#  } else if(d.relicGrade === "4"){ }}
+                                 一般
+            {{#  } else { }}
+                                未定级
+            {{#  } }}
+		</script>
+		<script type="text/html" id="sourceBar">
+            {{#  if(d.source === "0"){ }}
+                                征集购买 
+            {{#  } else if(d.source === "1"){ }}
+                                依法交换
+            {{#  } else if(d.source === "2"){ }}
+                                接受捐赠
+            {{#  } else if(d.source === "3"){ }}
+                                拨交
+            {{#  } else if(d.source === "4"){ }}
+                                移交
+            {{#  } else if(d.source === "5"){ }}
+                                旧藏
+            {{#  } else if(d.source === "6"){ }}
+                                发掘
+            {{#  } else if(d.source === "7"){ }}
+                                采集
+            {{#  } else if(d.source === "8"){ }}
+                                拣选
+            {{#  } else { }}
+                                其他
+            {{#  } }}
+		</script>
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs data-count-look" lay-event="look">
+            	查看
+            </a>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">
+            	编辑
+            </a>
+        </script>
+		
+	</div>
+	<div id="page"></div>
+	
+	<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+	<script src="../../lib/fiterMore/filterMore.min.js"></script>
+	<script>
+    //初始化参数
+    var options = {
+    	//默认展开条件数
+        "expandRow": 3,
+        //查询条件
+        "searchBoxs": [
+            {
+                "id": "wwlb",
+                "title": "文物类别",
+                "data": [
+                    { "value": "石器、石刻", "text": "石器、石刻" },
+                    { "value": "玉器", "text": "玉器" },
+                    { "value": "陶器砖瓦", "text": "陶器砖瓦" },
+                    { "value": "瓷器", "text": "瓷器" },
+                    { "value": "金属", "text": "金属" },
+                    { "value": "甲骨", "text": "甲骨" },
+                    { "value": "照片", "text": "照片" },
+                    { "value": "书法", "text": "书法" },
+                    { "value": "绘画", "text": "绘画" },
+                    { "value": "碑帖", "text": "碑帖" },
+                    { "value": "玺印", "text": "玺印" },
+                    { "value": "文房四宝", "text": "文房四宝" },
+                    { "value": "文献", "text": "文献" },
+                    { "value": "书籍", "text": "书籍" },
+                    { "value": "钱币", "text": "钱币" },
+                    { "value": "邮票", "text": "邮票" },
+                    { "value": "证章", "text": "证章" },
+                    { "value": "纺织品", "text": "纺织品" },
+                    { "value": "民间艺术", "text": "民间艺术" },
+                    { "value": "出土文物", "text": "出土文物" },
+                    { "value": "近代文物", "text": "近代文物" },
+                    { "value": "现代文物", "text": "现代文物" },
+                    { "value": "杂项", "text": "杂项" }
+                    /*{ "value": "SQ", "text": "石器、石刻" },
+                    { "value": "YQ", "text": "玉器" },
+                    { "value": "TQ", "text": "陶器砖瓦" },
+                    { "value": "CQ", "text": "瓷器" },
+                    { "value": "JS", "text": "金属" },
+                    { "value": "JG", "text": "甲骨" },
+                    { "value": "ZP", "text": "照片" },
+                    { "value": "SF", "text": "书法" },
+                    { "value": "HH", "text": "绘画" },
+                    { "value": "BT", "text": "碑帖" },
+                    { "value": "XY", "text": "玺印" },
+                    { "value": "WF", "text": "文房四宝" },
+                    { "value": "WX", "text": "文献" },
+                    { "value": "SJ", "text": "书籍" },
+                    { "value": "QB", "text": "钱币" },
+                    { "value": "YP", "text": "邮票" },
+                    { "value": "ZZ", "text": "证章" },
+                    { "value": "FZ", "text": "纺织品" },
+                    { "value": "MJYS", "text": "民间艺术" },
+                    { "value": "CT", "text": "出土文物" },
+                    { "value": "JDS", "text": "近代文物" },
+                    { "value": "XDS", "text": "现代文物" },
+                    { "value": "ZX", "text": "杂项" }*/
+                ]
+            },{
+                "id": "cdlb",
+                "title": "朝代",
+                "data": [
+                    { "value": "夏", "text": "夏" },
+                    { "value": "商", "text": "商" },
+                    { "value": "西周", "text": "西周" },
+                    { "value": "东周", "text": "东周" },
+                    { "value": "秦", "text": "秦" },
+                    { "value": "西汉", "text": "西汉" },
+                    { "value": "东汉", "text": "东汉" },
+                    { "value": "三国", "text": "三国" },
+                    { "value": "西晋", "text": "西晋" },
+                    { "value": "东晋", "text": "东晋" },
+                    { "value": "五胡十六国", "text": "五胡十六国" },
+                    { "value": "南北朝", "text": "南北朝" },
+                    { "value": "隋朝", "text": "隋朝" },
+                    { "value": "唐朝", "text": "唐朝" },
+                    { "value": "五代十国", "text": "五代十国" },
+                    { "value": "宋", "text": "宋" },
+                    { "value": "辽", "text": "辽" },
+                    { "value": "西夏", "text": "西夏" },
+                    { "value": "金", "text": "金" },
+                    { "value": "元", "text": "元" },
+                    { "value": "明", "text": "明" },
+                    { "value": "清", "text": "清" }
+                ]
+            },{
+                "id": "cpjb",
+                "title": "藏品级别",
+                "data": [
+                    { "value": "0", "text": "一级" },
+                    { "value": "1", "text": "二级" },
+                    { "value": "2", "text": "三级" },
+                    { "value": "3", "text": "一般" },
+                    { "value": "4", "text": "未定级" }
+                ]
+            },{
+                "id": "cplylb",
+                "title": "藏品来源",
+                "data": [
+                    { "value": "0", "text": "征集购买" },
+                    { "value": "1", "text": "接受捐赠" },
+                    { "value": "2", "text": "依法交换" },
+                    { "value": "3", "text": "拨交" },
+                    { "value": "4", "text": "移交" },
+                    { "value": "5", "text": "旧藏" },
+                    { "value": "6", "text": "发掘" },                   
+                    { "value": "7", "text": "采集" },                                       
+                    { "value": "8", "text": "拣选" },                                       
+                    { "value": "9", "text": "其他" }
+                ]
+            }
+        ]
+    };
+    $("#searchbox").fiterMore(options);
+    </script>
+    
+    
+	<script type="text/javascript" src="../../lib/layui/layui.js"></script>
+	<script>
+        var tjcpData = [];
+        var e = 0;
+        layui.use(['form', 'table'], function () {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
+
+            table.render({
+                elem: '#currentTableId',
+                url: '../../json/collection/cpxx.json',
+                toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+                defaultToolbar: [],
+                cols: [
+                    [
+                        {type: 'checkbox'},
+                        {type: 'numbers', title: '序号', templet: '#xuhao', width: 30},
+                        {field: 'Img', title: '图片', align: "center", templet: "#relicImg"},
+                        {field: 'registrationNo', title: '文物号', sort: true, width: 100},
+                        {field: 'name', title: '名称', minWidth: 140},
+                        {field: 'category', title: '类别'},
+                        {field: 'age', title: '年代'},
+                        {field: 'source', title: '来源', templet: '#sourceBar'},
+                        {field: 'quantity', title: '数量'},
+                        /*{field: 'weight', title: '重量'},
+                        {field: 'matter', title: '质地'},
+                        {field: 'size', title: '尺寸'},*/
+                        {field: 'inMuseumDate', title: '入藏年代'},
+                        {field: 'fulldisable', title: '完残程度'},
+                        {field: 'relicGrade', title: '文物级别', templet: '#gradeBar'},
+                        {title: '操作', templet: '#currentTableBar', align: "center"}
+                    ]
+                ],
+                limits: [5, 10, 15, 20, 25, 50],
+                limit: 5,
+                page: true
+            });
+
+            table.on('tool(currentTableFilter)', function (obj) {
+                var data = obj.data;
+                tjcpData = JSON.stringify(data);
+                console.log(obj);
+                if (obj.event === 'look') {
+                    e = 0;
+                    var index = layui.layer.open({
+                        title: "查看藏品信息",
+                        type: 2,
+                        content: "zsxx.html",
+                        area: ['100%', '100%'],
+                        success: function (layero, index) {
+                            setTimeout(function () {
+                                layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+                                    tips: 3
+                                });
+                            }, 500)
+                        }
+                    })
+                    //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                    $(window).resize(function () {
+                        layui.layer.full(index);
+                    })
+                    layui.layer.full(index);
+                } else if (obj.event === 'edit') {
+                    e = 1;
+                    var index = layui.layer.open({
+                        title: "编辑藏品信息",
+                        type: 2,
+                        content: "zsxx.html",
+                        area: ['100%', '100%'],
+                        success: function (layero, index) {
+                            setTimeout(function () {
+                                layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+                                    tips: 3
+                                });
+                            }, 500)
+                        }
+                    })
+                    //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                    $(window).resize(function () {
+                        layui.layer.full(index);
+                    })
+                    layui.layer.full(index);
+                }
+            });
+            // 监听快速查询操作
+            $(".data-quickSearch-btn").on("click", function () {
+                /*var index = layui.layer.open({
+                    title : "快速查询",
+                    type : 2,
+                    content : "../qs.html",
+                    success : function(layero, index){
+                        setTimeout(function(){
+                            layui.layer.tips('点击此处返回知识检索', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        },500)
+                    }
+                })
+                //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                $(window).resize(function(){
+                    layui.layer.full(index);
+                })
+                layui.layer.full(index);*/
+            });
+
+            // 监听高级查询操作
+            $(".data-advancedSearch-btn").on("click", function () {
+                // var index = layui.layer.open({
+                //     title : "高级查询",
+                //     type : 2,
+                //     content : "../as.html",
+                //     area: ['100%', '100%'],
+                //     success : function(layero, index){
+                //         setTimeout(function(){
+                //             layui.layer.tips('点击此处返回知识检索', '.layui-layer-setwin .layui-layer-close', {
+                //                 tips: 3
+                //             });
+                //         },500)
+                //     }
+                // })
+                // //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                // $(window).resize(function(){
+                //     layui.layer.full(index);
+                // })
+                // layui.layer.full(index);
+            });
+
+            //监听自定义查询操作
+            $(".data-zdycx-btn").on("click", function () {
+                // var index = layui.layer.open({
+                //     title : "自定义查询",
+                //     type : 2,
+                //     area: ['700px', '400px'],
+                //     content : "../zdy.html",
+                //     success : function(layero, index){
+                //         setTimeout(function(){
+                //             layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+                //                 tips: 3
+                //             });
+                //         },500)
+                //     }
+                // })
+                // //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                // $(window).resize(function(){
+                //     layui.layer.full(index);
+                // })
+                // layui.layer.full(index);
+
+            });
+
+            // 监听全文检索操作
+            $(".data-qwjs-btn").on("click", function () {
+                // var index = layui.layer.open({
+                //     title : "全文检索",
+                //     type : 2,
+                //     content : "../qwjs.html",
+                //     area: ['100%', '100%'],
+                //     success : function(layero, index){
+                //         setTimeout(function(){
+                //             layui.layer.tips('点击此处返回知识检索', '.layui-layer-setwin .layui-layer-close', {
+                //                 tips: 3
+                //             });
+                //         },500)
+                //     }
+                // })
+                // //改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+                // $(window).resize(function(){
+                //     layui.layer.full(index);
+                // })
+                // layui.layer.full(index);
+            });
+
+            //监听表格复选框选择
+            table.on('checkbox(currentTableFilter)', function(obj){
+                //console.log(obj.data)
+            });
+        });
+    </script>
+    
+    
+</body>
+</html>

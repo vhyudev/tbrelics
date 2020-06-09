@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">
+	</head>
+	<style type="text/css">
+		.layui-date {
+			position: absolute;
+			right: 2px;
+			top: 7%;
+			cursor: pointer;
+			font-size: 24px;
+			color: #c2c2c2;
+		}
+		
+		#lable:after {
+			content: '* ';
+			color: red;
+		}
+		
+		.layui-form-pane .layui-form-label {
+			width: 90px;
+		}
+	</style>
+
+	<body style="height: 100%;">
+		<fieldset class="layui-elem-field" style="border:0px;height: 80px;">
+			<!--<legend>搜索信息</legend>-->
+			<div style="margin: 10px 40px 0px;">
+				<form class="layui-form layui-form-pane" action="">
+					<div class="layui-form-item">
+
+						<div class="layui-inline">
+							<label class="layui-form-label">起始时间</label>
+							<div class="layui-input-inline">
+								<input type="text" name="IntoDate" id="IntoDate" autocomplete="off" class="layui-input">
+								<i class="layui-icon layui-date" id="date1">&#xe637;</i>
+							</div>
+
+						</div>
+						---- &nbsp;&nbsp;
+						<div class="layui-inline">
+							<label class="layui-form-label">终止时间</label>
+							<div class="layui-input-inline">
+								<input type="text" name="IntoDate" id="IntoDate" autocomplete="off" class="layui-input">
+								<i class="layui-icon layui-date" id="date1">&#xe637;</i>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">统计方式</label>
+							<div class="layui-input-inline">
+								<select name="ClassifyType" lay-search="">
+									<option value="">柱状图</option>
+									<option value="书法、绘画">饼图</option>
+									<option value="瓷器">折线图</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline" style="margin-left: 43%;">
+							<a class="layui-btn layui-btn-sm" lay-submit="" lay-filter="data-search-btn">生成统计图</a>
+							<a class="layui-btn layui-btn-primary layui-btn-sm">重置</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</fieldset>
+		<div id="container1" style="height: 80%;width: 60%;margin-left: 20%;"></div>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script>
+			layui.use(['form', 'table', 'laydate', ], function() {
+				var $ = layui.jquery,
+					form = layui.form,
+					table = layui.table;
+				var laydate = layui.laydate;
+				//日期
+				laydate.render({
+					elem: '#AddTime',
+					eventElem: '#date',
+					range: true,
+					trigger: 'click'
+				});
+				/* //日期范围
+				laydate.render({
+				  elem: '#test6'
+				  ,range: true
+				}); */
+			});
+		</script>
+
+		<script>
+			layui.use('laydate', function() {
+				var $ = layui.jquery,
+					laydate = layui.laydate;
+
+				//日期范围
+				laydate.render({
+					elem: '#test6',
+					range: true
+				});
+
+			});
+		</script>
+		<script>
+			layui.use('table', function() {
+				/* var $ = layui.jquery, */
+				var table = layui.table;
+
+				//监听行工具事件
+				table.on('tool(test)', function(obj) {
+					var data = obj.data;
+					//console.log(obj)
+					if(obj.event === 'detail') {
+						layer.msg('ID：' + data.id + ' 的查看操作');
+					} else if(obj.event === 'del') {
+						layer.confirm('确定删除?', function(index) {
+							obj.del();
+							layer.close(index);
+						});
+					} else if(obj.event === 'edit') {
+						/* layer.alert('编辑行：<br>'+ JSON.stringify(data)) */
+						var index = layui.layer.open({
+							skin: 'demo-class',
+							area: ['800px', '440px'],
+							title: "信息查看",
+							type: 2,
+							content: "zzbj.html",
+						});
+					}
+				});
+			});
+		</script>
+		<script type="text/javascript" src="../../lib/echarts/echarts.min.js"></script>
+		<script type="text/javascript">
+			var dom = document.getElementById("container1");
+			var myChart = echarts.init(dom);
+			var app = {};
+			option = null;
+			option = {
+				title: {
+					text: '文物出入库统计'
+				},
+				tooltip: {
+					trigger: 'axis'
+				},
+				legend: {
+					data: ['文物出库', '文物入库']
+				},
+				grid: {
+					left: '3%',
+					right: '4%',
+					bottom: '3%',
+					containLabel: true
+				},
+				toolbox: {
+					feature: {
+						saveAsImage: {}
+					}
+				},
+				xAxis: {
+					type: 'category',
+					boundaryGap: false,
+					data: ['10.27', '10.28', '10.29', '10.30', '10.31', '11.01', '11.02']
+				},
+				yAxis: {
+					type: 'value'
+				},
+				series: [{
+						name: '文物出库',
+						type: 'line',
+						stack: '总量',
+						data: [12, 13, 10, 13, 9, 23, 21]
+					},
+					{
+						name: '文物入库',
+						type: 'line',
+						stack: '总量',
+						data: [22, 18, 19, 23, 29, 33, 31]
+					}
+				]
+			};
+
+			;
+			if(option && typeof option === "object") {
+				myChart.setOption(option, true);
+			}
+		</script>
+
+		<script type="text/javascript">
+			var dom = document.getElementById("container1");
+			var myChart = echarts.init(dom);
+			var app = {};
+			option = null;
+
+			option = {
+				title: {
+					text: '库房文物数量变动统计'
+				},
+				color: ['#009688'],
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: { // 坐标轴指示器，坐标轴触发有效
+						type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+					}
+				},
+				grid: {
+					left: '3%',
+					right: '4%',
+					bottom: '3%',
+					containLabel: true
+				},
+				xAxis: [{
+					type: 'category',
+					data: ['瓷器库', '书画库', '青铜库', '铁器库', '其他'],
+					axisTick: {
+						alignWithLabel: true
+					}
+				}],
+				yAxis: [{
+					type: 'value'
+				}],
+				series: [{
+					name: '数量变化',
+					type: 'bar',
+					barWidth: '60%',
+					data: [10, 2, 20, 4, 30]
+				}]
+			};;
+			if(option && typeof option === "object") {
+				myChart.setOption(option, true);
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,9 @@
+newmtl RuYaoPan_WT_10:MeshSG
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd RuYao.jpg
+Ni 1.00
+Ks 0.63 0.68 0.72
+Ns 61.11

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>藏品检索--添加藏品预提借清单</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">   
+    <link rel="stylesheet" href="../../lib/fiterMore/fiterMore.min.css" />    
+    <style type="text/css">
+        .searchbox .l {
+    		width: 58px;
+    	}	
+    	.childrenBody{
+    		margin: 0px 5px;
+    	}
+    	.layui-elem-field{
+    		border: none;
+    	}
+    	.layui-form-item {
+    		margin-bottom: 0px;
+    	}
+    	.layui-input, .layui-select, .layui-textarea {
+		    height: 30px;
+		}
+    	.layui-form-pane .layui-form-label {
+    		height: 30px;
+    		padding: 5px 15px;
+    	}
+    	.layui-table-cell {
+    		height: auto;
+    		line-height: 18px; 
+    		padding: 0 0px;
+    		text-align: center;
+    		overflow:visible;
+    		text-overflow:inherit;
+    		white-space:normal;
+    	} 
+    	
+    	.data-close-btn{
+    		position: absolute;
+		    left: 700px;
+		    top: -187px;
+    	}  	
+    </style>
+</head>
+<body class="childrenBody">	
+	<form class="layui-form" action="" lay-filter="demo1">			
+        <div class="layui-form-item" style="margin-top: 10px;margin-bottom: 5px;">	
+            <div class="layui-input-inline">
+			    <input type="text" name="keyword" placeholder="请输入文物号或藏品名称" autocomplete="off" class="layui-input">				
+            </div>   
+            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </div>     
+    </form>
+    
+    <!--filterMore筛选条件-->
+	<div class="searchbox" id="searchbox"></div>
+	   
+    <div class="layui-inline" style="margin-top: 10px;">
+        <a class="layui-btn layui-btn-sm data-addBatch-btn">批量加入</a>
+        <a class="layui-btn layui-btn-sm data-close-btn">关闭</a>
+    </div>
+    
+	<div class="layui-form">
+		<table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>				
+		<script type="text/html" id="xuhao">
+		    {{d.LAY_TABLE_INDEX+1}}
+		</script>
+		<script type="text/html" id="relicImg">
+		    <img src="{{d.Img}}" style="width: 40px;height: 40px;">
+		</script>
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-sm" lay-event="add">加入</a>
+        </script>		
+	</div>
+	<div id="page"></div>
+    
+	<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+	<script src="../../lib/fiterMore/filterMore.min.js"></script>
+	<script>
+    //初始化参数
+    var options = {
+    	//默认展开条件数
+        "expandRow": 3,
+        //查询条件
+        "searchBoxs": [
+            {
+                "id": "wwlb",
+                "title": "文物类别",
+                "data": [
+                    { "value": "石器、石刻", "text": "石器、石刻" },
+                    { "value": "玉器", "text": "玉器" },
+                    { "value": "陶器砖瓦", "text": "陶器砖瓦" },
+                    { "value": "瓷器", "text": "瓷器" },
+                    { "value": "金属", "text": "金属" },
+                    { "value": "甲骨", "text": "甲骨" },
+                    { "value": "照片", "text": "照片" },
+                    { "value": "书法", "text": "书法" },
+                    { "value": "绘画", "text": "绘画" },
+                    { "value": "碑帖", "text": "碑帖" },
+                    { "value": "玺印", "text": "玺印" },
+                    { "value": "文房四宝", "text": "文房四宝" },
+                    { "value": "文献", "text": "文献" },
+                    { "value": "书籍", "text": "书籍" },
+                    { "value": "钱币", "text": "钱币" },
+                    { "value": "邮票", "text": "邮票" },
+                    { "value": "证章", "text": "证章" },
+                    { "value": "纺织品", "text": "纺织品" },
+                    { "value": "民间艺术", "text": "民间艺术" },
+                    { "value": "出土文物", "text": "出土文物" },
+                    { "value": "近代文物", "text": "近代文物" },
+                    { "value": "现代文物", "text": "现代文物" },
+                    { "value": "杂项", "text": "杂项" }
+                ]
+            },{
+                "id": "cdlb",
+                "title": "朝代",
+                "data": [
+                    { "value": "夏", "text": "夏" },
+                    { "value": "商", "text": "商" },
+                    { "value": "西周", "text": "西周" },
+                    { "value": "东周", "text": "东周" },
+                    { "value": "秦", "text": "秦" },
+                    { "value": "西汉", "text": "西汉" },
+                    { "value": "东汉", "text": "东汉" },
+                    { "value": "三国", "text": "三国" },
+                    { "value": "西晋", "text": "西晋" },
+                    { "value": "东晋", "text": "东晋" },
+                    { "value": "五胡十六国", "text": "五胡十六国" },
+                    { "value": "南北朝", "text": "南北朝" },
+                    { "value": "隋朝", "text": "隋朝" },
+                    { "value": "唐朝", "text": "唐朝" },
+                    { "value": "五代十国", "text": "五代十国" },
+                    { "value": "宋", "text": "宋" },
+                    { "value": "辽", "text": "辽" },
+                    { "value": "西夏", "text": "西夏" },
+                    { "value": "金", "text": "金" },
+                    { "value": "元", "text": "元" },
+                    { "value": "明", "text": "明" },
+                    { "value": "清", "text": "清" }
+                ]
+            },{
+                "id": "cpjb",
+                "title": "藏品级别",
+                "data": [
+                    { "value": "0", "text": "一级" },
+                    { "value": "1", "text": "二级" },
+                    { "value": "2", "text": "三级" },
+                    { "value": "3", "text": "一般" },
+                    { "value": "4", "text": "未定级" }
+                ]
+            },{
+                "id": "cplylb",
+                "title": "藏品来源",
+                "data": [
+                    { "value": "0", "text": "征集购买" },
+                    { "value": "1", "text": "接受捐赠" },
+                    { "value": "2", "text": "依法交换" },
+                    { "value": "3", "text": "拨交" },
+                    { "value": "4", "text": "移交" },
+                    { "value": "5", "text": "旧藏" },
+                    { "value": "6", "text": "发掘" },                   
+                    { "value": "7", "text": "采集" },                                       
+                    { "value": "8", "text": "拣选" },                                       
+                    { "value": "9", "text": "其他" }
+                ]
+            }
+        ]
+    };
+    $("#searchbox").fiterMore(options);
+    </script>
+	
+	<script type="text/javascript" src="../../lib/layui/layui.js"></script>	
+	<script>
+	    var xzytjData = sessionStorage.getItem("xzytjData");
+        xzytjData=eval('('+xzytjData+')');
+        if(xzytjData == null){
+        	xzytjData =[];
+        }
+        
+	    layui.use(['form', 'table'], function () {
+	        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+	
+	        table.render({
+	            elem: '#currentTableId',
+	            url: '../../json/collection/ckTable.json',
+	            cols: [
+	                [
+	                {type: 'checkbox'},
+	                {type: "numbers", title: '序号',templet: '#xuhao', width: 30},
+	                {field: 'Img', title: '图片',align: "center", templet: "#relicImg"},
+	                {field: 'TotalNumber', title: '文物号', sort: true,},
+	                {field: 'McrName', title: '名称', minWidth: 100},
+	                {field: 'Age', title: '年代', sort: true},
+	                {field: 'Number', title: '数量(单位)', sort: true, minwidth: 90},
+	                {field: 'Fulldisable', title: '完残程度'},	                
+	                {field: 'Fcrclass', title: '藏品级别', sort: true,},
+	                {field: 'Hall', title: '方位'},        
+	                {field: 'Msource', title: '来源'},
+	                {title: '操作', templet: '#currentTableBar', align: "center"}
+	            ]
+				],
+	            limits: [5, 10, 15, 20, 25, 50],
+	            limit: 5,
+	            page: true
+	        });
+	        
+        
+	        //监听表格复选框选择
+			table.on('checkbox(currentTableFilter)', function(obj){
+				//console.log(obj.data)
+			});
+			
+			//关闭
+			$(".data-close-btn").on("click", function () {
+				layui.layer.close(layer.index);//关闭当前窗口
+	            window.parent.location.reload();//刷新父页面
+			})
+			
+	        //监听批量加入操作
+	        $(".data-addBatch-btn").on("click", function () {
+	        	var checkStatus = table.checkStatus('currentTableId'), 
+	            data = checkStatus.data;
+	            
+	            if(data.length < 1){
+	            	layer.msg('未勾选藏品！',{icon: 2});
+	            }else{	            		                
+	                layer.msg('成功加入！',{icon: 1});	                
+	                if (xzytjData.length == 0 && data.length != 0) {
+	                	xzytjData = data;
+	                }else{
+	                	//去重
+	                	for(var i = 0; i < xzytjData.length; i++){
+	                		for ( var j = 0; j < data.length; j++) {
+	                			if(xzytjData[i].TotalNumber == data[j].TotalNumber){
+	                				data.splice(j, 1);
+                                    break;
+	                			}
+	                		}
+	                	}
+	                	for ( var k = 0; k < data.length; k++) {
+	                		xzytjData.push(data[k]);
+	                	}
+	                }
+	                sessionStorage.setItem("xzytjData",JSON.stringify(xzytjData));//将对象转为json字符串存储
+	                layui.layer.close(layer.index);//关闭当前窗口
+	                window.parent.location.reload();//刷新父页面
+		        }
+	            
+	        });
+	
+	        table.on('tool(currentTableFilter)', function (obj) {
+	            var data = obj.data;
+	            if (obj.event === 'add') {
+	                xzytjData.push(data);
+	                sessionStorage.setItem("xzytjData",JSON.stringify(xzytjData));//将对象转为json字符串存储
+	            } 
+	        });
+	
+	    });
+    </script>
+    
+    
+</body>
+</html>

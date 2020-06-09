@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>研究</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../../lib/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../../../css/relic_info.css">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+			.yanjiu {
+				width: 96%;
+				height: auto;
+				margin-left: 2%;
+				line-height: 40px;
+				font-size: 16px;
+				padding-left: 5px;
+				text-indent: 20px;
+				color: #666666;
+			}
+		</style>
+	</head>
+	<body>
+	<div style="margin-left: 20px">
+		<img src="../../../../images/yhcp/wenchaung1.png" width="350px">
+		<img src="../../../../images/yhcp/wenchuang2.png" width="350px">
+		<img src="../../../../images/yhcp/wenchuang3.png" width="350px">
+	</div>
+	<script>
+		(function(){
+			/**
+			 * 获取当前域
+			 **/
+			function _getDomain(){
+				var _hostname = window.location.hostname.toString();
+				var _hosts = _hostname.split(".");
+				var _len = _hosts.length;
+				if(_len>2){
+					return _hosts[_len-2]+"."+_hosts[_len-1];
+				}
+				return _hostname;
+			}
+
+			window.onload = function()
+			{
+//设置子页面的域
+				document.domain=_getDomain();
+				function _setHeight()
+				{
+					if (window.parent != window)
+					{
+						try
+						{
+//设置父级iframe的高度
+							parent.document.getElementById("wenchuangysp").style.height = document.body.scrollHeight+ 'px';
+						}
+						catch(e)
+						{
+						}
+					}
+//每隔2s设置一次，主要为了兼容子页面加载完毕之后高度再变化
+					setTimeout(_setHeight,2000);
+				}
+//子页面加载完毕之后调用一次
+				_setHeight();
+			}
+		})();
+	</script>
+	</body>
+</html>

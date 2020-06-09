@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录-藏品和数字资源管理平台</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="lib/layui/css/layui.css">
+    <link rel="stylesheet" href="css/font.css">
+    <link rel="stylesheet" href="css/weadmin.css">
+    <script type="text/javascript" src="lib/layui/layui.js" charset="utf-8"></script>
+
+</head>
+<body class="login-bg">
+
+<div class="login">
+    <div class="message">藏品和数字资源管理平台-登录</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form" >
+        <input name="username" id="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+        <hr class="hr15">
+        <input name="password" id="password" lay-verify="required" placeholder="密码"  type="password"
+               class="layui-input">
+        <hr class="hr15">
+            <input class="loginin" value="登录" lay-submit lay-filter="login" style="width:100%;" type="button">
+        <hr class="hr20" >
+    </form>
+</div>
+
+<script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript">
+    layui.use(['layer','form'], function(){
+        var $ = layui.jquery,
+            layer = parent.layer === undefined ? layui.layer : parent.layer,
+            form = layui.form;
+
+        $('.loginin').click(function() {
+            var username = $("#username").val();
+            var pwd = $("#password").val();
+            $.ajax({
+                type: "post",
+                url: "user/login",
+                data: {
+                    "username" : username,
+                    "password" : md5(pwd)
+                },
+                dataType: "json",
+                success: function (res) {
+                    if(res.status=="200"){
+                        var userInfo = res.result;
+                        sessionStorage.setItem("userInfo",JSON.stringify(userInfo));
+                        layer.msg("登录成功！", {icon: 1}, function (){
+                            window.location.href='home.html';
+                        });
+                    }else{
+                        layer.msg("登录失败！", {icon: 2});
+                    }
+                }
+            })
+        });
+    });
+</script>
+<!-- 底部结束 -->
+</body>
+</html>

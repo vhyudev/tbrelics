@@ -1,0 +1,192 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加联系人</title>
+    <link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+    <style>
+
+
+
+    </style>
+</head>
+<body>
+<div class="layui-container" style="height: 250px">
+    <div class="layui-row" style="height: 100%">
+            <div class="layui-col-xs6" style="height: 100%">
+                <fieldset style="height: 100%;overflow-y: scroll;">
+            <table class="layui-table" id="all_list" style="" >
+                <colgroup>
+                    <col width="8%">
+                    <col>
+                    <col>
+                    <col>
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td><input type="checkbox" lay-skin="primary"></td>
+                    <td>宋范宽雪景寒林图轴</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" lay-skin="primary"></td>
+                    <td>清乾隆款珐琅彩芍药雉鸡图玉壶春瓶</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" lay-skin="primary"></td>
+                    <td>西周太保方鼎</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+    <div class="layui-col-xs6" style="height: 100%">
+        <fieldset style="height: 100%">
+            <div id="test9" class="demo-tree demo-tree-box"
+                 style=" height:100%;overflow: scroll;"></div>
+        </fieldset>
+    </div>
+</div>
+    <div class="layui-form-item" style="margin-left:25% ;margin-top: 30px;">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../../lib/layui/layui.js"></script>
+<script type="text/javascript">//注意：parent 是 JS 自带的全局对象，可用于操作父页面
+layui.use(['layer', 'form', 'tree'], function () {
+    var layer = layui.layer
+        , form = layui.form;
+    $ = layui.jquery;
+    var tree = layui.tree
+        , layer = layui.layer
+        , util = layui.util
+        ,//模拟数据1
+        data1 = [{
+            title: '器物'
+            , id: 1
+            , children: [{
+                title: '一组'
+                , id: 1001
+            }, {
+                title: '二组'
+                , id: 1002
+            }]
+        }, {
+            title: '书画'
+            , id: 2
+            , children: [{
+                title: '二组'
+                , id: 2000
+            }, {
+                title: '二组'
+                , id: 2001
+            }]
+        }, {
+            title: '历史'
+            , id: 3
+            , children: [{
+                title: '一组'
+                , id: 3000
+            }, {
+                title: '二组'
+                , id: 3001
+            }]
+        }]
+    var link = parent.layer.getFrameIndex(window.name); //获取窗口索引
+//回车键查询
+    $(".layui-input").bind("keydown", function (e) {
+        // 兼容FF和IE和Opera
+        var theEvent = e || window.event;
+        var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if (code == 13) {
+            //回车执行查询
+            $("#form").click();
+        }
+    });
+    //开启节点操作图标
+    tree.render({
+        elem: '#test9'
+        , data: data1
+        ,showCheckbox: true
+        , click: function (obj) {
+            layer.msg(JSON.stringify(obj.data));
+        }
+    });
+    var active = 0;
+    form.on("submit(formDemo)", function (data) {
+        // 获取搜索框的值
+        var kwds = $("#searchInput").val();
+        // 获取第一个列表内容
+        var this_one = {};
+        var real_name = '';
+        // 定义数据列表
+        var list = $("#all_list .list_one");
+        // 定义查找的起始值
+        var true_one = 0;
+        for (var i = 0; i < list.length; i++) {
+            this_one = $(list[i]);
+            real_name = this_one.text().toString();
+            // 执行like匹配
+            if (real_name.match(kwds)) {
+                // 处理第当前的结果
+                if (true_one == active) {
+                    // 获取窗口的宽和高
+                    var windows_wdh = $(window).width();
+                    var windows_hgt = $(window).height();
+                    // 获取第一个坐标
+                    var x_len = this_one.offset().left;
+                    var y_len = this_one.offset().top;
+                    // 驱动滚动条滚动到指定的位置
+                    $("html,body").animate({
+                        scrollTop: (y_len - windows_hgt / 2),
+                        scrollLeft: (x_len - windows_wdh / 2)
+                    }, 500);
+                    // 标记当前选中的结果
+                    this_one.addClass('active');
+                    this_one.removeClass('on');
+                } else {
+                    // 标记符合的结果
+                    this_one.addClass('on');
+                    this_one.removeClass('active');
+                }
+                // 累加真实的选择
+                true_one++;
+            } else {
+                this_one.removeClass('on');
+                this_one.removeClass('active');
+            }
+        }
+        // 判断是否搜索完毕 如果搜索完毕 则从第一个开始 否则继续搜索下一个
+        active = active >= true_one - 1 ? 0 : active + 1;
+        if (true_one == 0) {
+            layer.msg('未匹配到联系人', function () {
+            });
+        }
+        return false;
+    })
+    $('#add').on('click', function () {
+        var id_array = new Array();
+        $('input[name="name"]:checked').each(function () {
+            id_array.push($(this).attr("data-id"));//向数组中添加元素
+        });
+        var idstr = id_array.join(',');//将数组元素连接起来以构建一个字符串
+        //alert(idstr);
+        //alert(id_array.length);
+        if (id_array.length > 3) {
+            layer.msg('你④不④傻，选这么多联系人？', function () {
+            });
+        } else {
+            parent.$('#addlink').val(idstr);
+            parent.layer.close(link);
+        }
+    });
+
+});
+</script>
+
+</body>
+</html>

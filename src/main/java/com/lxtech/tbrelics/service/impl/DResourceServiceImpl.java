@@ -1,0 +1,147 @@
+package com.lxtech.tbrelics.service.impl;
+
+import com.lxtech.tbrelics.dataacquisition.DResource;
+import com.lxtech.tbrelics.dataacquisition.DataJson;
+import com.lxtech.tbrelics.dataacquisition.FileErgodic;
+import com.lxtech.tbrelics.dataacquisition.ReadImgInformation;
+import com.lxtech.tbrelics.mapper.LCollectionMapper;
+import com.lxtech.tbrelics.mapper.LResourceMapper;
+import com.lxtech.tbrelics.service.CollectionService;
+import com.lxtech.tbrelics.service.DResourceService;
+import com.lxtech.tbrelics.service.ResourceCollectionService;
+import com.lxtech.tbrelics.util.ImageUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+@Service
+public class DResourceServiceImpl  implements DResourceService {
+
+    @Autowired
+    private CollectionService collectionService;
+
+    @Autowired
+    private LCollectionMapper lCollectionMapper;
+
+    @Autowired
+    private LResourceMapper  lResourceMapper;
+
+    @Autowired
+    private ResourceCollectionService resourceCollectionService;
+
+    private  int count=0;
+
+    @Override
+    //@Async //通过@Async注解表明该方法是异步方法，如果注解在类上，那表明这个类里面的所有方法都是异步的。
+    public Future<String> insertDResource(File file) throws IOException {
+        FileErgodic fileErgodic = new FileErgodic();
+        List<File>  fileList1 = fileErgodic.getFiles(file);//文件
+        if(fileList1.isEmpty()||fileList1==null){
+            return new AsyncResult<>("该目录为空值="+file);
+        }
+        List<DResource> list = new ArrayList<>();
+        ReadImgInformation readImgInformation = null;
+        for(File fileone:fileList1){
+
+            readImgInformation = new ReadImgInformation();
+            Map<String, String> map =  readImgInformation.getImgInfo(fileone);
+            if(map!=null){
+                //long relicID = collectionService.selectRelicID(map.get("identifier"));
+                DResource dResource = readImgInformation.structureResource(map,map.get("identifier"));
+                list.add(dResource);
+            }
+        }
+        DataJson dataJson = null;
+        if(!list.isEmpty()||list!=null||list.size()>0){
+            dataJson = new DataJson();
+            dataJson.transformJson(list);
+        }
+        return new AsyncResult<>("完成批量插入目录="+file);
+    }
+
+    @Override
+    public Future<String> insert(List<File> fileList) throws IOException {
+        List<DResource> list = new ArrayList<>();
+        ReadImgInformation readImgInformation = null;
+        for(File fileone:fileList){
+            readImgInformation = new ReadImgInformation();
+            Map<String, String> map =  readImgInformation.getImgInfo(fileone);
+            if(map!=null){
+                DResource dResource = readImgInformation.structureResource(map,map.get("identifier"));
+                //Long relicID = collectionService.selectRelicID(map.get("identifier"));
+                //dResource.setRelicid(relicID);
+                list.add(dResource);
+                if(list.size() %100 == 0){
+                    System.out.println("当前第"+list.size()+"个文件路径："+fileone.getPath());
+                }
+            }
+        }
+        DataJson dataJson = null;
+
+        if(!list.isEmpty()||list!=null||list.size()>0){
+            List<DResource> listNew = new ArrayList<>();
+            for(int i=1;i<=list.size();i++){
+                if(i%10000 == 0){
+                    listNew.add(list.get(i-1));
+                    dataJson = new DataJson();
+                    dataJson.transformJson(listNew);
+
+                    listNew = new ArrayList<>();
+                }else{
+                    listNew.add(list.get(i-1));
+                    if(i==list.size()){
+                        dataJson = new DataJson();
+                        dataJson.transformJson(listNew);
+                    }
+                }
+            }
+        }
+        return new AsyncResult<>("完成批量插入目录=");
+    }
+
+    @Override
+    @Async("getAsyncExecutor")
+    public  Future<String> thumbImg(String address) throws IOException, InterruptedException, ExecutionException {
+        try{
+            String URL=null;
+            String[] add = address.split("/");
+            if(add[0].equals("chuli")){
+                URL = "F:/"+address;
+            }else if(add[0].equals("chuli2011as")||add[0].equals("yipu")){
+                URL = "E:/"+address;
+            }else{
+                System.out.println("数据不符合规定");
+            }
+            File f= new File(URL);
+            if(f.exists()){
+                ImageUtil imageUtil = new ImageUtil();
+                imageUtil.thumbnailImage(f, 1920, 1080);
+            }else {
+                return new AsyncResult<>("文件不存在");
+            }
+        }catch (NullPointerException e){
+            return new AsyncResult<>("文件不符合标准"); }
+        return new AsyncResult<>("缩略图生成完毕");
+    }
+
+
+    @Override
+    @Async("getAsyncExecutor")
+    public Future<DResource> imgAttribute(String address) throws IOException, ExecutionException, InterruptedException {
+
+        return new AsyncResult<>(null);
+    }
+
+
+
+
+}

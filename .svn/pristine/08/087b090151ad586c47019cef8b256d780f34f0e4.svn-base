@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="../../lib/layui/css/layui.css" media="all">		
+	</head>
+
+	<body style="height: 100%; margin: 0">
+		<fieldset class="layui-elem-field" style="border: 0px;">
+			<!--<legend>搜索信息</legend>-->
+			<div style="margin: 10px 40px 0px;">
+				<form class="layui-form layui-form-pane" action="">
+					<div class="layui-form-item">
+
+						<div class="layui-inline">
+							<label class="layui-form-label">选择指标</label>
+							<div class="layui-input-inline">
+								<select name="ClassifyType" lay-search="">
+									<option value="">完残程度</option>
+									<option value="书法、绘画">文物类别</option>
+									<option value="瓷器">文物时代</option>
+									<option value="铜器">文物级别</option>
+									<option value="玉石器、宝石">文物来源</option>
+									<option value="雕塑、造像">文物质地</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">统计方式</label>
+							<div class="layui-input-inline">
+								<select name="ClassifyType" lay-search="">
+									<option value="">饼图</option>
+									<option value="书法、绘画">柱状图</option>
+									<option value="瓷器">折线图</option>
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline" style="margin-right: 100px;">
+							<a class="layui-btn layui-btn-sm" lay-submit="" lay-filter="data-search-btn">生成统计图</a>
+							<a class="layui-btn layui-btn-primary layui-btn-sm">重置</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</fieldset>
+		<div id="container" style="height: 80%;width:80%;margin:0px auto;"></div>
+		<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+		<script>
+			layui.use(['form', 'table', 'laydate', ], function() {
+				var $ = layui.jquery,
+					form = layui.form,
+					table = layui.table;
+				var laydate = layui.laydate;
+				//日期
+				laydate.render({
+					elem: '#AddTime',
+					eventElem: '#date',
+					range: true,
+					trigger: 'click'
+				});
+				/* //日期范围
+				laydate.render({
+				  elem: '#test6'
+				  ,range: true
+				}); */
+			});
+		</script>
+
+		<script>
+			layui.use('laydate', function() {
+				var $ = layui.jquery,
+					laydate = layui.laydate;
+
+				//日期范围
+				laydate.render({
+					elem: '#test6',
+					range: true
+				});
+
+			});
+		</script>
+		<script>
+			layui.use('table', function() {
+				/* var $ = layui.jquery, */
+				var table = layui.table;
+
+				//监听行工具事件
+				table.on('tool(test)', function(obj) {
+					var data = obj.data;
+					//console.log(obj)
+					if(obj.event === 'detail') {
+						layer.msg('ID：' + data.id + ' 的查看操作');
+					} else if(obj.event === 'del') {
+						layer.confirm('确定删除?', function(index) {
+							obj.del();
+							layer.close(index);
+						});
+					} else if(obj.event === 'edit') {
+						/* layer.alert('编辑行：<br>'+ JSON.stringify(data)) */
+						var index = layui.layer.open({
+							skin: 'demo-class',
+							area: ['800px', '440px'],
+							title: "账单编辑",
+							type: 2,
+							content: "zzbj.html",
+						});
+					}
+				});
+			});
+		</script>
+		<script type="text/javascript" src="../../lib/echarts/echarts.min.js"></script>
+		<script type="text/javascript">
+			var dom = document.getElementById("container");
+			var myChart = echarts.init(dom);
+			var app = {};
+			option = null;
+			option = {
+				title: {
+					text: '藏品完残程度统计',
+					subtext: '',
+					left: 'center'
+				},
+				tooltip: {
+					trigger: 'item',
+					formatter: '{a} <br/>{b} : {c} ({d}%)'
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left',
+					data: ['残缺', '严重残缺', '完整', '基本完整']
+				},
+				series: [{
+					name: '访问来源',
+					type: 'pie',
+					radius: '55%',
+					center: ['50%', '60%'],
+					data: [{
+							value: 335,
+							name: '残缺'
+						},
+						{
+							value: 310,
+							name: '严重残缺'
+						},
+						{
+							value: 234,
+							name: '完整'
+						},
+						{
+							value: 135,
+							name: '基本完整'
+						},
+					],
+					emphasis: {
+						itemStyle: {
+							shadowBlur: 10,
+							shadowOffsetX: 0,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						}
+					}
+				}]
+			};;
+			if(option && typeof option === "object") {
+				myChart.setOption(option, true);
+			}
+		</script>
+	</body>
+
+</html>

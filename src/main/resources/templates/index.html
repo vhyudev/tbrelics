@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!-- basic -->
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>天津博物馆</title>
+      
+       <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+      <!-- bootstrap css -->
+      <link rel="stylesheet" type="text/css" href="moban4454/css/bootstrap.min.css">
+      <!-- style css -->
+      <link rel="stylesheet" type="text/css" href="moban4454/css/style.css">
+      <link rel="stylesheet" type="text/css" href="moban4454/css/load01.css">
+      <style>
+      	.hoverDiv:hover .content{
+      		display: block;
+		}
+		.content {
+			position: absolute;
+			width: 92.3%;
+			height: 84%;
+			text-align: center;
+			background: rgba(1,1,1,0.4);
+			bottom: 90px;
+			display: none;
+		}
+		.head_img{
+			width:80px;
+			height: 80px;
+			background: rgba(245,245,245,1);
+		}
+		
+      </style>
+      <script src="moban4454/3dmodel/3dmodel.js"></script>
+   	  <script src="moban4454/build/three.js"></script>
+      <script src="moban4454/3dmodel/js/loaders/OBJLoader.js"></script>
+      <script src="moban4454/3dmodel/js/controls/OrbitControls.js"></script>
+      <script type="text/javascript" src="moban4454/3dmodel/js/loaders/MTLLoader.js"></script>
+      <!--三维模型-->
+      <!--玉壶春瓶-->
+      <script type="text/javascript">
+
+			var container,controls;
+			var camera, scene, renderer;
+			var mouseX = 0, mouseY = 0;
+			
+			var windowHalfX = 550;
+			var windowHalfY = 500;
+			
+			
+			var object;
+			var id = null;
+			
+			function clearModel () {
+			  // 清除局部的模型
+			  if (scene !== null) {
+				// 确保3D相关对象已销毁
+				window.cancelAnimationFrame(stop) // 可以取消动画
+				scene = null
+				camera = null
+				renderer = null
+				controls = null
+			  }
+			}
+
+			function init() {
+				
+				//清除模型
+				clearModel();
+				
+				renderer = new THREE.WebGLRenderer({
+					antialias:true,
+					canvas:document.getElementById('mainCanvas')
+				});
+				
+				camera = new THREE.PerspectiveCamera( initial, windowHalfX / windowHalfY, 1, 1000 );
+				camera.position.z = position_z;
+
+				// scene
+
+				scene = new THREE.Scene();
+
+				var ambientLight = new THREE.AmbientLight( 0xffffff);
+				scene.add( ambientLight );
+
+				var pointLight = new THREE.PointLight( 0xffffff);
+//				pointLight.position.set(100,0,100);
+				pointLight.position.set(-1.288,1.942,-3.340);
+				pointLight.intensity = 0.1;
+				pointLight.decay = 2;	
+				camera.add( pointLight );
+				
+				scene.add( camera );
+				
+
+				// manager
+
+//				var manager = new THREE.LoadingManager(  );
+//
+//				manager.onProgress = function ( item, loaded, total ) {
+//
+////					console.log( item, loaded, total );
+//				};
+//				
+				// model
+
+				function onProgress( xhr ) {
+
+					if ( xhr.lengthComputable ) {
+
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						var progress = Math.round( percentComplete, 2 );
+						document.getElementById('baifenbi').innerHTML =  Math.round( percentComplete, 2 ) + "%";
+						if(progress == 100) {
+							document.getElementById('loading').style.visibility = "hidden";
+						}
+//						console.log( 'model ' + Math.round( percentComplete, 2 ) + '% downloaded' );
+					}
+				}
+
+				function onError() {}
+				
+				new THREE.MTLLoader()
+					.setPath('moban4454/'+path)
+					.load( mtl, function ( materials ) {
+
+						materials.preload();
+
+						new THREE.OBJLoader()
+							.setMaterials( materials )
+							.setPath('moban4454/'+path)
+							.load( obj, function ( object ) {
+
+//								object.position.y = - 95;
+								console.log('dadsa');
+								scene.add( object );
+							}, onProgress, onError );
+
+					} );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( windowHalfX, windowHalfY );
+				//设置颜色
+				renderer.setClearColor('rgb(131,128,129)',1.0);
+				
+				// 拖拽
+				//controls = new TrackballControls( camera, renderer.domElement );
+				controls = new THREE.OrbitControls( camera, renderer.domElement );
+ 				controls.autoRotate = true;//自动旋转
+				//controls.enableZoom =true;//缩放
+				controls.minDistance = minDistance;
+				controls.maxDistance = maxDistance;
+				//controls.maxAzimuthAngle =
+                controls.autoRotateSpeed = 0.5;
+				window.addEventListener( 'resize', onWindowResize, false );
+				
+				animate();
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = windowHalfX / windowHalfY;
+				camera.updateProjectionMatrix();
+				
+				renderer.setSize( windowHalfX, windowHalfY );
+			}
+			
+
+			function animate() {
+
+				controls.update();
+				renderer.render( scene, camera );
+				
+				requestAnimationFrame( animate );
+			}
+			function render() {
+				camera.position.x += ( mouseX - camera.position.x ) * .05;
+				camera.position.y += ( - mouseY - camera.position.y ) * .05;
+				if(camera.position.z >= 270) {
+					camera.position.z = 270
+				}
+				camera.lookAt( scene.position );
+			}
+		</script>
+   </head>
+   <body onload="init()">
+      <!-- header section start -->
+      <div class="header_section">
+         <div class="header_main">
+            <div class="mobile_menu">
+               <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                  <div class="logo_mobile">
+                      <a href="index.html"><img src="moban4454/images/logo1.png"></a>
+                  </div>
+
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                  </button>
+               </nav>
+            </div>
+            <div class="container-fluid">
+               <div class="logo">
+                   <a href="index.html" style="float: left;position: relative;top: 20px;"><img
+                           src="moban4454/images/logo1.png"></a>
+                   <h1 class="banner_taital">藏品和数字资源管理系统</h1>
+               </div>
+               <div class="menu_main">
+                  <ul>
+                     <li class="active"><a href="index.html">首页</a></li>
+                     <li><a href="#definition">高清图像</a></li>
+                     <li><a href="#3dmodel">三维模型</a></li>
+                     <li><a href="login.html" target="_blank">资源系统</a></li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+         <!-- banner section start -->
+         <div class="banner_section" style="padding-top: 30px;padding-bottom: 0px;">
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+               <div class="carousel-inner">
+                  <div class="carousel-item active">
+                     <div class="container">
+                        <p class="banner_text">天津博物馆是一座历史艺术类综合性博物馆，现有古代青铜器、陶瓷器、法书、绘画、玉器、玺印、文房用具、甲骨、货币、邮票、敦煌遗书、地方民间工艺品及近现代历史文献等各类藏品近20万件，图书资料20万册。另有20多万张文物高清图像，以及玉壶春瓶、澄泥砚等典型文物的三维模型。</p>
+                        <!--<div class="read_bt"><a href="#">Get A Quote</a></div>-->
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- banner section end -->
+      </div>
+      <!-- header section end -->
+      <!-- services section start -->
+      <div class="services_section layout_padding" id="definition">
+         <div class="container">
+            <h1 class="services_taital">高清图像 </h1>
+            <p class="services_text">全面、丰富、有价值的藏品高清图像库，浏览优质图片，了解历史的文化与艺术，增广见闻。</p>
+            <div style="width: 80px;height: 32px;float: right;padding-right: 30px;text-align: right;margin-top: -32px;">
+            		<a href="login.html"><img src="moban4454/images/more.png"/></a>
+            </div>
+            <div class="services_section_2">
+            		<ul>
+            			<li>
+            				<div class="row">
+		                  <div class="col-md-4">
+		                     <div class="hoverDiv">
+		                     	<img src="moban4454/images/xjhlt.jpg" class="services_img">
+            						<div class="content">
+            							<div style="width: 80%;height: 85%;margin: 10%;text-align: left;padding-left: 30px;color: white;">
+            								<div style="font-size: 24px;margin-top: 100px;">文物信息</div>
+            								<div>雪景寒林图</div>
+            								<div>宋（960-1279）</div>
+            								<div>纵193.5厘米 横160.3厘米</div>
+            								<div style="font-size:24px;margin-top: 30px;">图像信息</div>
+            								<div>4368x2912</div>
+            								<div>36.0M</div>
+            								<div>tif</div>
+            							</div>
+            						</div>
+		                     </div>
+		                     <div class="btn_main"><a href="#">雪景寒林</a></div>
+		                  </div>
+		                  <div class="col-md-4">
+		                     <div class="hoverDiv">
+		                     	<img src="moban4454/images/tbd.jpg" class="services_img">
+            						<div class="content">
+            							<div style="width: 80%;height: 85%;margin: 10%;text-align: left;padding-left: 30px;color: white;">
+            								<div style="font-size: 24px;margin-top: 100px;">文物信息</div>
+            								<div>太保鼎</div>
+            								<div>西周（公元前1046-前771）</div>
+            								<div>通高57.6厘米 口长35.8厘米 宽22.8厘米</div>
+            								<div style="font-size:24px;margin-top: 30px;">图像信息</div>
+            								<div>4368x2912</div>
+            								<div>34.0M</div>
+            								<div>tif</div>
+            							</div>
+            						</div>
+		                     </div>
+		                     <div class="btn_main"><a href="#">太保鼎</a></div>
+		                  </div>
+		                  <div class="col-md-4">
+		                     <div class="hoverDiv">
+		                     	<img src="moban4454/images/rns.jpg" class="services_img">
+            						<div class="content">
+            							<div style="width: 80%;height: 85%;margin: 10%;text-align: left;padding-left: 30px;color: white;">
+            								<div style="font-size: 24px;margin-top: 100px;">文物信息</div>
+            								<div>如南山之寿寿山石章</div>
+            								<div>清（1644-1911）</div>
+            								<div>高11厘米 宽8厘米</div>
+            								<div style="font-size:24px;margin-top: 30px;">图像信息</div>
+            								<div>4368x2912</div>
+            								<div>34.0M</div>
+            								<div>tif</div>
+            							</div>
+            						</div>
+		                     </div>
+		                     <div class="btn_main"><a href="#">寿山石</a></div>
+		                  </div>
+		               </div>
+            			</li>
+            		</ul>
+            </div>
+         </div>
+      </div>
+      <!-- services section end -->
+      <!-- about section start -->
+      <div class="" style="width: 80%;margin-left: 10%;height: 700px;">
+      	<div style="width: 100%;">
+		      <h1 class="about_taital" style="width: 70%;padding-left: 20px;">三维模型</h1>
+		      <div style="width: 80px;height: 32px;text-align: right;margin-top:15px;float: right;margin-right: 10px;">
+		            <a href="moban4454/exhibition.html" target="_blank">
+						<img src="moban4454/images/more.png"/>
+					</a>
+		      </div>
+	      </div>
+	      <div class="about_section layout_padding" style="width: 100%;" id="3dmodel">
+	         <div class="" style="height: auto;">
+	            <div class="row" style="height: 500px;">
+	               <div class="col-md-6">
+	                  <div class="about_taital_main">
+	                     <h2 id="name">清 乾隆款珐琅彩芍药雉鸡图玉壶春瓶</h2>
+	                     <p class="about_text" id="message">清乾隆款珐琅彩芍药雉鸡图玉壶春瓶，是国宝级文物。高16.3厘米，口径4厘米，底径5厘米。小撇口，长颈，腹部下端丰满，圈足。瓶胎质细腻洁白，胎体轻薄，釉面莹润如玉，上用珐琅彩绘画。颈部用蓝料彩绘上下两组蕉叶纹，腹部珐琅彩绘芍药雉鸡图：两只雌雄雉鸡栖身于山石上，彼此相偎，作态亲昵，周围衬以芍药花及秋季花草。空白处墨彩题诗：“青扶承露蕊，红妥出阑枝。”引首朱文“春和”印，句尾白文“翠铺”朱文“霞映”二方印。瓶底赭彩四字方款“乾隆年制”。这件玉壶春瓶，构图十分精美，芍药雉鸡寓意金鸡富贵，有吉祥的含义。画工精细入微，绘画图案取自清代宫廷画家的手稿。此瓶集诗、书、画、印于一身，有如一幅展开的画卷，称之国宝名副其实。</p>
+	                     <div class="readmore_bt" id="name_btn">
+							 <a id="a_html" href="moban4454/3dmodel/yyt.html?mtl=yhcp.mtl&obj=yhcp.obj&path=yhcp/&initial=50&position_z=250&minDistance=100&maxDistance=450" target="_blank">玉壶春瓶</a>
+						 </div>
+	                  </div>
+	               </div>
+	               <div class="col-md-6 padding_right_0">
+	                  <canvas id="mainCanvas" width="500px" height="500px" style=""></canvas>
+	                  <div class="loading" id="loading" style="height: 510px;"><!--class=""loading-->
+				        <div class="pic"> <!--class=""pic-->
+				            <!--外面的圈圈-->
+				            <span></span>
+				            <!--数据加载进度（百分比数字）-->
+				            <b id="baifenbi"></b>
+				        </div>
+				      </div>
+	               </div>
+	            </div>
+	         </div>
+	      </div>
+      </div>
+      
+      <div class="services_section" style="width: 80%;height: 80px;margin-top: 30px;margin-bottom: 5px;margin-left:
+      10%;" >
+      	<div style="width: 100%;height: auto;display: flex;justify-content:space-around;">
+      		<div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(0,0)" ><img src="moban4454/images/yhcp_head.png" class="head_img"/></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(1,0)" ><img src="moban4454/images/bxhl_head.png" class="head_img"/></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(2,0)" ><img src="moban4454/images/yyt_head.png" class="head_img"  /></a>
+	        </div>
+	        <div class="row" style="display: inline-block;">
+	            <a onclick="changeModel(3,0)" ><img src="moban4454/images/yth_head.png" class="head_img"  /></a>
+	        </div>
+      	</div>
+      </div>
+      <!-- copyright section start -->
+      <div class="copyright_section"  style="background-color: #122c2d;margin-top: 15px;">
+         <div class="container">
+            <p class="copyright_text">&copy; 1998-2020 天津博物馆版权所有 津ICP备12002929号</p>
+         </div>
+      </div>
+      <!-- copyright section end -->
+      <!-- Javascript files-->
+      <	!--三维模型-->
+      <!--玉壶春瓶-->
+      
+   </body>
+</html>

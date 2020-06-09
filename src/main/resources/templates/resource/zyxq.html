@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>资源详情</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="../../static/lib/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../static/css/zyjs.css">
+	</head>
+
+	<body>
+		<div style="margin: 10px 0px -5px 10px">
+			<button type="button" class="layui-btn back">
+				<i class="layui-icon layui-icon-return"></i>返回
+			</button>
+		</div>
+		<div class="resourceContent">
+			<div id="relicList"></div>
+		</div>
+
+		<script src="../../static/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+		<script src="../../static/lib/layui/layui.js"></script>
+		<script type="text/javascript">
+			layui.use(['layer'], function() {
+				var $ = layui.jquery,
+					layer = layui.layer;
+
+                var relicId =  sessionStorage.getItem("relicId");
+				$(function () {
+                    $.ajax({
+                        type: "post",
+                        url: "",
+                        data: {
+                            "relicId":relicId
+						},
+                        dataType: "json",
+                        success: function (res) {
+                            if(res.status=="200"){
+                                showAll(res.result);
+							}
+
+                        }
+                    })
+                })
+
+                function showAll(params) {
+                    layui.each(params, function(index, item) {
+                        var id = item.id;
+                        var relicName = item.title;
+                        var totalNumber = item.identifierType+"-"+item.identifier;
+                        var type = item.workType;
+                        var fcrclass = item.level;
+                        var age = item.date;
+                        var matter = item.materials;
+
+                        arr.push('<div class="relic layui-row">'
+                            + '<div class="relic-data">'
+                            + '<h2>' + relicName + '</h2>'
+                            +'<input type="hidden" class="relicId" value="'+id +'">'
+                            + '<button type="button" class="totalNumber layui-btn layui-btn-sm layui-btn-radius layui-btn-primary">'
+                            + totalNumber + '</button>'
+                            + '<button type="button" class="type layui-btn layui-btn-sm layui-btn-radius layui-btn-primary">'
+                            + type + '</button>'
+                            + '<button type="button" class="fcrclass layui-btn layui-btn-sm layui-btn-radius layui-btn-primary">'
+                            + fcrclass + '</button>'
+                            + '<button type="button" class="age layui-btn layui-btn-sm layui-btn-radius layui-btn-primary">'
+                            + age + '</button>'
+                            + '<button type="button" class="matter layui-btn layui-btn-sm layui-btn-radius layui-btn-primary">'
+                            + matter + '</button></div>'
+                            + '<div class="relic-img">'
+                        );
+
+						var Img = item.Img;
+						for(var k = 0; k < Img.length; k++) {
+							var imgId = Img[k].id;
+							var relicId = Img[k].relicId;
+							var name = Img[k].name;
+							var addresss = Img[k].addresss;
+							var format = Img[k].format;
+							var resolutionRatio = Img[k].resolutionRatio;
+							var imgSize = Img[k].imgSize;
+
+                            arr.push('<div class="imgBox">'
+                                +'<a href="javascript;" target="_blank">'
+                                +'<img src="'+addresss+'" alt="'+addresss+'"/>'
+                                +'</a>'
+                                +'<div class="toolbar">'
+                                +'<span class="fbl">'+resolutionRatio+'</span>'
+                                +'<input type="hidden"  name="imgId" class="imgId" value="'+ imgId +'">'
+                                +'<div class="toolitem add-relic-img" data-relic="'+relicName+'">'
+                                +'<a title="加入文物篮"><i class="layui-icon layui-icon-cart"></i></a>'
+                                +'</div></div></div>'
+                            );
+						}
+						arr.push('</div></div>');
+                    });
+                    $("#relicList").html(arr.join(''));
+
+                    $(".imgBox").hover(function() {
+                        $(this).children(".toolbar").show();
+                    }, function() {
+                        $(this).children(".toolbar").hide();
+                    });
+
+                    addToCart();
+
+                }
+				
+				$(".back").on("click", function () {
+					window.location.href="zyjs.html";
+				})
+				
+				
+				//加入文物篮
+				function addToCart(){
+					$(".toolbar .add-relic-img").on("click", function () {
+						var relicName = $(this).attr("data-relic");
+						var $img = $(this).parent().siblings("a").children("img");
+						var name=$img.attr("alt");
+						var imgSrc = $img.attr("src");
+						var img=[];
+
+						layer.msg("加入文物篮",{icon:1});
+					});
+				}
+
+			})
+		</script>
+	</body>
+
+</html>

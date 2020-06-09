@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>故事传说</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="width: auto;height: auto;line-height: 40px;font-size: 24px;padding-left: 20px;padding-top: 10px;">
+			流转历史
+		</div>
+		<div style="width: 96%;height: auto;margin-left: 2%;border: 0.5px solid #CCCCCC;line-height: 40px;font-size: 16px;padding-left: 5px;">
+			西周太保鼎于清朝道光、咸丰年间出土于山东省寿张县梁山。出土之后，先后被山东济宁钟氏、南海李山农、日照丁跋臣等人收藏。
+			 1917年，清光绪年进士时任袁世凯政府国务卿的徐世昌将西周太保鼎连同西周太师鼎、西周小克鼎、西周克钟一并收藏。此后，太保鼎一直由徐家收藏。
+			  1958年徐家后人将它们捐献给国家。收藏于天津博物馆。
+		</div>
+	</body>
+</html>

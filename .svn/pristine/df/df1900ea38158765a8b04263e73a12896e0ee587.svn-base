@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>研究</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="width: auto;height: auto;line-height: 40px;font-size: 24px;padding-left: 20px;padding-top: 10px;">
+			相关研究成果
+		</div>
+		<div style="width: 96%;height: auto;margin-left: 2%;border: 0.5px solid #CCCCCC;line-height: 40px;font-size: 16px;padding-left: 5px;">
+			中国社会科学院历史研究所研究员任会斌《80件最有意思的中国青铜器》
+		</div>
+	</body>
+</html>

@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxtech.tbrelics.mapper.LResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.lxtech.tbrelics.domain.LResource" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="relicId" property="relicid" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="addresss" property="addresss" jdbcType="VARCHAR" />
+    <result column="smalladdr" property="smalladdr" jdbcType="VARCHAR" />
+    <result column="bigaddr" property="bigaddr" jdbcType="VARCHAR" />
+    <result column="format" property="format" jdbcType="VARCHAR" />
+    <result column="resolutionRatio" property="resolutionratio" jdbcType="VARCHAR" />
+    <result column="imgSize" property="imgsize" jdbcType="VARCHAR" />
+    <result column="imgComparison" property="imgcomparison" jdbcType="VARCHAR" />
+    <result column="resolutionRatioFlag" property="resolutionratioflag" jdbcType="VARCHAR" />
+    <result column="imgSizeFlag" property="imgsizeflag" jdbcType="VARCHAR" />
+    <result column="make" property="make" jdbcType="VARCHAR" />
+    <result column="model" property="model" jdbcType="VARCHAR" />
+    <result column="orientation" property="orientation" jdbcType="VARCHAR" />
+    <result column="resolutionunits" property="resolutionunits" jdbcType="VARCHAR" />
+    <result column="wresolution" property="wresolution" jdbcType="VARCHAR" />
+    <result column="hresolution" property="hresolution" jdbcType="VARCHAR" />
+    <result column="exifImageWidth" property="exifimagewidth" jdbcType="VARCHAR" />
+    <result column="exifImageLength" property="exifimagelength" jdbcType="VARCHAR" />
+    <result column="imgSoftware" property="imgsoftware" jdbcType="VARCHAR" />
+    <result column="hueLocation" property="huelocation" jdbcType="VARCHAR" />
+    <result column="exifver" property="exifver" jdbcType="VARCHAR" />
+    <result column="fnum" property="fnum" jdbcType="VARCHAR" />
+    <result column="isoSpeedRatings" property="isospeedratings" jdbcType="VARCHAR" />
+    <result column="imgExposureTime" property="imgexposuretime" jdbcType="VARCHAR" />
+    <result column="imgShootTime" property="imgshoottime" jdbcType="VARCHAR" />
+    <result column="saveTime" property="savetime" jdbcType="VARCHAR" />
+    <result column="finallTime" property="finalltime" jdbcType="VARCHAR" />
+    <result column="imgExposureValue" property="imgexposurevalue" jdbcType="VARCHAR" />
+    <result column="maxAVal" property="maxaval" jdbcType="VARCHAR" />
+    <result column="imgMeteringModel" property="imgmeteringmodel" jdbcType="VARCHAR" />
+    <result column="light" property="light" jdbcType="VARCHAR" />
+    <result column="bulbuse" property="bulbuse" jdbcType="VARCHAR" />
+    <result column="focallen" property="focallen" jdbcType="VARCHAR" />
+    <result column="colorfulspace" property="colorfulspace" jdbcType="VARCHAR" />
+    <result column="str1" property="str1" jdbcType="VARCHAR" />
+    <result column="str2" property="str2" jdbcType="VARCHAR" />
+    <result column="str3" property="str3" jdbcType="VARCHAR" />
+    <result column="str4" property="str4" jdbcType="VARCHAR" />
+    <result column="str5" property="str5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, relicId, name, addresss, smalladdr, bigaddr, format, resolutionRatio, imgSize, 
+    imgComparison, resolutionRatioFlag, imgSizeFlag, make, model, orientation, resolutionunits, 
+    wresolution, hresolution, exifImageWidth, exifImageLength, imgSoftware, hueLocation, 
+    exifver, fnum, isoSpeedRatings, imgExposureTime, imgShootTime, saveTime, finallTime, 
+    imgExposureValue, maxAVal, imgMeteringModel, light, bulbuse, focallen, colorfulspace, 
+    str1, str2, str3, str4, str5
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from l_resource
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectResouceBySql" resultMap="BaseResultMap" parameterType="com.lxtech.tbrelics.vo.RelicandresourceAttribute" >
+    select * from l_resource where relicId=#{relicId}
+    <if test="format!=null and !''.equals(format)">
+      and format = #{format}
+    </if>
+    <if test="resolutionRatioFlag!=null and !''.equals(resolutionRatioFlag)">
+      and resolutionRatioFlag = #{resolutionRatioFlag}
+    </if>
+    <if test="imgSizeFlag!=null and !''.equals(imgSizeFlag)">
+      and imgSizeFlag = #{imgSizeFlag}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from l_resource
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.lxtech.tbrelics.domain.LResource" >
+    insert into l_resource (id, relicId, name, 
+      addresss, smalladdr, bigaddr, 
+      format, resolutionRatio, imgSize, 
+      imgComparison, resolutionRatioFlag, imgSizeFlag, 
+      make, model, orientation, 
+      resolutionunits, wresolution, hresolution, 
+      exifImageWidth, exifImageLength, imgSoftware, 
+      hueLocation, exifver, fnum, 
+      isoSpeedRatings, imgExposureTime, imgShootTime, 
+      saveTime, finallTime, imgExposureValue, 
+      maxAVal, imgMeteringModel, light, 
+      bulbuse, focallen, colorfulspace, 
+      str1, str2, str3, str4, 
+      str5)
+    values (#{id,jdbcType=BIGINT}, #{relicid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{addresss,jdbcType=VARCHAR}, #{smalladdr,jdbcType=VARCHAR}, #{bigaddr,jdbcType=VARCHAR}, 
+      #{format,jdbcType=VARCHAR}, #{resolutionratio,jdbcType=VARCHAR}, #{imgsize,jdbcType=VARCHAR}, 
+      #{imgcomparison,jdbcType=VARCHAR}, #{resolutionratioflag,jdbcType=VARCHAR}, #{imgsizeflag,jdbcType=VARCHAR}, 
+      #{make,jdbcType=VARCHAR}, #{model,jdbcType=VARCHAR}, #{orientation,jdbcType=VARCHAR}, 
+      #{resolutionunits,jdbcType=VARCHAR}, #{wresolution,jdbcType=VARCHAR}, #{hresolution,jdbcType=VARCHAR}, 
+      #{exifimagewidth,jdbcType=VARCHAR}, #{exifimagelength,jdbcType=VARCHAR}, #{imgsoftware,jdbcType=VARCHAR}, 
+      #{huelocation,jdbcType=VARCHAR}, #{exifver,jdbcType=VARCHAR}, #{fnum,jdbcType=VARCHAR}, 
+      #{isospeedratings,jdbcType=VARCHAR}, #{imgexposuretime,jdbcType=VARCHAR}, #{imgshoottime,jdbcType=VARCHAR}, 
+      #{savetime,jdbcType=VARCHAR}, #{finalltime,jdbcType=VARCHAR}, #{imgexposurevalue,jdbcType=VARCHAR}, 
+      #{maxaval,jdbcType=VARCHAR}, #{imgmeteringmodel,jdbcType=VARCHAR}, #{light,jdbcType=VARCHAR}, 
+      #{bulbuse,jdbcType=VARCHAR}, #{focallen,jdbcType=VARCHAR}, #{colorfulspace,jdbcType=VARCHAR}, 
+      #{str1,jdbcType=VARCHAR}, #{str2,jdbcType=VARCHAR}, #{str3,jdbcType=VARCHAR}, #{str4,jdbcType=VARCHAR}, 
+      #{str5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lxtech.tbrelics.domain.LResource" >
+    insert into l_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="relicid != null" >
+        relicId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="addresss != null" >
+        addresss,
+      </if>
+      <if test="smalladdr != null" >
+        smalladdr,
+      </if>
+      <if test="bigaddr != null" >
+        bigaddr,
+      </if>
+      <if test="format != null" >
+        format,
+      </if>
+      <if test="resolutionratio != null" >
+        resolutionRatio,
+      </if>
+      <if test="imgsize != null" >
+        imgSize,
+      </if>
+      <if test="imgcomparison != null" >
+        imgComparison,
+      </if>
+      <if test="resolutionratioflag != null" >
+        resolutionRatioFlag,
+      </if>
+      <if test="imgsizeflag != null" >
+        imgSizeFlag,
+      </if>
+      <if test="make != null" >
+        make,
+      </if>
+      <if test="model != null" >
+        model,
+      </if>
+      <if test="orientation != null" >
+        orientation,
+      </if>
+      <if test="resolutionunits != null" >
+        resolutionunits,
+      </if>
+      <if test="wresolution != null" >
+        wresolution,
+      </if>
+      <if test="hresolution != null" >
+        hresolution,
+      </if>
+      <if test="exifimagewidth != null" >
+        exifImageWidth,
+      </if>
+      <if test="exifimagelength != null" >
+        exifImageLength,
+      </if>
+      <if test="imgsoftware != null" >
+        imgSoftware,
+      </if>
+      <if test="huelocation != null" >
+        hueLocation,
+      </if>
+      <if test="exifver != null" >
+        exifver,
+      </if>
+      <if test="fnum != null" >
+        fnum,
+      </if>
+      <if test="isospeedratings != null" >
+        isoSpeedRatings,
+      </if>
+      <if test="imgexposuretime != null" >
+        imgExposureTime,
+      </if>
+      <if test="imgshoottime != null" >
+        imgShootTime,
+      </if>
+      <if test="savetime != null" >
+        saveTime,
+      </if>
+      <if test="finalltime != null" >
+        finallTime,
+      </if>
+      <if test="imgexposurevalue != null" >
+        imgExposureValue,
+      </if>
+      <if test="maxaval != null" >
+        maxAVal,
+      </if>
+      <if test="imgmeteringmodel != null" >
+        imgMeteringModel,
+      </if>
+      <if test="light != null" >
+        light,
+      </if>
+      <if test="bulbuse != null" >
+        bulbuse,
+      </if>
+      <if test="focallen != null" >
+        focallen,
+      </if>
+      <if test="colorfulspace != null" >
+        colorfulspace,
+      </if>
+      <if test="str1 != null" >
+        str1,
+      </if>
+      <if test="str2 != null" >
+        str2,
+      </if>
+      <if test="str3 != null" >
+        str3,
+      </if>
+      <if test="str4 != null" >
+        str4,
+      </if>
+      <if test="str5 != null" >
+        str5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="relicid != null" >
+        #{relicid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addresss != null" >
+        #{addresss,jdbcType=VARCHAR},
+      </if>
+      <if test="smalladdr != null" >
+        #{smalladdr,jdbcType=VARCHAR},
+      </if>
+      <if test="bigaddr != null" >
+        #{bigaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null" >
+        #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratio != null" >
+        #{resolutionratio,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsize != null" >
+        #{imgsize,jdbcType=VARCHAR},
+      </if>
+      <if test="imgcomparison != null" >
+        #{imgcomparison,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratioflag != null" >
+        #{resolutionratioflag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsizeflag != null" >
+        #{imgsizeflag,jdbcType=VARCHAR},
+      </if>
+      <if test="make != null" >
+        #{make,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionunits != null" >
+        #{resolutionunits,jdbcType=VARCHAR},
+      </if>
+      <if test="wresolution != null" >
+        #{wresolution,jdbcType=VARCHAR},
+      </if>
+      <if test="hresolution != null" >
+        #{hresolution,jdbcType=VARCHAR},
+      </if>
+      <if test="exifimagewidth != null" >
+        #{exifimagewidth,jdbcType=VARCHAR},
+      </if>
+      <if test="exifimagelength != null" >
+        #{exifimagelength,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsoftware != null" >
+        #{imgsoftware,jdbcType=VARCHAR},
+      </if>
+      <if test="huelocation != null" >
+        #{huelocation,jdbcType=VARCHAR},
+      </if>
+      <if test="exifver != null" >
+        #{exifver,jdbcType=VARCHAR},
+      </if>
+      <if test="fnum != null" >
+        #{fnum,jdbcType=VARCHAR},
+      </if>
+      <if test="isospeedratings != null" >
+        #{isospeedratings,jdbcType=VARCHAR},
+      </if>
+      <if test="imgexposuretime != null" >
+        #{imgexposuretime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgshoottime != null" >
+        #{imgshoottime,jdbcType=VARCHAR},
+      </if>
+      <if test="savetime != null" >
+        #{savetime,jdbcType=VARCHAR},
+      </if>
+      <if test="finalltime != null" >
+        #{finalltime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgexposurevalue != null" >
+        #{imgexposurevalue,jdbcType=VARCHAR},
+      </if>
+      <if test="maxaval != null" >
+        #{maxaval,jdbcType=VARCHAR},
+      </if>
+      <if test="imgmeteringmodel != null" >
+        #{imgmeteringmodel,jdbcType=VARCHAR},
+      </if>
+      <if test="light != null" >
+        #{light,jdbcType=VARCHAR},
+      </if>
+      <if test="bulbuse != null" >
+        #{bulbuse,jdbcType=VARCHAR},
+      </if>
+      <if test="focallen != null" >
+        #{focallen,jdbcType=VARCHAR},
+      </if>
+      <if test="colorfulspace != null" >
+        #{colorfulspace,jdbcType=VARCHAR},
+      </if>
+      <if test="str1 != null" >
+        #{str1,jdbcType=VARCHAR},
+      </if>
+      <if test="str2 != null" >
+        #{str2,jdbcType=VARCHAR},
+      </if>
+      <if test="str3 != null" >
+        #{str3,jdbcType=VARCHAR},
+      </if>
+      <if test="str4 != null" >
+        #{str4,jdbcType=VARCHAR},
+      </if>
+      <if test="str5 != null" >
+        #{str5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lxtech.tbrelics.domain.LResource" >
+    update l_resource
+    <set >
+      <if test="relicid != null" >
+        relicId = #{relicid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addresss != null" >
+        addresss = #{addresss,jdbcType=VARCHAR},
+      </if>
+      <if test="smalladdr != null" >
+        smalladdr = #{smalladdr,jdbcType=VARCHAR},
+      </if>
+      <if test="bigaddr != null" >
+        bigaddr = #{bigaddr,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null" >
+        format = #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratio != null" >
+        resolutionRatio = #{resolutionratio,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsize != null" >
+        imgSize = #{imgsize,jdbcType=VARCHAR},
+      </if>
+      <if test="imgcomparison != null" >
+        imgComparison = #{imgcomparison,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratioflag != null" >
+        resolutionRatioFlag = #{resolutionratioflag,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsizeflag != null" >
+        imgSizeFlag = #{imgsizeflag,jdbcType=VARCHAR},
+      </if>
+      <if test="make != null" >
+        make = #{make,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        model = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="orientation != null" >
+        orientation = #{orientation,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionunits != null" >
+        resolutionunits = #{resolutionunits,jdbcType=VARCHAR},
+      </if>
+      <if test="wresolution != null" >
+        wresolution = #{wresolution,jdbcType=VARCHAR},
+      </if>
+      <if test="hresolution != null" >
+        hresolution = #{hresolution,jdbcType=VARCHAR},
+      </if>
+      <if test="exifimagewidth != null" >
+        exifImageWidth = #{exifimagewidth,jdbcType=VARCHAR},
+      </if>
+      <if test="exifimagelength != null" >
+        exifImageLength = #{exifimagelength,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsoftware != null" >
+        imgSoftware = #{imgsoftware,jdbcType=VARCHAR},
+      </if>
+      <if test="huelocation != null" >
+        hueLocation = #{huelocation,jdbcType=VARCHAR},
+      </if>
+      <if test="exifver != null" >
+        exifver = #{exifver,jdbcType=VARCHAR},
+      </if>
+      <if test="fnum != null" >
+        fnum = #{fnum,jdbcType=VARCHAR},
+      </if>
+      <if test="isospeedratings != null" >
+        isoSpeedRatings = #{isospeedratings,jdbcType=VARCHAR},
+      </if>
+      <if test="imgexposuretime != null" >
+        imgExposureTime = #{imgexposuretime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgshoottime != null" >
+        imgShootTime = #{imgshoottime,jdbcType=VARCHAR},
+      </if>
+      <if test="savetime != null" >
+        saveTime = #{savetime,jdbcType=VARCHAR},
+      </if>
+      <if test="finalltime != null" >
+        finallTime = #{finalltime,jdbcType=VARCHAR},
+      </if>
+      <if test="imgexposurevalue != null" >
+        imgExposureValue = #{imgexposurevalue,jdbcType=VARCHAR},
+      </if>
+      <if test="maxaval != null" >
+        maxAVal = #{maxaval,jdbcType=VARCHAR},
+      </if>
+      <if test="imgmeteringmodel != null" >
+        imgMeteringModel = #{imgmeteringmodel,jdbcType=VARCHAR},
+      </if>
+      <if test="light != null" >
+        light = #{light,jdbcType=VARCHAR},
+      </if>
+      <if test="bulbuse != null" >
+        bulbuse = #{bulbuse,jdbcType=VARCHAR},
+      </if>
+      <if test="focallen != null" >
+        focallen = #{focallen,jdbcType=VARCHAR},
+      </if>
+      <if test="colorfulspace != null" >
+        colorfulspace = #{colorfulspace,jdbcType=VARCHAR},
+      </if>
+      <if test="str1 != null" >
+        str1 = #{str1,jdbcType=VARCHAR},
+      </if>
+      <if test="str2 != null" >
+        str2 = #{str2,jdbcType=VARCHAR},
+      </if>
+      <if test="str3 != null" >
+        str3 = #{str3,jdbcType=VARCHAR},
+      </if>
+      <if test="str4 != null" >
+        str4 = #{str4,jdbcType=VARCHAR},
+      </if>
+      <if test="str5 != null" >
+        str5 = #{str5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lxtech.tbrelics.domain.LResource" >
+    update l_resource
+    set relicId = #{relicid,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      addresss = #{addresss,jdbcType=VARCHAR},
+      smalladdr = #{smalladdr,jdbcType=VARCHAR},
+      bigaddr = #{bigaddr,jdbcType=VARCHAR},
+      format = #{format,jdbcType=VARCHAR},
+      resolutionRatio = #{resolutionratio,jdbcType=VARCHAR},
+      imgSize = #{imgsize,jdbcType=VARCHAR},
+      imgComparison = #{imgcomparison,jdbcType=VARCHAR},
+      resolutionRatioFlag = #{resolutionratioflag,jdbcType=VARCHAR},
+      imgSizeFlag = #{imgsizeflag,jdbcType=VARCHAR},
+      make = #{make,jdbcType=VARCHAR},
+      model = #{model,jdbcType=VARCHAR},
+      orientation = #{orientation,jdbcType=VARCHAR},
+      resolutionunits = #{resolutionunits,jdbcType=VARCHAR},
+      wresolution = #{wresolution,jdbcType=VARCHAR},
+      hresolution = #{hresolution,jdbcType=VARCHAR},
+      exifImageWidth = #{exifimagewidth,jdbcType=VARCHAR},
+      exifImageLength = #{exifimagelength,jdbcType=VARCHAR},
+      imgSoftware = #{imgsoftware,jdbcType=VARCHAR},
+      hueLocation = #{huelocation,jdbcType=VARCHAR},
+      exifver = #{exifver,jdbcType=VARCHAR},
+      fnum = #{fnum,jdbcType=VARCHAR},
+      isoSpeedRatings = #{isospeedratings,jdbcType=VARCHAR},
+      imgExposureTime = #{imgexposuretime,jdbcType=VARCHAR},
+      imgShootTime = #{imgshoottime,jdbcType=VARCHAR},
+      saveTime = #{savetime,jdbcType=VARCHAR},
+      finallTime = #{finalltime,jdbcType=VARCHAR},
+      imgExposureValue = #{imgexposurevalue,jdbcType=VARCHAR},
+      maxAVal = #{maxaval,jdbcType=VARCHAR},
+      imgMeteringModel = #{imgmeteringmodel,jdbcType=VARCHAR},
+      light = #{light,jdbcType=VARCHAR},
+      bulbuse = #{bulbuse,jdbcType=VARCHAR},
+      focallen = #{focallen,jdbcType=VARCHAR},
+      colorfulspace = #{colorfulspace,jdbcType=VARCHAR},
+      str1 = #{str1,jdbcType=VARCHAR},
+      str2 = #{str2,jdbcType=VARCHAR},
+      str3 = #{str3,jdbcType=VARCHAR},
+      str4 = #{str4,jdbcType=VARCHAR},
+      str5 = #{str5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,30 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 3,
+	"data": [{
+		"id":1,
+		"registrationNo": "59.3.150",
+		"name": "西周太保方鼎",
+		"fulldisable": "拍摄",
+		"outTime": "2019-11-08",
+		"username":"李少军",
+		"outNo":"12425672132",
+		"inTime":"2019-12-08",
+		"handlingSituation":"腐蚀损毁严重，急需修复",
+		"remark":""
+		
+	},{
+		"id":1,
+		"registrationNo": "59.3.150",
+		"name": "西周太保方鼎",
+		"fulldisable": "拍摄",
+		"outTime": "2019-08-10",
+		"username":"李少军",
+		"outNo":"523234422432",
+		"inTime":"2019-10-10",
+		"handlingSituation":"腐蚀损毁严重，急需修复",
+		"remark":""
+		
+	}]
+}

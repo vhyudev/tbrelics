@@ -1,0 +1,69 @@
+package com.lxtech.tbrelics.service;
+
+import com.lxtech.tbrelics.domain.LUserResource;
+import com.lxtech.tbrelics.view.ViewResourceCollection;
+import com.lxtech.tbrelics.vo.CollectionResources;
+import com.lxtech.tbrelics.vo.CountCollectionResources;
+import com.lxtech.tbrelics.vo.RelicandresourceAttribute;
+import com.lxtech.tbrelics.vo.UserResources;
+import net.sf.json.JSONObject;
+import org.apache.ibatis.annotations.Param;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
+public interface CollectionService {
+    ViewResourceCollection selectByResourceId(Long id);
+
+    JSONObject findSearchCriteria();
+
+    List<String> findRelicsAge();
+
+    List<String> findRelicsType();
+
+    List<CollectionResources> selectShopCarts(long userid);
+
+    int insertUserResource(LUserResource lUserResource);
+
+    int delUserResource(long userid, long resid);
+
+    int delBatchUserResource(long userId, long[] resIdArray);
+
+    UserResources selectResources(long userid);
+
+    int noTotal();
+
+    List<CollectionResources>  selectBysql(int start, int end) throws Exception;
+
+    int haveTotal(RelicandresourceAttribute relicandresourceAttribute);
+
+    List<CollectionResources>  selectByHavesql(RelicandresourceAttribute relicandresourceAttribute) throws Exception;
+
+    List<CollectionResources> selectRelicByIdentifier(String identifier);
+
+    List<CollectionResources> selectRelicListByIdentifier(String identifier);
+
+    long selectRelicID(String identifier);
+
+    List<CollectionResources> selectByIdentifier(String identifier, int start, int end);
+    int selectCountByIdentifier(String identifier);
+
+    List<CollectionResources> selectListByIdentifier(String identifier, int start, int end);
+    int selecListCounttByIdentifier(String identifier);
+
+    CountCollectionResources findIdentifierLike(String identifier, int start, int end);
+
+    CountCollectionResources findNameLike(String title, int start, int end);
+
+    CountCollectionResources findAllByPage(int start, int end);
+
+    CountCollectionResources findSearchByPage(RelicandresourceAttribute relicandresourceAttribute) throws Exception;
+
+    void thumbOne() throws IOException, InterruptedException, ExecutionException;
+
+    void thumbFirst() throws IOException, InterruptedException, ExecutionException;
+
+    void thumbTwo() throws IOException, InterruptedException, ExecutionException;
+}

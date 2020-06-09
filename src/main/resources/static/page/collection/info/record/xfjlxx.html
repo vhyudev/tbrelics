@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>修复信息详情</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../../lib/layui/css/layui.css" media="all">
+		<style type="text/css">
+		.layui-form-item {
+		    margin-bottom: 5px;
+		}
+		.layui-textarea {
+	        min-height: 70px;
+	    }
+	    .layui-date {
+			position: absolute;
+			right: 5px;
+			top: 3px;
+			cursor: pointer;
+			font-size: 30px;
+			color: #c2c2c2;
+		}
+		.layui-table-cell {
+		    height: auto;
+		    line-height: 18px;
+		    padding: 0 0px;
+		    text-align: center;
+		    overflow:visible;
+		    text-overflow:inherit;
+		    white-space:normal;
+		}
+		</style>
+	</head>
+
+	<body>
+		<div class="childrenBody">
+			<form class="layui-form" action="" lay-filter="demo1" style="width: 96%;margin-top: 15px">
+				<div class="layui-form-item" style="margin-top: 10px;">	
+					<div class="layui-inline">
+						<label class="layui-form-label">文物名</label>
+						<div class="layui-input-inline">
+							<input type="text" name="name" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">文物号</label>
+						<div class="layui-input-inline">
+							<input type="text" name="registrationNo" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">承担机构</label>
+						<div class="layui-input-inline">
+							<input type="text" name="organizer" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">修复人</label>
+						<div class="layui-input-inline">
+							<input type="text" name="username" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">开始时间</label>
+						<div class="layui-input-inline">
+							<input type="text" name="startTime" id="startTime" autocomplete="off" class="layui-input">
+							<i class="layui-icon layui-date" id="date1">&#xe637;</i>
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">结束时间</label>
+						<div class="layui-input-inline">
+							<input type="text" name="endTime" id="endTime" autocomplete="off" class="layui-input">
+							<i class="layui-icon layui-date" id="date2">&#xe637;</i>
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item bz">
+					<label class="layui-form-label">修复情况及结果</label>
+					<div class="layui-input-block">
+						<textarea name="result" class="layui-textarea"></textarea>
+					</div>
+				</div>
+				<div class="layui-form-item bz">
+					<label class="layui-form-label">修复技术技法</label>
+					<div class="layui-input-block">
+						<textarea name="skill" class="layui-textarea"></textarea>
+					</div>
+				</div>
+				
+				<div class="layui-form-item bz">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-block">
+						<textarea name="remark" class="layui-textarea"></textarea>
+					</div>
+				</div>
+
+				<div class="layui-form tableContent" style="margin-left: 40px;">
+					<div class="layui-table-tool" style="min-height: 30px;width:96.85%;border: 0px;margin-bottom: -10px;margin-right: 5px;">
+						<button class="layui-btn layui-btn-xs data-addtr-btn"><i class="layui-icon">&#xe654;</i> 添加</button>
+						<button class="layui-btn layui-btn-xs layui-btn-danger data-del-btn"><i class="layui-icon">&#xe640;</i>删除</button>
+					</div>
+<!--					<table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>	-->
+					<script type="text/html" id="xuhao">
+						{{d.LAY_TABLE_INDEX+1}}
+					</script>					
+				</div>
+				<div id="page"></div>
+
+				<div id="bar" class="layui-form-item" style="margin-left: 30%;">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+						<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<script src="../../../../lib/layui/layui.js" charset="utf-8"></script>
+		<script>
+			if(parent.tjcpData.length<1){
+				var tjcpData=[];
+				tjcpData.relics=[];
+			}else{
+				var tjcpData=JSON.parse(parent.tjcpData);
+			}			
+
+			layui.use(['form', 'laydate' ,'table'], function() {
+				var $ = layui.jquery,
+					form = layui.form,
+					layer = layui.layer,
+					laydate = layui.laydate,
+					table = layui.table;
+					
+					//日期
+					laydate.render({
+						elem: '#time',
+						eventElem: '#date1',
+						trigger: 'click',
+						range: true
+					});
+
+				form.val("demo1", {
+					registrationNo:tjcpData.registrationNo,
+					name:tjcpData.name,
+					organizer: tjcpData.organizer,
+					username: tjcpData.username,
+					startTime: tjcpData.startTime,
+					endTime: tjcpData.endTime,
+					remark: tjcpData.remark
+				})
+
+				console.log(parent.e);
+				if(parent.e == 0) {
+					$("#bar").hide();
+					$(".layui-table-tool").hide();
+					$(".tableContent").show();
+				} else {
+					$("#bar").show();
+					$(".layui-table-tool").show();
+					$(".tableContent").hide();
+				}
+				
+				table.render({
+		            elem: '#currentTable',
+		            data: tjcpData.relics,
+		            cols: [
+		                [
+		                // {type: 'checkbox'},
+		                {type: 'numbers', title: '序号',templet: '#xuhao'},
+		                {field: 'registrationNo', title: '文物号',sort: true,edit: 'text'},
+		                {field: 'name', title: '名称', minWidth: 250,edit: 'text'},    
+		                {field: 'fulldisable', title: '完残程度',edit: 'text'},
+		                {field: 'reason', title: '修复原因',edit: 'text'},
+		                {field: 'result', title: '修复情况及结果',edit: 'text'},
+		                {field: 'skill', title: '修复技术技法',edit: 'text'}
+		            ]
+					],
+		            limits: [5, 10, 15, 20, 25, 50],
+		            limit: 5,
+		            page: true
+		        });
+		        
+		        //监听单元格编辑
+				table.on('edit(currentTable)', function(obj) {
+					var value = obj.value, //得到修改后的值
+						data = obj.data, //得到所在行所有键值
+						field = obj.field; //得到字段
+					layer.msg('[Index: ' + data.index + '] ' + field + ' 字段更改为：' + value);
+				});
+		       
+		        var data = [];
+		        //添加
+				$(".data-addtr-btn").on("click", function() {					
+					//var tableBak = tjcpData.relics;
+					var tableBak = table.cache.currentTable;
+					if(data.length<1){
+						for(var i = 0; i < tableBak.length; i++) {
+							data.push(tableBak[i]); //将之前的数组备份
+						}
+					}
+					data.push({
+						"registrationNo": "",
+						"name": "",
+						"fulldisable": "",						
+						"reason": "",
+						"result": "",
+						"skill": ""
+					})
+					table.reload("currentTable", {
+						data: data
+					})
+				});
+				
+				//删除
+                $(".data-del-btn").click(function() {
+					var checkStatus = table.checkStatus('currentTable');
+					if(checkStatus.data.length < 1) {
+						layer.alert("请选择一条数据操作");
+						return false;
+					} else {
+						data = table.cache.currentTable;
+						for(var k = 0; k < checkStatus.data.length; k++) {
+							var _delId = checkStatus.data[k].registrationNo;
+							for(var i = 0; i < data.length; i++) {
+								var _id = data[i].registrationNo;
+								if(_id == _delId) {
+									data.splice(i, 1);
+									break;
+								}
+							}
+						}
+						table.reload("currentTable", {
+							data: data
+						})
+					}
+
+				});
+				
+				form.on('submit(demo1)', function(data) {
+					/*layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					})*/
+					return false;
+				});
+			});
+		</script>
+
+	</body>
+
+</html>

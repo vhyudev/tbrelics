@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxtech.tbrelics.mapper.ViewCollectionCountMapper" >
+  <resultMap id="BaseResultMap" type="com.lxtech.tbrelics.view.ViewCollectionCount" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="identifierType" property="identifiertype" jdbcType="VARCHAR" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="period" property="period" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="workType" property="worktype" jdbcType="VARCHAR" />
+    <result column="materials" property="materials" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <!--====================有条件===========================-->
+  <select id="findSearchByPage" resultType="java.lang.Long" parameterType="com.lxtech.tbrelics.vo.RelicandresourceAttribute" >
+    select id from view_collection_count where id!=1
+    <if test="workType!=null and !''.equals(workType)">
+      and workType = #{workType}
+    </if>
+    <if test="period!=null and !''.equals(period)">
+      and period = #{period}
+    </if>
+    <if test="level!=null and !''.equals(level)">
+      and level = #{level}
+    </if>
+     limit #{start},#{end}
+  </select>
+
+  <select id="findSearchByPageCount" resultType="java.lang.Integer" parameterType="com.lxtech.tbrelics.vo.RelicandresourceAttribute" >
+    select count(*) from view_collection_count where id!=1
+    <if test="workType!=null and !''.equals(workType)">
+      and workType = #{workType}
+    </if>
+    <if test="period!=null and !''.equals(period)">
+      and period = #{period}
+    </if>
+    <if test="level!=null and !''.equals(level)">
+      and level = #{level}
+    </if>
+  </select>
+</mapper>

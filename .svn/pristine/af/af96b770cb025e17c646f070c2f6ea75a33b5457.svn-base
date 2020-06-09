@@ -1,0 +1,723 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxtech.tbrelics.mapper.LCollectionMapper" >
+  <resultMap id="BaseResultMap" type="com.lxtech.tbrelics.domain.LCollection" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="identifierType" property="identifiertype" jdbcType="VARCHAR" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="formerTitle" property="formertitle" jdbcType="VARCHAR" />
+    <result column="chronology" property="chronology" jdbcType="VARCHAR" />
+    <result column="period" property="period" jdbcType="VARCHAR" />
+    <result column="period1" property="period1" jdbcType="VARCHAR" />
+    <result column="period2" property="period2" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="workType" property="worktype" jdbcType="VARCHAR" />
+    <result column="textureType1" property="texturetype1" jdbcType="VARCHAR" />
+    <result column="textureType2" property="texturetype2" jdbcType="VARCHAR" />
+    <result column="materials" property="materials" jdbcType="VARCHAR" />
+    <result column="absoluteQuantity" property="absolutequantity" jdbcType="VARCHAR" />
+    <result column="length" property="length" jdbcType="VARCHAR" />
+    <result column="width" property="width" jdbcType="VARCHAR" />
+    <result column="height" property="height" jdbcType="VARCHAR" />
+    <result column="dimensions" property="dimensions" jdbcType="VARCHAR" />
+    <result column="massRange" property="massrange" jdbcType="VARCHAR" />
+    <result column="mass" property="mass" jdbcType="VARCHAR" />
+    <result column="massUnit" property="massunit" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="levelOfCompleteness" property="levelofcompleteness" jdbcType="VARCHAR" />
+    <result column="currentConditionOfCompleteness" property="currentconditionofcompleteness" jdbcType="VARCHAR" />
+    <result column="presentStateOfPreservation" property="presentstateofpreservation" jdbcType="VARCHAR" />
+    <result column="accessionDate" property="accessiondate" jdbcType="VARCHAR" />
+    <result column="accessionYear" property="accessionyear" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="edition" property="edition" jdbcType="VARCHAR" />
+    <result column="existingVolume" property="existingvolume" jdbcType="VARCHAR" />
+    <result column="F33" property="f33" jdbcType="VARCHAR" />
+    <result column="F34" property="f34" jdbcType="VARCHAR" />
+    <result column="F35" property="f35" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, identifierType, identifier, title, formerTitle, chronology, period, period1, 
+    period2, date, workType, textureType1, textureType2, materials, absoluteQuantity, 
+    length, width, height, dimensions, massRange, mass, massUnit, level, source, levelOfCompleteness, 
+    currentConditionOfCompleteness, presentStateOfPreservation, accessionDate, accessionYear, 
+    author, edition, existingVolume, F33, F34, F35
+  </sql>
+
+  <!--group by period-->
+  <select id="selectRelicsAge" resultType="java.lang.String">
+	select period from l_collection where period !='' group by period
+    order by
+      case period
+      when '新石器时代' then 1
+      when '旧石器时代' then 2
+      when '夏(约前2070~前1600)' then 3
+      when '商(前1600~前1046)' then 4
+      when '周' then 5
+      when '秦(前221~前206)' then 6
+      when '汉' then 7
+      when '三国' then 8
+      when '西晋(265~317)' then 9
+      when '东晋十六国' then 10
+      when '南北朝' then 11
+      when '隋(581~618)' then 12
+      when '唐(618~907)' then 13
+      when '五代十国' then 14
+      when '宋' then 15
+      when '辽(907~1125)' then 16
+      when '西夏(1038~1227)' then 17
+      when '金(1115~1234)' then 18
+      when '元(1206~1368)' then 19
+      when '明(1368~1644)' then 20
+      when '清(1616~1911)' then 21
+      when '中华民国(1912~1949)' then 22
+      when '中华人民共和国(1949年10月1日成立)' then 23
+      when '公元前20世纪' then 24
+      when '公元18世纪' then 25
+      when '公元19世纪' then 26
+      when '公元20世纪' then 27
+      end asc
+  </select>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lxtech.tbrelics.domain.LCollectionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from l_collection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from l_collection
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from l_collection
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lxtech.tbrelics.domain.LCollectionExample" >
+    delete from l_collection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lxtech.tbrelics.domain.LCollection" >
+    insert into l_collection (id, identifierType, identifier, 
+      title, formerTitle, chronology, 
+      period, period1, period2, 
+      date, workType, textureType1, 
+      textureType2, materials, absoluteQuantity, 
+      length, width, height, 
+      dimensions, massRange, mass, 
+      massUnit, level, source, 
+      levelOfCompleteness, currentConditionOfCompleteness, 
+      presentStateOfPreservation, accessionDate, 
+      accessionYear, author, edition, 
+      existingVolume, F33, F34, 
+      F35)
+    values (#{id,jdbcType=BIGINT}, #{identifiertype,jdbcType=VARCHAR}, #{identifier,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{formertitle,jdbcType=VARCHAR}, #{chronology,jdbcType=VARCHAR}, 
+      #{period,jdbcType=VARCHAR}, #{period1,jdbcType=VARCHAR}, #{period2,jdbcType=VARCHAR}, 
+      #{date,jdbcType=VARCHAR}, #{worktype,jdbcType=VARCHAR}, #{texturetype1,jdbcType=VARCHAR}, 
+      #{texturetype2,jdbcType=VARCHAR}, #{materials,jdbcType=VARCHAR}, #{absolutequantity,jdbcType=VARCHAR}, 
+      #{length,jdbcType=VARCHAR}, #{width,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR}, 
+      #{dimensions,jdbcType=VARCHAR}, #{massrange,jdbcType=VARCHAR}, #{mass,jdbcType=VARCHAR}, 
+      #{massunit,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
+      #{levelofcompleteness,jdbcType=VARCHAR}, #{currentconditionofcompleteness,jdbcType=VARCHAR}, 
+      #{presentstateofpreservation,jdbcType=VARCHAR}, #{accessiondate,jdbcType=VARCHAR}, 
+      #{accessionyear,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{edition,jdbcType=VARCHAR}, 
+      #{existingvolume,jdbcType=VARCHAR}, #{f33,jdbcType=VARCHAR}, #{f34,jdbcType=VARCHAR}, 
+      #{f35,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lxtech.tbrelics.domain.LCollection" >
+    insert into l_collection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="identifiertype != null" >
+        identifierType,
+      </if>
+      <if test="identifier != null" >
+        identifier,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="formertitle != null" >
+        formerTitle,
+      </if>
+      <if test="chronology != null" >
+        chronology,
+      </if>
+      <if test="period != null" >
+        period,
+      </if>
+      <if test="period1 != null" >
+        period1,
+      </if>
+      <if test="period2 != null" >
+        period2,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="worktype != null" >
+        workType,
+      </if>
+      <if test="texturetype1 != null" >
+        textureType1,
+      </if>
+      <if test="texturetype2 != null" >
+        textureType2,
+      </if>
+      <if test="materials != null" >
+        materials,
+      </if>
+      <if test="absolutequantity != null" >
+        absoluteQuantity,
+      </if>
+      <if test="length != null" >
+        length,
+      </if>
+      <if test="width != null" >
+        width,
+      </if>
+      <if test="height != null" >
+        height,
+      </if>
+      <if test="dimensions != null" >
+        dimensions,
+      </if>
+      <if test="massrange != null" >
+        massRange,
+      </if>
+      <if test="mass != null" >
+        mass,
+      </if>
+      <if test="massunit != null" >
+        massUnit,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="levelofcompleteness != null" >
+        levelOfCompleteness,
+      </if>
+      <if test="currentconditionofcompleteness != null" >
+        currentConditionOfCompleteness,
+      </if>
+      <if test="presentstateofpreservation != null" >
+        presentStateOfPreservation,
+      </if>
+      <if test="accessiondate != null" >
+        accessionDate,
+      </if>
+      <if test="accessionyear != null" >
+        accessionYear,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="edition != null" >
+        edition,
+      </if>
+      <if test="existingvolume != null" >
+        existingVolume,
+      </if>
+      <if test="f33 != null" >
+        F33,
+      </if>
+      <if test="f34 != null" >
+        F34,
+      </if>
+      <if test="f35 != null" >
+        F35,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="identifiertype != null" >
+        #{identifiertype,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null" >
+        #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="formertitle != null" >
+        #{formertitle,jdbcType=VARCHAR},
+      </if>
+      <if test="chronology != null" >
+        #{chronology,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=VARCHAR},
+      </if>
+      <if test="period1 != null" >
+        #{period1,jdbcType=VARCHAR},
+      </if>
+      <if test="period2 != null" >
+        #{period2,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="worktype != null" >
+        #{worktype,jdbcType=VARCHAR},
+      </if>
+      <if test="texturetype1 != null" >
+        #{texturetype1,jdbcType=VARCHAR},
+      </if>
+      <if test="texturetype2 != null" >
+        #{texturetype2,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null" >
+        #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="absolutequantity != null" >
+        #{absolutequantity,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        #{length,jdbcType=VARCHAR},
+      </if>
+      <if test="width != null" >
+        #{width,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="dimensions != null" >
+        #{dimensions,jdbcType=VARCHAR},
+      </if>
+      <if test="massrange != null" >
+        #{massrange,jdbcType=VARCHAR},
+      </if>
+      <if test="mass != null" >
+        #{mass,jdbcType=VARCHAR},
+      </if>
+      <if test="massunit != null" >
+        #{massunit,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="levelofcompleteness != null" >
+        #{levelofcompleteness,jdbcType=VARCHAR},
+      </if>
+      <if test="currentconditionofcompleteness != null" >
+        #{currentconditionofcompleteness,jdbcType=VARCHAR},
+      </if>
+      <if test="presentstateofpreservation != null" >
+        #{presentstateofpreservation,jdbcType=VARCHAR},
+      </if>
+      <if test="accessiondate != null" >
+        #{accessiondate,jdbcType=VARCHAR},
+      </if>
+      <if test="accessionyear != null" >
+        #{accessionyear,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="edition != null" >
+        #{edition,jdbcType=VARCHAR},
+      </if>
+      <if test="existingvolume != null" >
+        #{existingvolume,jdbcType=VARCHAR},
+      </if>
+      <if test="f33 != null" >
+        #{f33,jdbcType=VARCHAR},
+      </if>
+      <if test="f34 != null" >
+        #{f34,jdbcType=VARCHAR},
+      </if>
+      <if test="f35 != null" >
+        #{f35,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lxtech.tbrelics.domain.LCollectionExample" resultType="java.lang.Integer" >
+    select count(*) from l_collection
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update l_collection
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.identifiertype != null" >
+        identifierType = #{record.identifiertype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identifier != null" >
+        identifier = #{record.identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.formertitle != null" >
+        formerTitle = #{record.formertitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chronology != null" >
+        chronology = #{record.chronology,jdbcType=VARCHAR},
+      </if>
+      <if test="record.period != null" >
+        period = #{record.period,jdbcType=VARCHAR},
+      </if>
+      <if test="record.period1 != null" >
+        period1 = #{record.period1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.period2 != null" >
+        period2 = #{record.period2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=VARCHAR},
+      </if>
+      <if test="record.worktype != null" >
+        workType = #{record.worktype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.texturetype1 != null" >
+        textureType1 = #{record.texturetype1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.texturetype2 != null" >
+        textureType2 = #{record.texturetype2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.materials != null" >
+        materials = #{record.materials,jdbcType=VARCHAR},
+      </if>
+      <if test="record.absolutequantity != null" >
+        absoluteQuantity = #{record.absolutequantity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.length != null" >
+        length = #{record.length,jdbcType=VARCHAR},
+      </if>
+      <if test="record.width != null" >
+        width = #{record.width,jdbcType=VARCHAR},
+      </if>
+      <if test="record.height != null" >
+        height = #{record.height,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dimensions != null" >
+        dimensions = #{record.dimensions,jdbcType=VARCHAR},
+      </if>
+      <if test="record.massrange != null" >
+        massRange = #{record.massrange,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mass != null" >
+        mass = #{record.mass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.massunit != null" >
+        massUnit = #{record.massunit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.level != null" >
+        level = #{record.level,jdbcType=VARCHAR},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.levelofcompleteness != null" >
+        levelOfCompleteness = #{record.levelofcompleteness,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentconditionofcompleteness != null" >
+        currentConditionOfCompleteness = #{record.currentconditionofcompleteness,jdbcType=VARCHAR},
+      </if>
+      <if test="record.presentstateofpreservation != null" >
+        presentStateOfPreservation = #{record.presentstateofpreservation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessiondate != null" >
+        accessionDate = #{record.accessiondate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessionyear != null" >
+        accessionYear = #{record.accessionyear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.edition != null" >
+        edition = #{record.edition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.existingvolume != null" >
+        existingVolume = #{record.existingvolume,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f33 != null" >
+        F33 = #{record.f33,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f34 != null" >
+        F34 = #{record.f34,jdbcType=VARCHAR},
+      </if>
+      <if test="record.f35 != null" >
+        F35 = #{record.f35,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update l_collection
+    set id = #{record.id,jdbcType=BIGINT},
+      identifierType = #{record.identifiertype,jdbcType=VARCHAR},
+      identifier = #{record.identifier,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      formerTitle = #{record.formertitle,jdbcType=VARCHAR},
+      chronology = #{record.chronology,jdbcType=VARCHAR},
+      period = #{record.period,jdbcType=VARCHAR},
+      period1 = #{record.period1,jdbcType=VARCHAR},
+      period2 = #{record.period2,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=VARCHAR},
+      workType = #{record.worktype,jdbcType=VARCHAR},
+      textureType1 = #{record.texturetype1,jdbcType=VARCHAR},
+      textureType2 = #{record.texturetype2,jdbcType=VARCHAR},
+      materials = #{record.materials,jdbcType=VARCHAR},
+      absoluteQuantity = #{record.absolutequantity,jdbcType=VARCHAR},
+      length = #{record.length,jdbcType=VARCHAR},
+      width = #{record.width,jdbcType=VARCHAR},
+      height = #{record.height,jdbcType=VARCHAR},
+      dimensions = #{record.dimensions,jdbcType=VARCHAR},
+      massRange = #{record.massrange,jdbcType=VARCHAR},
+      mass = #{record.mass,jdbcType=VARCHAR},
+      massUnit = #{record.massunit,jdbcType=VARCHAR},
+      level = #{record.level,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR},
+      levelOfCompleteness = #{record.levelofcompleteness,jdbcType=VARCHAR},
+      currentConditionOfCompleteness = #{record.currentconditionofcompleteness,jdbcType=VARCHAR},
+      presentStateOfPreservation = #{record.presentstateofpreservation,jdbcType=VARCHAR},
+      accessionDate = #{record.accessiondate,jdbcType=VARCHAR},
+      accessionYear = #{record.accessionyear,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      edition = #{record.edition,jdbcType=VARCHAR},
+      existingVolume = #{record.existingvolume,jdbcType=VARCHAR},
+      F33 = #{record.f33,jdbcType=VARCHAR},
+      F34 = #{record.f34,jdbcType=VARCHAR},
+      F35 = #{record.f35,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lxtech.tbrelics.domain.LCollection" >
+    update l_collection
+    <set >
+      <if test="identifiertype != null" >
+        identifierType = #{identifiertype,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null" >
+        identifier = #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="formertitle != null" >
+        formerTitle = #{formertitle,jdbcType=VARCHAR},
+      </if>
+      <if test="chronology != null" >
+        chronology = #{chronology,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        period = #{period,jdbcType=VARCHAR},
+      </if>
+      <if test="period1 != null" >
+        period1 = #{period1,jdbcType=VARCHAR},
+      </if>
+      <if test="period2 != null" >
+        period2 = #{period2,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="worktype != null" >
+        workType = #{worktype,jdbcType=VARCHAR},
+      </if>
+      <if test="texturetype1 != null" >
+        textureType1 = #{texturetype1,jdbcType=VARCHAR},
+      </if>
+      <if test="texturetype2 != null" >
+        textureType2 = #{texturetype2,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null" >
+        materials = #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="absolutequantity != null" >
+        absoluteQuantity = #{absolutequantity,jdbcType=VARCHAR},
+      </if>
+      <if test="length != null" >
+        length = #{length,jdbcType=VARCHAR},
+      </if>
+      <if test="width != null" >
+        width = #{width,jdbcType=VARCHAR},
+      </if>
+      <if test="height != null" >
+        height = #{height,jdbcType=VARCHAR},
+      </if>
+      <if test="dimensions != null" >
+        dimensions = #{dimensions,jdbcType=VARCHAR},
+      </if>
+      <if test="massrange != null" >
+        massRange = #{massrange,jdbcType=VARCHAR},
+      </if>
+      <if test="mass != null" >
+        mass = #{mass,jdbcType=VARCHAR},
+      </if>
+      <if test="massunit != null" >
+        massUnit = #{massunit,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="levelofcompleteness != null" >
+        levelOfCompleteness = #{levelofcompleteness,jdbcType=VARCHAR},
+      </if>
+      <if test="currentconditionofcompleteness != null" >
+        currentConditionOfCompleteness = #{currentconditionofcompleteness,jdbcType=VARCHAR},
+      </if>
+      <if test="presentstateofpreservation != null" >
+        presentStateOfPreservation = #{presentstateofpreservation,jdbcType=VARCHAR},
+      </if>
+      <if test="accessiondate != null" >
+        accessionDate = #{accessiondate,jdbcType=VARCHAR},
+      </if>
+      <if test="accessionyear != null" >
+        accessionYear = #{accessionyear,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="edition != null" >
+        edition = #{edition,jdbcType=VARCHAR},
+      </if>
+      <if test="existingvolume != null" >
+        existingVolume = #{existingvolume,jdbcType=VARCHAR},
+      </if>
+      <if test="f33 != null" >
+        F33 = #{f33,jdbcType=VARCHAR},
+      </if>
+      <if test="f34 != null" >
+        F34 = #{f34,jdbcType=VARCHAR},
+      </if>
+      <if test="f35 != null" >
+        F35 = #{f35,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lxtech.tbrelics.domain.LCollection" >
+    update l_collection
+    set identifierType = #{identifiertype,jdbcType=VARCHAR},
+      identifier = #{identifier,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      formerTitle = #{formertitle,jdbcType=VARCHAR},
+      chronology = #{chronology,jdbcType=VARCHAR},
+      period = #{period,jdbcType=VARCHAR},
+      period1 = #{period1,jdbcType=VARCHAR},
+      period2 = #{period2,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      workType = #{worktype,jdbcType=VARCHAR},
+      textureType1 = #{texturetype1,jdbcType=VARCHAR},
+      textureType2 = #{texturetype2,jdbcType=VARCHAR},
+      materials = #{materials,jdbcType=VARCHAR},
+      absoluteQuantity = #{absolutequantity,jdbcType=VARCHAR},
+      length = #{length,jdbcType=VARCHAR},
+      width = #{width,jdbcType=VARCHAR},
+      height = #{height,jdbcType=VARCHAR},
+      dimensions = #{dimensions,jdbcType=VARCHAR},
+      massRange = #{massrange,jdbcType=VARCHAR},
+      mass = #{mass,jdbcType=VARCHAR},
+      massUnit = #{massunit,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      levelOfCompleteness = #{levelofcompleteness,jdbcType=VARCHAR},
+      currentConditionOfCompleteness = #{currentconditionofcompleteness,jdbcType=VARCHAR},
+      presentStateOfPreservation = #{presentstateofpreservation,jdbcType=VARCHAR},
+      accessionDate = #{accessiondate,jdbcType=VARCHAR},
+      accessionYear = #{accessionyear,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      edition = #{edition,jdbcType=VARCHAR},
+      existingVolume = #{existingvolume,jdbcType=VARCHAR},
+      F33 = #{f33,jdbcType=VARCHAR},
+      F34 = #{f34,jdbcType=VARCHAR},
+      F35 = #{f35,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

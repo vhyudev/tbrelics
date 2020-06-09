@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>查看备选单</title>
+    <meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+    <style type="text/css">
+		.bz{
+			position: absolute;
+		    top: 10px;
+		    left: 280px;
+		}
+		.layui-table-cell {
+		    height: auto;
+		    line-height: 18px;
+		    padding: 0 0px;
+		    text-align: center;
+		    overflow:visible;
+		    text-overflow:inherit;
+		    white-space:normal;
+		}
+	</style>
+</head>
+<body>
+<div class="childrenBody">
+	<form class="layui-form" action="" lay-filter="demo1">	
+        <div class="layui-form-item" style="margin-top: 10px;">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Name" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">数量</label>
+            <div class="layui-input-inline">
+                <input type="text" name="Number" autocomplete="off" class="layui-input layui-disabled">
+            </div>
+        </div>                  
+        <div class="layui-form-item bz">	            
+            <label class="layui-form-label">备注</label>
+            <div class="layui-input-inline">
+                <textarea name="Remark" class="layui-textarea" style="width: 200%;"></textarea>
+            </div>
+        </div>
+        
+        <div class="layui-form" style="margin: 0px 5px;">
+			<table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>
+<!--			<script type="text/html" id="toolbarDemo">-->
+<!--				<div class="layui-btn-container">-->
+<!--					<button type="button" class="layui-btn layui-btn-xs" lay-event="importData">-->
+<!--						<i class="iconfont icon-import"></i>导出-->
+<!--					</button>-->
+<!--				</div>-->
+<!--			</script>-->
+			<script type="text/html" id="xuhao">
+			    {{d.LAY_TABLE_INDEX+1}}
+			</script>
+			<script type="text/html" id="checkboxTpl">
+	            {{#  if(d.stockStatus === 0){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已征集未登记</button>
+	            {{#  } else if(d.stockStatus === 1){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已登记未入库</button>
+	            {{#  } else if(d.stockStatus === 2){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已入库</button>
+	            {{#  } else if(d.stockStatus === 3){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">出库</button>
+	            {{#  } else if(d.stockStatus === 4){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">返还入库</button>
+	            {{#  } else { }}
+	               <button type="button" class="layui-btn layui-btn-xs">完全返还入库</button>
+	            {{#  } }}
+		    </script>
+		</div>
+		<div id="page"></div>
+    </form> 
+</div>
+
+<script src="../../../lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    var tjcpData = eval('('+parent.tjcpData+')');
+    console.log(tjcpData);     
+    
+    layui.use(['form', 'table', ], function(){
+		var $ = layui.jquery,
+		form = layui.form,
+		table = layui.table;
+		
+		form.val("demo1", {
+			Name: tjcpData.Name,
+			Number: tjcpData.Number,
+			Remark: tjcpData.Remark
+		})
+			
+		table.render({
+            elem: '#currentTable',
+            data: tjcpData.data,
+			toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+			defaultToolbar: [ 'print', 'exports', {
+				title: '提示' //标题
+				,layEvent: 'LAYTABLE_TIPS' //事件名，用于 toolbar 事件中使用
+				,icon: 'layui-icon-tips' //图标类名
+			}],
+            cols: [
+                [
+                /*{type: 'checkbox'},*/
+                {type: 'numbers', title: '序号',templet: '#xuhao', width: 30},
+                {field: 'TotalNumber', title: '文物号', sort: true, edit: 'text'},
+                {field: 'McrName', title: '名称', edit: 'text', minWidth: 100},
+                {field: 'Age', title: '年代', sort: true, edit: 'text'},
+                {field: 'Number', title: '数量(单位)', sort: true, edit: 'text'},
+                {field: 'Hall', title: '方位', edit: 'text'},
+                {field: 'Fulldisable', title: '完残程度', edit: 'text'},
+                {field: 'stockStatus', title: '藏品状态',templet: '#checkboxTpl'}/*,
+                {fixed: 'right', title:'操作', toolbar: '#barDemo', width: 80}*/
+            ]
+			],
+            limits: [5, 10, 15, 20, 25, 50],
+            limit: 5,
+            page: true
+       	});
+		//监听头部事件
+		table.on('toolbar(currentTable)', function(obj){
+
+			if(obj.event === 'exports') {//导出
+				console.log('dadasdsad')
+			}
+		});
+	});
+</script>
+
+</body>
+</html>

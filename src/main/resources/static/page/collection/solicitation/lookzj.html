@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>查看征集信息</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+		<style type="text/css">
+			.layui-form-pane .layui-form-label {
+				padding: 8px 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="childrenBody">
+			<form class="layui-form layui-form-pane" action="" lay-filter="demo1" style="padding: 5px;">
+				<div class="layui-form-item" style="margin-top: 10px;">
+					<div class="layui-inline">
+						<label class="layui-form-label">征集单号</label>
+						<div class="layui-input-inline">
+							<input type="text" id="id" name="id" autocomplete="off" class="layui-input" value="{}" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">原记录表号</label>
+						<div class="layui-input-inline">
+							<input type="text" id="repCode" name="repCode" autocomplete="off" class="layui-input" value="201908171530" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label">来源</label>
+						<div class="layui-input-inline">
+							<input type="text" id="source" name="source" autocomplete="off" class="layui-input" value="购买" readonly="readonly">
+						</div>
+					</div>
+					
+					<div class="layui-inline">
+						<label class="layui-form-label">入馆日期</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" id="joinTime" name="joinTime" placeholder="2019-10-15" readonly="readonly">
+						</div>
+					</div>
+
+					<div class="layui-inline">
+						<label class="layui-form-label">征集人</label>
+						<div class="layui-input-inline">
+							<input type="text" id="zjPeo" name="zjPeo" autocomplete="off" class="layui-input" value="张茂才" readonly="readonly">
+						</div>
+					</div>
+					<!--<div class="layui-inline">
+						<label class="layui-form-label">征集凭证</label>
+						<div class="layui-input-inline">
+							<input type="text" name="bePeo" autocomplete="off" class="layui-input" value="0a1b20190323.jpg" readonly="readonly">
+						</div>
+					</div>-->
+
+				</div>
+
+			</form>
+			<!--<table class="layui-hide" id="test" lay-filter="test"></table>-->
+		</div>
+		<div class="layui-form" style="margin: 0px 5px;">
+			<div class="layui-btn-container">
+				<button class="layui-btn layui-btn-xs data-add-relic-btn" lay-event="rz"><i class="layui-icon">&#xe654;</i>入账</button>
+			</div>
+			<table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>
+
+			<script type="text/html" id="xuhao">
+				{{d.LAY_TABLE_INDEX+1}}
+			</script>
+		</div>
+		<div id="page"></div>
+		<script src="../../../lib/layui/layui.js" charset="utf-8"></script>
+		<script>
+			layui.use(['laydate'], function() {
+
+				var laydate = layui.laydate;
+
+				//日期范围
+				laydate.render({
+					elem: '#test6',
+					format: "yyyy年MM月dd日"
+				});
+			});
+		</script>
+		<script>
+			var tjcpData = eval('(' + parent.tjcpData + ')');
+			console.log(tjcpData);
+            var data;
+			layui.use(['form', 'table'], function() {
+				var $ = layui.jquery,
+					form = layui.form,
+					table = layui.table;
+
+				form.val("demo1", {
+                    id: tjcpData.id,
+                    joinTime: tjcpData.joinTime,
+                    repCode: tjcpData.repCode,
+                    source:tjcpData.source,
+                    zjPeo:tjcpData.zjPeo
+
+				})
+
+				table.render({
+					elem: '#currentTable',
+					data: tjcpData.data,
+					cols: [
+						[{
+								type: 'checkbox'
+							},
+							{
+								type: 'numbers',
+								title: '序号',
+								templet: '#xuhao',
+								width: 30
+							},
+
+							{
+								field: 'McrName',
+								title: '文物名称',
+								minWidth: 100
+							},
+							{
+								field: 'Age',
+								title: '现状',
+								sort: true
+							},
+							{
+								field: 'toNumber',
+								title: '统计数量',
+								sort: true
+							},
+							{
+								field: 'nowNumber',
+								title: '实际数量',
+								sort: true
+							},
+
+                            {
+                                field: 'cultType',
+                                title: '文物分类',
+                                sort: true
+                            }
+							// {fixed: 'right', title:'操作', toolbar:"#barDemo", width:120}
+							/*{field: 'Hall', title: '方位', edit: 'text'},
+							{field: 'Fulldisable', title: '完残程度', edit: 'text'},
+							{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150} */
+						]
+					],
+					limits: [5, 10, 15, 20, 25, 50],
+					limit: 5,
+					page: true
+				});
+
+				/*//监听单元格编辑
+				table.on('edit(currentTable)', function(obj) {
+					var value = obj.value, //得到修改后的值
+						data = obj.data, //得到所在行所有键值
+						field = obj.field; //得到字段
+					layer.msg('[Index: ' + data.index + '] ' + field + ' 字段更改为：' + value);
+				});*/
+                $(".data-add-relic-btn").on("click", function () {
+
+                    var checkStatus = table.checkStatus('currentTable')
+                     data = JSON.stringify(checkStatus.data);
+                    layer.open({
+                        type: 2,
+                        title: '入账信息',
+                        area: ['30%', '70%'],
+                        content: ["rzCult.html",'data']
+                    });
+                });
+
+            });
+                /*// 监听添加操作
+				$(".data-add-btn").on("click", function() {
+					tjcpData = [];
+					tjcpData = JSON.stringify(tjcpData);
+					var index = layui.layer.open({
+						title: "",
+						area: ['30%', '30%'],
+						content:'确定入账？',
+						type: 2,
+                        success : function(layero, index){
+                            setTimeout(function(){
+                                layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+                                    tips: 3
+                                });
+                            },500)
+                        }
+						/!*content: "addcp.html",*!/
+
+					})*/
+					//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+					/* $(window).resize(function(){
+						layui.layer.full(index);
+					})
+					layui.layer.full(index); */
+					/* 	//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+						 $(window).resize(function(){
+							layui.layer.full(index);
+						})
+						layui.layer.full(index); 
+					 });
+					 */
+				/*});*/
+
+				/*//监听提交
+				form.on('submit(demo1)', function(data) {
+					layer.alert(JSON.stringify(data.field), {
+						title: '最终的提交信息'
+					})
+					return false;
+				});*/
+
+
+		</script>
+		<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
+	</body>
+
+</html>

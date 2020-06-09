@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxtech.tbrelics.mapper.ViewApplicationResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.lxtech.tbrelics.view.ViewApplicationResource" >
+    <result column="id" property="id" jdbcType="BIGINT" />
+    <result column="applicationId" property="applicationid" jdbcType="BIGINT" />
+    <result column="resourceId" property="resourceid" jdbcType="BIGINT" />
+    <result column="userId" property="userid" jdbcType="BIGINT" />
+    <result column="applyTime" property="applytime" jdbcType="DATE" />
+    <result column="useTime" property="usetime" jdbcType="DATE" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="addresss" property="addresss" jdbcType="VARCHAR" />
+    <result column="format" property="format" jdbcType="VARCHAR" />
+    <result column="resolutionRatio" property="resolutionratio" jdbcType="VARCHAR" />
+    <result column="imgSize" property="imgsize" jdbcType="VARCHAR" />
+    <result column="relicId" property="relicid" jdbcType="BIGINT" />
+    <result column="total" property="total" jdbcType="INTEGER" />
+    <result column="purpose" property="purpose" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="appname" property="appname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, applicationId, resourceId, userId, applyTime, useTime, name, addresss, format, 
+    resolutionRatio, imgSize, relicId, total, purpose, status, realname, appname
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lxtech.tbrelics.view.ViewApplicationResourceExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from view_application_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.lxtech.tbrelics.view.ViewApplicationResourceExample" >
+    delete from view_application_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lxtech.tbrelics.view.ViewApplicationResource" >
+    insert into view_application_resource (id, applicationId, resourceId, 
+      userId, applyTime, useTime, 
+      name, addresss, format, 
+      resolutionRatio, imgSize, relicId, 
+      total, purpose, status, 
+      realname, appname)
+    values (#{id,jdbcType=BIGINT}, #{applicationid,jdbcType=BIGINT}, #{resourceid,jdbcType=BIGINT}, 
+      #{userid,jdbcType=BIGINT}, #{applytime,jdbcType=DATE}, #{usetime,jdbcType=DATE}, 
+      #{name,jdbcType=VARCHAR}, #{addresss,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, 
+      #{resolutionratio,jdbcType=VARCHAR}, #{imgsize,jdbcType=VARCHAR}, #{relicid,jdbcType=BIGINT}, 
+      #{total,jdbcType=INTEGER}, #{purpose,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{appname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lxtech.tbrelics.view.ViewApplicationResource" >
+    insert into view_application_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applicationid != null" >
+        applicationId,
+      </if>
+      <if test="resourceid != null" >
+        resourceId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="applytime != null" >
+        applyTime,
+      </if>
+      <if test="usetime != null" >
+        useTime,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="addresss != null" >
+        addresss,
+      </if>
+      <if test="format != null" >
+        format,
+      </if>
+      <if test="resolutionratio != null" >
+        resolutionRatio,
+      </if>
+      <if test="imgsize != null" >
+        imgSize,
+      </if>
+      <if test="relicid != null" >
+        relicId,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="purpose != null" >
+        purpose,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="appname != null" >
+        appname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applicationid != null" >
+        #{applicationid,jdbcType=BIGINT},
+      </if>
+      <if test="resourceid != null" >
+        #{resourceid,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="applytime != null" >
+        #{applytime,jdbcType=DATE},
+      </if>
+      <if test="usetime != null" >
+        #{usetime,jdbcType=DATE},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addresss != null" >
+        #{addresss,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null" >
+        #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratio != null" >
+        #{resolutionratio,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsize != null" >
+        #{imgsize,jdbcType=VARCHAR},
+      </if>
+      <if test="relicid != null" >
+        #{relicid,jdbcType=BIGINT},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=INTEGER},
+      </if>
+      <if test="purpose != null" >
+        #{purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="appname != null" >
+        #{appname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lxtech.tbrelics.view.ViewApplicationResourceExample" resultType="java.lang.Integer" >
+    select count(*) from view_application_resource
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update view_application_resource
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applicationid != null" >
+        applicationId = #{record.applicationid,jdbcType=BIGINT},
+      </if>
+      <if test="record.resourceid != null" >
+        resourceId = #{record.resourceid,jdbcType=BIGINT},
+      </if>
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=BIGINT},
+      </if>
+      <if test="record.applytime != null" >
+        applyTime = #{record.applytime,jdbcType=DATE},
+      </if>
+      <if test="record.usetime != null" >
+        useTime = #{record.usetime,jdbcType=DATE},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addresss != null" >
+        addresss = #{record.addresss,jdbcType=VARCHAR},
+      </if>
+      <if test="record.format != null" >
+        format = #{record.format,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resolutionratio != null" >
+        resolutionRatio = #{record.resolutionratio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgsize != null" >
+        imgSize = #{record.imgsize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relicid != null" >
+        relicId = #{record.relicid,jdbcType=BIGINT},
+      </if>
+      <if test="record.total != null" >
+        total = #{record.total,jdbcType=INTEGER},
+      </if>
+      <if test="record.purpose != null" >
+        purpose = #{record.purpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realname != null" >
+        realname = #{record.realname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appname != null" >
+        appname = #{record.appname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update view_application_resource
+    set id = #{record.id,jdbcType=BIGINT},
+      applicationId = #{record.applicationid,jdbcType=BIGINT},
+      resourceId = #{record.resourceid,jdbcType=BIGINT},
+      userId = #{record.userid,jdbcType=BIGINT},
+      applyTime = #{record.applytime,jdbcType=DATE},
+      useTime = #{record.usetime,jdbcType=DATE},
+      name = #{record.name,jdbcType=VARCHAR},
+      addresss = #{record.addresss,jdbcType=VARCHAR},
+      format = #{record.format,jdbcType=VARCHAR},
+      resolutionRatio = #{record.resolutionratio,jdbcType=VARCHAR},
+      imgSize = #{record.imgsize,jdbcType=VARCHAR},
+      relicId = #{record.relicid,jdbcType=BIGINT},
+      total = #{record.total,jdbcType=INTEGER},
+      purpose = #{record.purpose,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      realname = #{record.realname,jdbcType=VARCHAR},
+      appname = #{record.appname,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

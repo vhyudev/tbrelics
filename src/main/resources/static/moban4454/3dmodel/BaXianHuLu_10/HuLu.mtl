@@ -1,0 +1,18 @@
+newmtl _Plane001SG
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd default1.jpg
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 10.00
+newmtl _transform1SG
+illum 4
+Kd 1.00 1.00 1.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd default2.jpg
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 10.00

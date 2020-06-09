@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>生成提借出库单</title>
+    <meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+    <style type="text/css">
+		.layui-form-label {
+		    width: 100px;
+		}
+		.layui-table-cell {
+		    height: auto;
+		    line-height: 18px;
+		    padding: 0 0px;
+		    text-align: center;
+		    overflow:visible;
+		    text-overflow:inherit;
+		    white-space:normal;
+		}
+		#tj_reason:after {
+			content: "*";
+			color: red;
+		}
+
+	</style>
+</head>
+<body>
+<div class="childrenBody">
+	<form class="layui-form" action="" lay-filter="demo1">			
+        <div class="layui-form-item" style="margin-top: 10px;">	
+        	<div class="layui-inline">
+                <label class="layui-form-label">提借清单凭证号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="tjpzh" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">提借时限</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="timeLimit" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">提借时间</label>
+	            <div class="layui-input-inline">
+	            	<input type="text" class="layui-input" name="yijiTime"  id="test2" placeholder="yyyy-MM-dd">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">提借人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="username" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">提借部门领导</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="tjleader" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">保管人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="saver" autocomplete="off" class="layui-input">
+	            </div>
+	        </div> 
+	        <div class="layui-inline">
+	            <label class="layui-form-label">保管部门领导</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="saveleader" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>	        
+	        <div class="layui-inline">
+	            <label class="layui-form-label">馆长</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="leader" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">点交人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="djr" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>	        
+	        <div class="layui-inline">
+	            <label class="layui-form-label">点收人</label>
+	            <div class="layui-input-inline">
+	                <input type="text" name="dsr" autocomplete="off" class="layui-input">
+	            </div>
+	        </div>
+	        <div class="layui-inline">
+	            <label class="layui-form-label">出库时间</label>
+	            <div class="layui-input-inline">
+	                <input type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd">
+	            </div>
+	        </div>
+			<div class="layui-inline" id="div1">
+				<label class="layui-form-label" id="tj_reason">提借原因</label>
+				<div class="layui-input-inline">
+					<!--<input type="text" name="reason" autocomplete="off" class="layui-input">-->
+					<select name="reason" id="reason" lay-filter="typeSelect">
+						<option></option>
+						<option value="0">拍摄</option>
+						<option value="1">扫描</option>
+						<option value="2">观摩</option>
+						<option value="3">维修</option>
+						<option value="4">外展</option>
+						<option value="5">内展</option>
+					</select>
+				</div>
+			</div>
+	        <div class="layui-inline">
+				<label class="layui-form-label" id="lable">上传凭证</label>
+				<div class="layui-input-inline">
+					<button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>附件</button>
+				</div>
+			</div>
+        </div>
+        
+        <div class="layui-form tableContent" style="margin: 0px 5px;">
+			<table class="layui-hide" id="currentTable" lay-filter="currentTable"></table>					
+			<script type="text/html" id="toolbarDemo">
+				<input type="checkbox" name="checkall" class="checkall"  title="全选" lay-skin="primary" lay-filter="checkall"> 
+				<!--<div class="layui-btn-container">		    
+				    <button type="button" class="layui-btn layui-btn-xs layui-btn-danger data-delete-btn">
+				        <i class="layui-icon">&#xe640;</i>删除
+				    </button>
+				</div>-->
+			</script>
+			<script type="text/html" id="xuhao">
+			    {{d.LAY_TABLE_INDEX+1}}
+			</script>
+			<script type="text/html" id="checkboxTpl">
+	            {{#  if(d.stockStatus === 0){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已征集未登记</button>
+	            {{#  } else if(d.stockStatus === 1){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已登记未入库</button>
+	            {{#  } else if(d.stockStatus === 2){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">已入库</button>
+	            {{#  } else if(d.stockStatus === 3){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">出库</button>
+	            {{#  } else if(d.stockStatus === 4){ }}
+	                <button type="button" class="layui-btn layui-btn-xs">返还入库</button>
+	            {{#  } else { }}
+	               <button type="button" class="layui-btn layui-btn-xs">完全返还入库</button>
+	            {{#  } }}
+		    </script>
+			<!--<script type="text/html" id="barDemo">
+			    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+			</script>-->
+		</div>
+		<div id="page"></div>
+        
+        <div class="layui-form-item"style="margin-left: 30%;">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">确认出库</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form> 
+</div>
+
+<script src="../../../lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    var tjcpData = eval('('+parent.tjcpData+')');
+    console.log(tjcpData);        
+    var type;//选择缘由事件类别
+    layui.use(['form', 'table', 'laydate' ], function(){
+		var $ = layui.jquery,
+		form = layui.form,
+		table = layui.table,
+		laydate = layui.laydate;
+		
+		laydate.render({
+		    elem: '#test1',
+		    trigger: 'click'
+		})
+		
+		laydate.render({
+		    elem: '#test2',
+		    trigger: 'click'
+		})
+		
+		form.val("demo1", {
+			tjpzh:tjcpData.tjpzh,
+			// reason: tjcpData.reason,
+			timeLimit: tjcpData.timeLimit,
+			yijiTime: tjcpData.yijiTime,
+			username: tjcpData.username,
+			tjleader: tjcpData.tjleader,
+			saver: tjcpData.saver,
+			saveleader: tjcpData.saveleader,
+			leader: tjcpData.leader,
+			yanjiao: tjcpData.yanjiao,
+			djr: '孙明',
+			dsr: '李少军'
+		})
+			
+		table.render({
+            elem: '#currentTable',
+            data: tjcpData.data,
+            toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+            defaultToolbar: [],
+            cols: [
+                [
+                {type: 'checkbox'},
+                {type: 'numbers', title: '序号',templet: '#xuhao', width: 30},
+                {field: 'TotalNumber', title: '文物号', sort: true},
+                {field: 'McrName', title: '名称', minWidth: 150},
+                {field: 'Age', title: '年代', sort: true},
+                {field: 'Number', title: '数量(单位)', sort: true},
+                {field: 'Hall', title: '方位'},
+                {field: 'Fulldisable', title: '完残程度'},
+                {field: 'stockStatus', title: '藏品状态',templet: '#checkboxTpl'},
+                {field: 'yanjiao', title: '出库验交记录',edit: 'edit', width: 150}/*,
+                {fixed: 'right', title:'操作', toolbar: '#barDemo', width: 80}*/
+            ]
+			],
+            limits: [5, 10, 15, 20, 25, 50],
+            limit: 5,
+            page: true
+        });
+        
+        //全选
+        form.on('checkbox(checkall)', function(data){
+	        var child = $(data.elem).parents('.tableContent').find('input[type="checkbox"]');
+	        child.each(function(index, item){
+	            item.checked = data.elem.checked;
+	        });
+	        form.render('checkbox');
+	    });
+	    
+	    //取消全选
+	    table.on('checkbox', function (obj) {
+	    	var checkStatus = table.checkStatus('currentTable');
+	    	var length = checkStatus.data.length;
+            if (length != table.count) {
+                $(".checkall").prop("checked", false);
+                form.render('checkbox');
+            }
+        })
+        
+        //监听单元格编辑
+		table.on('edit(currentTable)', function(obj){
+		    var value = obj.value, //得到修改后的值
+		    data = obj.data, //得到所在行所有键值
+		    field = obj.field; //得到字段
+		    layer.msg('[Index: '+ data.index +'] ' + field + ' 字段更改为：'+ value);
+		});
+		
+		
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            })
+            return false;
+        });
+
+		//监听下拉框事件
+		form.on('select(typeSelect)', function(data){
+
+			var title;
+			type = data.value;
+			if(data.value == 0){//拍照
+				title = "拍摄记录";
+			}else if(data.value == 1){//扫描
+				title = "扫描记录";
+			}else if(data.value == 2){//观摩
+				title = "观摩记录";
+			}else if(data.value == 3){//修复
+				title = "修复记录";
+			}else if(data.value == 4){//外展
+				title = "外展记录";
+			}else if(data.value == 5){//内展
+				title = "内展记录";
+			}
+
+			var index = layui.layer.open({
+				title : title,
+				type : 2,
+				content : "../info/record/recordChoose.html",
+				area: ['100%', '100%'],
+				success : function(layero, index){
+					setTimeout(function(){
+						layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+							tips: 3
+						});
+					},500)
+				}
+			})
+			//改变窗口大小时，重置弹窗的高度，防止超出可视区域（如F12调出debug的操作）
+			$(window).resize(function(){
+				layui.layer.full(index);
+			})
+			layui.layer.full(index);
+
+
+		});
+        
+        
+	});
+</script>
+
+</body>
+</html>

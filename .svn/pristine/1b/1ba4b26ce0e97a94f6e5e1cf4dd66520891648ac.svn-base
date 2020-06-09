@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lxtech.tbrelics.mapper.ViewShopcartMapper" >
+  <resultMap id="BaseResultMap" type="com.lxtech.tbrelics.view.ViewShopcart" >
+    <result column="urid" property="urid" jdbcType="BIGINT" />
+    <result column="userid" property="userid" jdbcType="BIGINT" />
+    <result column="resid" property="resid" jdbcType="BIGINT" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="relicId" property="relicid" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="addresss" property="addresss" jdbcType="VARCHAR" />
+    <result column="format" property="format" jdbcType="VARCHAR" />
+    <result column="resolutionRatio" property="resolutionratio" jdbcType="VARCHAR" />
+    <result column="imgSize" property="imgsize" jdbcType="VARCHAR" />
+    <result column="identifierType" property="identifiertype" jdbcType="VARCHAR" />
+    <result column="identifier" property="identifier" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="workType" property="worktype" jdbcType="VARCHAR" />
+    <result column="materials" property="materials" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    urid, userid, resid, username, realname, relicId, name, addresss, format, resolutionRatio, 
+    imgSize, identifierType, identifier, title, date, workType, materials, level, source
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.lxtech.tbrelics.view.ViewShopcartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from view_shopcart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.lxtech.tbrelics.view.ViewShopcartExample" >
+    delete from view_shopcart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lxtech.tbrelics.view.ViewShopcart" >
+    insert into view_shopcart (urid, userid, resid, 
+      username, realname, relicId, 
+      name, addresss, format, 
+      resolutionRatio, imgSize, identifierType, 
+      identifier, title, date, 
+      workType, materials, level, 
+      source)
+    values (#{urid,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, #{resid,jdbcType=BIGINT}, 
+      #{username,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{relicid,jdbcType=BIGINT}, 
+      #{name,jdbcType=VARCHAR}, #{addresss,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, 
+      #{resolutionratio,jdbcType=VARCHAR}, #{imgsize,jdbcType=VARCHAR}, #{identifiertype,jdbcType=VARCHAR}, 
+      #{identifier,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, 
+      #{worktype,jdbcType=VARCHAR}, #{materials,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR}, 
+      #{source,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lxtech.tbrelics.view.ViewShopcart" >
+    insert into view_shopcart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="urid != null" >
+        urid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="resid != null" >
+        resid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="relicid != null" >
+        relicId,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="addresss != null" >
+        addresss,
+      </if>
+      <if test="format != null" >
+        format,
+      </if>
+      <if test="resolutionratio != null" >
+        resolutionRatio,
+      </if>
+      <if test="imgsize != null" >
+        imgSize,
+      </if>
+      <if test="identifiertype != null" >
+        identifierType,
+      </if>
+      <if test="identifier != null" >
+        identifier,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="worktype != null" >
+        workType,
+      </if>
+      <if test="materials != null" >
+        materials,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="urid != null" >
+        #{urid,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="resid != null" >
+        #{resid,jdbcType=BIGINT},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="relicid != null" >
+        #{relicid,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addresss != null" >
+        #{addresss,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null" >
+        #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="resolutionratio != null" >
+        #{resolutionratio,jdbcType=VARCHAR},
+      </if>
+      <if test="imgsize != null" >
+        #{imgsize,jdbcType=VARCHAR},
+      </if>
+      <if test="identifiertype != null" >
+        #{identifiertype,jdbcType=VARCHAR},
+      </if>
+      <if test="identifier != null" >
+        #{identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="worktype != null" >
+        #{worktype,jdbcType=VARCHAR},
+      </if>
+      <if test="materials != null" >
+        #{materials,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lxtech.tbrelics.view.ViewShopcartExample" resultType="java.lang.Integer" >
+    select count(*) from view_shopcart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update view_shopcart
+    <set >
+      <if test="record.urid != null" >
+        urid = #{record.urid,jdbcType=BIGINT},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=BIGINT},
+      </if>
+      <if test="record.resid != null" >
+        resid = #{record.resid,jdbcType=BIGINT},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realname != null" >
+        realname = #{record.realname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relicid != null" >
+        relicId = #{record.relicid,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addresss != null" >
+        addresss = #{record.addresss,jdbcType=VARCHAR},
+      </if>
+      <if test="record.format != null" >
+        format = #{record.format,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resolutionratio != null" >
+        resolutionRatio = #{record.resolutionratio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imgsize != null" >
+        imgSize = #{record.imgsize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identifiertype != null" >
+        identifierType = #{record.identifiertype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.identifier != null" >
+        identifier = #{record.identifier,jdbcType=VARCHAR},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=VARCHAR},
+      </if>
+      <if test="record.worktype != null" >
+        workType = #{record.worktype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.materials != null" >
+        materials = #{record.materials,jdbcType=VARCHAR},
+      </if>
+      <if test="record.level != null" >
+        level = #{record.level,jdbcType=VARCHAR},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update view_shopcart
+    set urid = #{record.urid,jdbcType=BIGINT},
+      userid = #{record.userid,jdbcType=BIGINT},
+      resid = #{record.resid,jdbcType=BIGINT},
+      username = #{record.username,jdbcType=VARCHAR},
+      realname = #{record.realname,jdbcType=VARCHAR},
+      relicId = #{record.relicid,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      addresss = #{record.addresss,jdbcType=VARCHAR},
+      format = #{record.format,jdbcType=VARCHAR},
+      resolutionRatio = #{record.resolutionratio,jdbcType=VARCHAR},
+      imgSize = #{record.imgsize,jdbcType=VARCHAR},
+      identifierType = #{record.identifiertype,jdbcType=VARCHAR},
+      identifier = #{record.identifier,jdbcType=VARCHAR},
+      title = #{record.title,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=VARCHAR},
+      workType = #{record.worktype,jdbcType=VARCHAR},
+      materials = #{record.materials,jdbcType=VARCHAR},
+      level = #{record.level,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

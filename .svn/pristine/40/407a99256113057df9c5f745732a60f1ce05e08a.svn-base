@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="moban4454">
+    <output-path>$PROJECT_DIR$/classes/artifacts/moban4454</output-path>
+    <root id="archive" name="moban4454.war" />
+  </artifact>
+</component>

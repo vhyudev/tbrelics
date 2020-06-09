@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>相关知识</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../lib/layui/css/layui.css" media="all">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div style="width: auto;height: auto;line-height: 40px;font-size: 24px;padding-left: 20px;padding-top: 10px;">
+			相关知识
+		</div>
+		<div style="width: 96%;height: auto;margin-left: 2%;border: 0.5px solid #CCCCCC;line-height: 40px;font-size: 16px;padding-left: 5px;">
+			鼎是在祭祀时盛放肉类的礼器，国君或王公大臣在重大庆典或接受赏赐时都要铸鼎，以记载盛况，是国家权力的象征。从太保鼎的器型和纹饰特点来看，其铸造年代应为西周早期。鼎腹内壁铸“大保铸”三字。大保即太保，太保为官职名，西周始置，为监护与辅弼国君之官。《尚书?君奭》载：“召公为保，周公为师，相成王左右。”《史记?燕召公世家》记载：“召公奭与周同姓，姓姬氏，周武王之灭纣，封召公于北燕。”据学者考证，这件太保鼎是西周成王时的重臣召公奭所铸造的。
+		</div>
+	</body>
+</html>

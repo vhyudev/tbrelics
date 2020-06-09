@@ -1,0 +1,211 @@
+package com.lxtech.tbrelics.controller;
+
+
+import com.lxtech.tbrelics.dataacquisition.DResource;
+import com.lxtech.tbrelics.dataacquisition.DataJson;
+import com.lxtech.tbrelics.dataacquisition.FileErgodic;
+import com.lxtech.tbrelics.dataacquisition.TiffOP;
+import com.lxtech.tbrelics.mapper.LCollectionMapper;
+import com.lxtech.tbrelics.service.CollectionService;
+import com.lxtech.tbrelics.service.DResourceService;
+import com.lxtech.tbrelics.util.GetImgInfo;
+import com.lxtech.tbrelics.util.GetInfoImg;
+import com.lxtech.tbrelics.util.ImageUtil;
+import com.lxtech.tbrelics.vo.ApplicationResources;
+import com.lxtech.tbrelics.vo.ResultVo;
+import com.lxtech.tbrelics.vo.UserResources;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskRejectedException;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+@RestController
+@RequestMapping("resource")
+public class ResourceController {
+
+    @Autowired
+    private CollectionService collectionService;
+
+    @Autowired
+    private DResourceService dResourceService;
+
+    @Autowired
+    private LCollectionMapper lCollectionMapper;
+
+    @Autowired
+    private GetInfoImg getInfoImg;
+
+
+    /**
+     * 用户文物蓝数据 倒叙排练4条
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("findUserResources")
+    public ResultVo findApplications(@RequestParam("userId")Long userId) throws Exception {
+        ResultVo resultVo = new ResultVo();
+        resultVo.setStatus("200");
+        resultVo.setMsg("用户文物篮数据");
+        UserResources userResources=collectionService.selectResources(userId);
+        resultVo.setResult(userResources);
+        return resultVo;
+    }
+
+    /**
+     * 批量插入资源
+     * @param path 文件夹硬盘根目录地址
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("insertResources")
+    public ResultVo findApplications(@RequestParam("path")String path) throws Exception {
+        ResultVo resultVo = new ResultVo();
+        resultVo.setStatus("200");
+        long start = System.currentTimeMillis();
+        FileErgodic fileErgodic = new FileErgodic();
+        List<File> fileList = fileErgodic.getFileDirectory(path);
+        List<Future<String>> lstFuture = new ArrayList<>();// 存放所有的线程，用于获取结果
+        if(fileList!=null){
+            for(File file:fileList){
+                while (true) {
+                    try {
+                        // 线程池超过最大线程数时，会抛出TaskRejectedException，则等待1s，直到不抛出异常为止
+                        Future<String> stringFuture = dResourceService.insertDResource(file);
+                        lstFuture.add(stringFuture);
+                        break;
+                    } catch (TaskRejectedException e) {
+                        System.out.println("线程池满，等待1S。");
+                        Thread.sleep(1000);
+                    }
+                }
+            }
+            // 获取值.get是阻塞式，等待当前线程完成才返回值
+            for (Future<String> future : lstFuture) {
+                future.get();
+                //System.out.println(future.get());
+            }
+        }
+        long end = System.currentTimeMillis();
+        String time= "批量插入执行时间"+(end-start)/1000+"s";
+        resultVo.setMsg(time);
+        return resultVo;
+    }
+
+    /**
+     * 缩略图生成方法
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("thumbImgURL")
+    public ResultVo thumbImg() throws Exception {
+        ResultVo resultVo = new ResultVo();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        int  resourceCount = lCollectionMapper.selectResourceCountByLevelone();
+        int  countPage = resourceCount/50 +1;
+        List<Future<String>> lstFuture = null;
+        for(int m=0;m<countPage;m++){
+            System.out.println("文物正在处理"+50*(m+1)+"条："+simpleDateFormat.format(new Date()));
+            lstFuture =new ArrayList<>();// 存放所有的线程，用于获取结果
+            // 线程池超过最大线程数时，会抛出TaskRejectedException，则等待1s，直到不抛出异常为止
+            List<String> listAddress = lCollectionMapper.selectResourcesAddressone(50*m,50);
+            for(int i=0;i<listAddress.size();i++){
+                try{
+                    // 线程池超过最大线程数时，会抛出TaskRejectedException，则等待1s，直到不抛出异常为止
+                    Future<String> future = dResourceService.thumbImg(listAddress.get(i));
+                    lstFuture.add(future);
+                } catch (TaskRejectedException e) {
+                    System.out.println("线程池满，等待1S。");
+                    Thread.sleep(1000);
+                }catch (NullPointerException e){
+                }
+            }
+            for(Future future:lstFuture ){
+                future.get();
+            }
+        }
+        resultVo.setStatus("200");
+        resultVo.setMsg("文物程序处理完毕");
+        return resultVo;
+    }
+
+    /**
+     * 获取资源信息
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("imgAttribute")
+    public ResultVo imgAttribute() throws Exception {
+        ResultVo resultVo = new ResultVo();
+        String[] level = {"一级","二级","三级","一般","未定级"};
+        for(int n=0;n<level.length;n++){
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            System.out.println(level[n]+"文物获取图片属性开始处理，每次处理100条");
+            int  resourceCount = lCollectionMapper.selectResourceCountByLevel(level[n]);
+            int  countPage = resourceCount/50 +1;
+            List<Future<DResource>> lstFuture = null;
+            List<DResource> dResourceList = null;
+            for(int m=0;m<countPage;m++){
+                System.out.println(level[n]+"文物正在处理"+50*(m+1)+"条："+simpleDateFormat.format(new Date()));
+                lstFuture =new ArrayList<>();// 存放所有的线程，用于获取结果
+                // 线程池超过最大线程数时，会抛出TaskRejectedException，则等待1s，直到不抛出异常为止
+                List<String>  listAddress = lCollectionMapper.selectResourcesAddress(50*m,50,level[n]);
+                for(String address:listAddress){
+                    try{
+                        String URL = null;
+                        String[] add = address.split("/");
+                        if(add[0].equals("chuli")){
+                            URL = "F:/"+address;
+                        }else if(add[0].equals("chuli2011as")||add[0].equals("yipu")){
+                            URL = "E:/"+address;
+                        }
+                        File f= new File(URL);
+                        if(f.exists()){
+                            Future<DResource> future = getInfoImg.getImgInfo(f);
+                            lstFuture.add(future);
+                        }
+                    } catch (TaskRejectedException e) {
+                        System.out.println("线程池满，等待1S。");
+                        Thread.sleep(1000);
+                    }catch (NullPointerException e){
+                        System.out.println("文件读取异常'");
+                    }
+                }
+                dResourceList = new ArrayList<>();
+                DResource dResource = null;
+                for(Future future:lstFuture ){
+                    try{
+                        dResource= (DResource) future.get();
+                        if(dResource!=null){
+                            dResourceList.add(dResource);
+                        }
+                    } catch (NullPointerException e){
+                        System.out.println("noGet");
+                    }
+                }
+                if(dResourceList.size()>0){
+                    DataJson dataJson = new DataJson();
+                    dataJson.dResourceTransformJson(dResourceList,"D:/imgAttributeLevel_"+(n+1));
+                }
+            }
+            System.out.println(level[n]+"文物程序处理完毕");
+        }
+
+        resultVo.setStatus("200");
+        resultVo.setMsg("文物程序处理完毕");
+        return resultVo;
+    }
+
+
+}

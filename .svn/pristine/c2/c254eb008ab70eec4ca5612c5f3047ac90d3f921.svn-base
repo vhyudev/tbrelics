@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>看大图</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="lib/layui/css/layui.css" media="all" />
+		<style type="text/css">
+			.imgbox {
+				height: 400px;
+				background-color: #e6e5e5;
+				position: relative;
+			}
+
+			.imgbox img {
+				max-width: 100%;
+				max-height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				margin: auto;
+			}
+
+			.relic{
+				margin-bottom: 10px;
+			}
+
+			.layui-table{
+				border: 0px !important;
+				margin-top: -10px;
+				padding-left: 10px;
+			}
+
+			.layui-table[lay-size=sm] td{
+				font-size: 14px;
+				padding-left: 20px;
+			}
+
+			.layui-table-cell{
+				display:table-cell;
+				vertical-align: middle;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div class="layui-row">
+			<div class="imgbox  layui-col-xs9 layui-col-sm9 layui-col-md9">
+				<a href="#">
+					<img src="" alt="">
+				</a>
+			</div>
+			<div class="layui-col-xs3 layui-col-sm3 layui-col-md3" style="padding-left: 10px">
+				<div class="relic">
+					<blockquote class="layui-elem-quote">文物信息</blockquote>
+					<table class="layui-table" lay-size="sm" id="relicTable"></table>
+				</div>
+				<div class="img">
+					<blockquote class="layui-elem-quote">图片信息</blockquote>
+					<table class="layui-table" lay-size="sm" id="imgTable"></table>
+				</div>
+
+			</div>
+		</div>
+
+
+		<script src="lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+		<script src="js/imgPath.js"></script>
+		<script type="text/javascript">
+            $.ajax({
+                type: "post",
+                url: "relic/selectByResourceId",
+                data: {
+                    id:parent.imgId
+				},
+                dataType: "json",
+                success: function (res) {
+                    if(res.status=="200") {
+                        var data=res.result;
+                        console.log(data);
+                        var id = data.id;
+                        //var name = data.name;
+                        var addresss = data.addresss;
+                        var format = data.format;
+                        var resolutionRatio = data.resolutionratio;
+                        var imgSize = data.imgsize;
+                        $("#imgTable").html('<tr><td>'+ format +'</td></tr>'
+							+ '<tr><td>'+ resolutionRatio +'</td></tr>'
+							+ '<tr><td>'+imgSize +'</td></tr>');
+                        if(isBlank(data.model)){
+                            $("#imgTable").append('<tr><td>'+ data.model +'</td></tr>');
+                        }
+                        if(isBlank(data.imgshoottime)){
+                            $("#imgTable").append('<tr><td>'+ data.imgshoottime +'</td></tr>');
+                        }
+
+                        var relicId = data.relicId;
+                        var relicName = data.title;
+                        var totalNumber = data.identifiertype+"-"+data.identifier;
+                        var fcrclass = isBlank(data.level);
+                        $("#relicTable").html('<tr><td>'+ relicName +'</td></tr>'
+							+'<tr><td>'+ totalNumber +'</td></tr>');
+                        if(isBlank(data.worktype)){
+                            $("#relicTable").append('<tr><td>'+ data.worktype +'</td></tr>');
+						}
+                        if(isBlank(data.period)){
+                            $("#relicTable").append('<tr><td>'+ data.period +'</td></tr>');
+                        }
+                        if(isBlank(data.fcrclass)){
+                            $("#relicTable").append('<tr><td>'+ data.fcrclass +'</td></tr>');
+                        }
+
+                        var big=getImgThumb(addresss,1);
+                        $(".imgbox img").attr("src",big);
+                        $(".imgbox img").attr("alt",big);
+                        $("img").on("contextmenu",function(){return false;});
+                        $("img").on("dragstart",function(){return false;});
+                        $("img").on('mousedown',function (e) { e.preventDefault()});
+                    }
+
+                }
+            })
+
+            //判断数据是否为空
+            function isBlank(str){
+                if (str == null || str == undefined || str == '') {
+                    return false;
+                }else{
+                    return true;
+				}
+            }
+
+
+		</script>
+	</body>
+
+</html>

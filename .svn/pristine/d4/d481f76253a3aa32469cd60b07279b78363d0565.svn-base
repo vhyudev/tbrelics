@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>相关知识</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../../lib/layui/css/layui.css" media="all">
+		<link rel="stylesheet" href="../../../../css/relic_info.css">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    /*margin:60px auto;*/
+			    position: relative;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="title">
+			（1）珐琅彩瓷
+		</div>
+		<hr class="hr_line"/>
+		<div class="content">
+			是引进西洋工艺专为清代宫廷御用而特制的一种精美的彩绘瓷器。创始于康熙末年，雍正朝制作日趋精美，乾隆时期更加工巧精细，达到了登峰造极的境地。珐琅彩瓷，也称“古月轩”瓷，是唯一被特准在宫廷内烧制的瓷器，由此可见它的珍贵和特殊了。
+			清代前期，从国外进口有与景泰蓝相似的金珐琅、铜珐琅等品物。当时国内也盛行在铜、玻璃料和瓷器等不同质地的胎上，用进口的各种珐琅彩料描绘而成的珐琅彩器，其中在瓷胎上绘画的称“瓷胎画珐琅”，也就是驰名中外的珐琅彩瓷器。珐琅彩瓷，是清康熙、雍正、乾隆三朝的宫廷御用瓷。
+		</div>
+		<div class="title">
+			（2）玉壶春瓶
+		</div>
+		<hr class="hr_line"/>
+		<div class="content">
+			玉壶春瓶又称玉壶赏瓶，是中国瓷器造型中的一种典型器形。流行地区广，沿用时间长，宋以后历代各地窑场均有烧制。它的造型是由唐代寺院里的净水瓶演变而来。基本形制为撇口、细颈、垂腹、圈足。它是一种以变化柔和的弧线为轮廓线的瓶类。其造型上的独特之处是：颈较细，颈部中央微微收束，颈部向下逐渐加宽过渡为杏圆状下垂腹，曲线变化圆缓；圈足相对较大，或内敛或外撇。这种瓶的造型定型于宋代，历经宋、元、明、清、民国直至现代。
+
+		</div>
+		<div class="title">
+			（3）珐琅彩瓷的制作
+		</div>
+		<hr class="hr_line"/>
+		<div class="content">
+			珐琅彩瓷的制作工艺十分复杂。先在江西景德镇御窑厂烧制素胎，千里挑一地精选，然后送至宫中御选，由清宫优秀画师用珐琅彩精心彩绘，画成后再选，再烧。由于珐琅彩瓷的胎质较一般瓷器薄，在二次上彩烧造时极易破裂，而且在高温烧制的过程中，瓷釉发生的复杂变化往往是难以预料和控制的，即使是清宫一流工匠，在烧制时也难免失败，其技术要求之高、工艺之复杂可想而知。一些器型、质地、图案和色彩俱佳的精品，甚至是工匠们终其一生求之不得的。然而，就是这凝结了工匠们心血和汗水的成品珐琅彩瓷，制作完成后呈送皇帝，经皇帝本人御览定夺后，也仅留数件极其完美者，余者全部就地砸碎深埋土中，不准流散民间，因而传世品极少，珍贵异常。而这件玉壶春瓶在当时就是由乾隆皇帝挑选出来的唯一的一件精品，可谓是天下无双，仅此一件。
+		</div>
+		<script>
+			(function(){
+				/**
+				 * 获取当前域
+				 **/
+				function _getDomain(){
+					var _hostname = window.location.hostname.toString();
+					var _hosts = _hostname.split(".");
+					var _len = _hosts.length;
+					if(_len>2){
+						return _hosts[_len-2]+"."+_hosts[_len-1];
+					}
+					return _hostname;
+				}
+
+				window.onload = function()
+				{
+//设置子页面的域
+					document.domain=_getDomain();
+					function _setHeight()
+					{
+						if (window.parent != window)
+						{
+							try
+							{
+//设置父级iframe的高度
+								parent.document.getElementById("xiangguanzs").style.height = document.body.scrollHeight+ 'px';
+							}
+							catch(e)
+							{
+							}
+						}
+//每隔2s设置一次，主要为了兼容子页面加载完毕之后高度再变化
+						setTimeout(_setHeight,2000);
+					}
+//子页面加载完毕之后调用一次
+					_setHeight();
+				}
+			})();
+		</script>
+	</body>
+</html>

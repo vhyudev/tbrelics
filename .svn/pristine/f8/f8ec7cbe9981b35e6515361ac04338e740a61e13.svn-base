@@ -1,0 +1,192 @@
+package com.lxtech.tbrelics.util;
+
+import com.lxtech.tbrelics.dataacquisition.ReadProperties;
+import com.lxtech.tbrelics.dataacquisition.TiffOP;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Service;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import static java.lang.System.out;
+
+/**
+ *  注意：缩略图在该路径下  D:/thumb
+ */
+public class ImageUtil {
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+    private static String DEFAULT_PREVFIX = "thumb_";//缩略图前缀
+    private static Boolean DEFAULT_FORCE = false;//建议该值为false
+    private static String thumb_type = "big";//缩略图类型:big大图4K,small小图570X428
+
+    /**
+     * <p>Title: thumbnailImage</p>
+     * <p>Description: 依据图片路径生成缩略图 </p>
+     *
+     * @param
+     * @param w         缩略图宽
+     * @param h         缩略图高
+     * @param //prevfix 生成缩略图的前缀
+     * @param //force   是否强制依照宽高生成缩略图(假设为false，则生成最佳比例缩略图)，按照比例生成缩略图
+     */
+    public void thumbnailImage(File imgFile, int w, int h) throws IOException {
+        String prevfix = DEFAULT_PREVFIX;
+        boolean force = DEFAULT_FORCE;
+        String suffix = null;
+        if (imgFile.getName().indexOf(".") > -1) {
+            suffix = imgFile.getName().substring(imgFile.getName().lastIndexOf(".") + 1).toLowerCase();
+        }
+        // ImageIO 支持的图片类型 : [BMP, bmp, jpg, JPG, wbmp, jpeg, png, PNG, JPEG, WBMP, GIF, gif]
+        if (suffix.equals("jpg") || suffix.equals("png") || suffix.equals("jpeg") || suffix.equals("gif")||suffix.equals("cr2")||suffix.equals("bmp")||suffix.equals("wbmp")||suffix.equals("tif")||suffix.equals("tiff")||suffix.equals("fff")){
+            bufThumb(imgFile, force, w, h, prevfix,suffix);
+        }else{
+            log.info("文件不符合="+imgFile.getName());
+        }
+    }
+    /**
+     * 创建多级目录
+     *
+     * @param path
+     */
+    public String creatFolder(String path) {
+        ReadProperties rp = new ReadProperties();
+        String thumbPath = rp.getPropertiesString("thumbPath", "application.properties");
+        String url = thumbPath + path.substring(3, path.length());
+        File file = new File(url);
+        if (!file.exists() && !file.isDirectory()) {
+            file.mkdirs();
+        }
+        return url;
+    }
+
+    public void bufThumb(File imgFile, boolean force, int w, int h, String prevfix,String suffix) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(imgFile);
+            if (suffix.equals("jpg") || suffix.equals("png") || suffix.equals("jpeg") || suffix.equals("gif")) {
+                ImgIoThumbSon( img,imgFile, force, w, h, prevfix);
+            }else{
+                bufThumbSon(img, imgFile, force, w, h, prevfix);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }catch (IllegalArgumentException e){
+            log.info("文件异常，文件读取不到。"+imgFile.getAbsolutePath());
+            AppendContentToFile a = new AppendContentToFile();
+            a.method("D:\\thumb\\thumb.txt", imgFile.getAbsolutePath());
+        }catch (NullPointerException e){
+            log.info("文件异常，不存在文件。"+imgFile.getAbsolutePath());
+            AppendContentToFile a = new AppendContentToFile();
+            a.method("D:\\thumb\\thumb.txt", imgFile.getAbsolutePath());
+        }finally {
+            img.getGraphics().dispose();//资源释放
+        }
+
+    }
+
+    //tif 缩略图
+    public void  bufThumbSon(BufferedImage img, File imgFile, boolean force, int w, int h, String prevfix) throws IOException {
+        int[] wh = getImgWH(img,w,h,force);
+        w=wh[0];
+        h=wh[1];
+        String p = imgFile.getPath();
+        String path = p.substring(0, p.lastIndexOf(File.separator));
+        String url = new ImageUtil().creatFolder(path) + File.separator + thumb_type + "-" + prevfix + imgFile.getName();
+        String imgUrl = url.substring(0, url.lastIndexOf(".") + 1) + "jpg";
+
+        //转换tif为jpg
+        //String save = imgFile.getAbsolutePath();
+        String save = new ImageUtil().creatFolder(path) + File.separator + prevfix + imgFile.getName();
+        String saveURL = save.substring(0, save.lastIndexOf(".") + 1) + "jpg";
+        File saveFile=new File(saveURL );
+        ImageIO.write(img, "JPEG", saveFile);
+
+        File  file= new File(imgUrl);
+        if(!file.exists()){
+            //Image img2 = ImageIO.read(saveFile);
+            BufferedImage img2= ImageIO.read(saveFile);
+            BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics g = bi.getGraphics();
+            g.drawImage(img2, 0, 0, w, h, Color.LIGHT_GRAY, null);
+            g.dispose();
+            ImageIO.write(bi, "JPEG",file);
+            img2.getGraphics().dispose();
+        }
+        saveFile.delete();
+    }
+
+
+    //jpg,png 缩略图
+    public void ImgIoThumbSon( BufferedImage img, File imgFile,boolean force, int w, int h, String prevfix) throws IOException {
+        int[] wh = getImgWH(img,w,h,force);
+        w=wh[0];
+        h=wh[1];
+        String p = imgFile.getPath();
+        String path = p.substring(0, p.lastIndexOf(File.separator));
+        String url = new ImageUtil().creatFolder(path) + File.separator + thumb_type + "-" + prevfix + imgFile.getName();
+        String imgUrl = url.substring(0, url.lastIndexOf(".") + 1) + "jpg";
+
+        File  file= new File(imgUrl);
+        if(!file.exists()){
+            BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            Graphics g = bi.getGraphics();
+            g.drawImage(img, 0, 0, w, h, Color.LIGHT_GRAY, null);
+            g.dispose();
+            ImageIO.write(bi, "JPEG",file);
+        }
+        //log.info(flags + "缩略图在该路径下生成成功" + imgUrl);
+    }
+
+    //获取图片w,h
+    public int[] getImgWH(BufferedImage img,int w,int h , boolean force){
+        int wh[] = new int[2];
+        if (!force) {
+            // 依据原图与要求的缩略图比例，找到最合适的缩略图比例
+            int width = img.getWidth(null);
+            int height = img.getHeight(null);
+            if(w>width&&h>height){
+                w=width;
+                h=height;
+            }else{
+                if ((width * 1.0) / w < (height * 1.0) / h) {
+                    if (width > w) {
+                        w = Integer.parseInt(new java.text.DecimalFormat("0").format(width * h / (height * 1.0)));
+                        log.debug("change image's width, width:{}, height:{}.", w, h);
+                    }
+                } else {
+                    if (height > h) {
+                        h = Integer.parseInt(new java.text.DecimalFormat("0").format(height * w / (width * 1.0)));
+                        log.debug("change image's height, width:{}, height:{}.", w, h);
+                    }
+                }
+
+            }
+
+        }
+        wh[0]=w;
+        wh[1]=h;
+        return wh;
+    }
+
+    public static void main(String[] args) throws IOException {
+        long start = System.currentTimeMillis();
+        ImageUtil imageUtil = new ImageUtil();
+        String url = "D:\\thumb\\tif\\GMS 1186-3.tif";
+        File file = new File(url);		//获取其file对象
+        imageUtil.thumbnailImage(file, 3000, 2000);//
+        long end= System.currentTimeMillis();
+        out.println("总时间="+(end-start)/1000);
+    }
+}
+

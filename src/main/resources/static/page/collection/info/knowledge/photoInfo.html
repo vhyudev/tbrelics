@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>图片资源</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../../../lib/layui/css/layui.css" media="all">
+		<style>
+			*{
+			    margin:0px;
+			    padding:0px;
+			}
+			body{
+			    /*background-color: #eeeeee;*/
+			}
+			.container{
+			    width:900px;
+			    height:450px;
+			    margin:60px auto;
+			    position: relative;
+			}
+			.pic{
+			    width:160px;
+			}
+			.container img{
+			    padding:10px 10px 10px 15px;
+			    background-color: white;
+			    border:1px solid #ddd;
+			    box-shadow: 2px 2px 3px rgba(50,50,50,0.4);
+			    z-index:1;
+			    position: absolute;
+			    -webkit-transition: all 0.5s ease-in;
+			    -moz-transition: all 0.5s ease-in;
+			    -ms-transition: all 0.5s ease-in;
+			    -o-transition: all 0.5s ease-in;
+			    transition: all 0.5s ease-in;
+			}
+			.container img:hover{
+			    z-index:2;
+			    box-shadow:15px 15px 20px rgba(50, 50, 50,0.4);
+			    transform: rotate(0deg) scale(1.2);
+			    -webkit-transform: rotate(0deg) scale(1.2);
+			}
+			.pic1{
+			    left:400px;
+			    top:0px;
+			    transform: rotate(-5deg);
+			    -webkit-transform: rotate(-5deg);
+			}
+			.pic2{
+			    left:200px;
+			    top:0px;
+			    transform: rotate(-20deg);
+			    -webkit-transform: rotate(-20deg);
+			}
+			.pic3{
+			    right:100px;
+			    /*bottom:100px;*/
+			    transform: rotate(5deg);
+			    -webkit-transform: rotate(5deg);
+			}
+			.pic4{
+			    top:150px;
+			    left:300px;
+			    transform: rotate(-10deg);
+			    -webkit-transform: rotate(-10deg);
+			}
+			.pic5{
+			    bottom:0px;
+			    top:0px;
+			    transform: rotate(-10deg);
+			    -webkit-transform: rotate(-10deg);
+			}
+			.pic6{
+			    left:0px;
+			    top:155px;
+			    transform: rotate(10deg);
+			    -webkit-transform: rotate(10deg);
+			}
+			.pic7{
+			    left:805px;
+			    top:0px;
+			    transform: rotate(20deg);
+			    -webkit-transform: rotate(20deg);
+			}
+			.pic8{
+			    left:810px;
+			    top:170px;
+			    transform: rotate(5deg);
+			    -webkit-transform: rotate(5deg);
+			}
+			.pic9{
+			    left:550px;
+			    top:150px;
+			    transform: rotate(15deg);
+			    -webkit-transform: rotate(15deg);
+			}
+		</style>
+	</head>
+	<body>
+
+		<div style="width: 100%;height: 30px;margin-top: 15px;">
+			<div style="font-size: 20px;padding-left: 30px;width: 70%;float: left;">
+				当前已有高清照片<span style="color: red;">31</span>张
+			</div>
+			<div style="float: right;margin-right: 30px;">
+				<a href="#">换一批</a>
+			</div>
+		</div>
+		<div class="container">
+		    <a href=""><img class="pic pic1" src="../../../../images/yhcp/1.jpg"/></a>
+			<a href=""><img class="pic pic2" src="../../../../images/yhcp/2.jpg"/></a>
+			<a href=""><img class="pic pic3" src="../../../../images/yhcp/3.jpg"/></a>
+			<a href=""><img class="pic pic4" src="../../../../images/yhcp/4.jpg"/></a>
+			<a href=""><img class="pic pic5" src="../../../../images/yhcp/5.jpg"/></a>
+			<a href=""><img class="pic pic6" src="../../../../images/yhcp/6.jpg"/></a>
+			<a href=""><img class="pic pic7" src="../../../../images/yhcp/7.jpg"/></a>
+			<a href=""><img class="pic pic8" src="../../../../images/yhcp/8.jpg"/></a>
+			<a href=""><img class="pic pic9" src="../../../../images/yhcp/9.jpg"/></a>
+
+		</div>
+		<script>
+			(function(){
+				/**
+				 * 获取当前域
+				 **/
+				function _getDomain(){
+					var _hostname = window.location.hostname.toString();
+					var _hosts = _hostname.split(".");
+					var _len = _hosts.length;
+					if(_len>2){
+						return _hosts[_len-2]+"."+_hosts[_len-1];
+					}
+					return _hostname;
+				}
+
+				window.onload = function()
+				{
+	//设置子页面的域
+					document.domain=_getDomain();
+					function _setHeight()
+					{
+						if (window.parent != window)
+						{
+							try
+							{
+	//设置父级iframe的高度
+								parent.document.getElementById("photoInfo").style.height = document.body.scrollHeight+ 'px';
+							}
+							catch(e)
+							{
+							}
+						}
+	//每隔2s设置一次，主要为了兼容子页面加载完毕之后高度再变化
+						setTimeout(_setHeight,2000);
+					}
+	//子页面加载完毕之后调用一次
+					_setHeight();
+				}
+			})();
+		</script>
+	</body>
+</html>

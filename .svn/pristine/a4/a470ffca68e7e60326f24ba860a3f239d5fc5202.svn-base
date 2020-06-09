@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title>活动资源</title>
+	<link rel="stylesheet" href="../../../../shijianzhou/css/fishBone.css" />
+	<script type="text/javascript" src="../../../../shijianzhou/js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="../../../../shijianzhou/js/fishBone.js"></script>
+	<script type="text/javascript" src="../../../../shijianzhou/js/jquery.SuperSlide.2.1.1.js"></script>
+	<script>
+		data = [
+				{
+					'时间':'1960年',
+					'接收单位':'天津文化部门',
+					'原所有者':'北京文物商店',
+					'完残程度':'完整',
+					'来源':'收购',
+					'事件':'入藏'
+				}, {
+					'时间': '2011.10.20至2011.10.20',
+					'承办单位':'天津博物馆',
+					'承办部门':'图像信息部',
+					'藏品状态':'已入库',
+					'拍摄人':'XXX',
+					'事件':'拍摄'
+				}, {
+					'时间': '2012.02.02至2012.04.02',
+					'主办单位':'天津博物馆',
+					'承办单位':'天津博物馆',
+					'藏品状态':'已入库',
+					'责任人':'XXX',
+					'事件':'内展'
+				},{
+					'时间': '2013.02.02至2012.04.02',
+					'主办单位':'故宫博物馆',
+					'承办单位':'天津博物馆',
+					'藏品状态':'已入库',
+					'责任人':'XXX',
+					'事件':'外展'
+				},{
+					'时间': '2013.07.02至2013.07.02',
+					'接待部门':'XXXX',
+					'参观单位/人员':'XXX',
+					'藏品状态':'已入库',
+					'责任人':'XXX',
+					'事件':'观摩'
+				},{
+					'时间': '2014.02.02至2014.04.02',
+					'修复人':'XXX',
+					'承担机构':'天津博物馆',
+					'藏品状态':'已入库',
+					'责任人':'XXX',
+					'事件':'修复'
+				},{
+					'时间': 	'2015.05.02至2015.08.02',
+					'主办单位':'天津博物馆',
+					'承办单位':'天津博物馆',
+					'藏品状态':'已入库',
+					'责任人':'XXX',
+					'事件':'内展'
+				},{
+					'时间': '2016.05.02至2016.08.02',
+					'主办单位':'天津博物馆',
+					'承办单位':'天津博物馆',
+					'藏品状态':'已入库',
+					'责任人':'XXX',
+					'事件':'内展'
+				},{
+					'时间': '2018.05.02至2018.08.02',
+					'主办单位':'天津博物馆',
+					'承办单位':'天津博物馆',
+					'藏品状态':'已入库',
+					'责任人':'XXX',
+					'事件':'内展'
+				},{
+					'时间': '2020.02.02至2012.04.02',
+					'主办单位':'天津博物馆',
+					'承办单位':'天津博物馆',
+					'藏品状态':'在展',
+					'责任人':'XXX',
+					'事件':'内展'
+				}
+		];
+		$(function() {
+			//创建案件历史
+			$(".fishBone").fishBone(data);
+		});
+
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="fishBone"/>
+	</div>
+	<script>
+
+		// var dod = document.getElementById('liss');
+		$('li').on('click', function (obj) {
+			console.log(obj);
+		});
+
+		(function(){
+			/**
+			 * 获取当前域
+			 **/
+			function _getDomain(){
+				var _hostname = window.location.hostname.toString();
+				var _hosts = _hostname.split(".");
+				var _len = _hosts.length;
+				if(_len>2){
+					return _hosts[_len-2]+"."+_hosts[_len-1];
+				}
+				return _hostname;
+			}
+
+			window.onload = function()
+			{
+//设置子页面的域
+				document.domain=_getDomain();
+				function _setHeight()
+				{
+					if (window.parent != window)
+					{
+						try
+						{
+//设置父级iframe的高度
+							parent.document.getElementById("huodongjl").style.height = document.body.scrollHeight+ 'px';
+						}
+						catch(e)
+						{
+						}
+					}
+//每隔2s设置一次，主要为了兼容子页面加载完毕之后高度再变化
+					setTimeout(_setHeight,2000);
+				}
+//子页面加载完毕之后调用一次
+				_setHeight();
+			}
+		})();
+	</script>
+</body>
+</html>
