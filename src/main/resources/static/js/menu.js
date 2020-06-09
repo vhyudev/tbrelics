@@ -44,6 +44,8 @@ layui.define('jquery', function(exports) {
 				_ul.append(items.join(''));
 				$('#side-nav').append(_ul);
 			});
+
+
 		},
 		/**
 		 * @param {Object} id 上级子菜单id,拼接menu获取元素
